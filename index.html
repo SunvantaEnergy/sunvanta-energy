@@ -243,25 +243,68 @@ dialog h2{margin-top:0;color:#15382b}
 const SUPABASE_URL = 'https://lwqxwsxhgopiubknjtnp.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_J2GEOxIuBbuS7xHm7USVTw_MFqFDgZ1';
 const WHATSAPP_NUMBER = '8616651698738';
+const CART_STORAGE_KEY = 'sunvanta_energy_cart_v1';
+
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let allProducts = [];
-let cart = [];
+let cart = loadSavedCart();
 let lastOrderMessage = '';
 
 document.getElementById('year').textContent = new Date().getFullYear();
 
+function loadSavedCart() {
+  try {
+    const saved = localStorage.getItem(CART_STORAGE_KEY);
+    if (!saved) return [];
+
+    const parsed = JSON.parse(saved);
+    if (!Array.isArray(parsed)) return [];
+
+    return parsed.filter(item =>
+      item &&
+      item.id !== undefined &&
+      item.name &&
+      Number.isInteger(Number(item.quantity)) &&
+      Number(item.quantity) > 0
+    ).map(item => ({
+      id: item.id,
+      name: String(item.name),
+      model: String(item.model || ''),
+      image_url: String(item.image_url || ''),
+      quantity: Number(item.quantity)
+    }));
+  } catch (error) {
+    console.error('Unable to restore cart:', error);
+    return [];
+  }
+}
+
+function saveCart() {
+  try {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+  } catch (error) {
+    console.error('Unable to save cart:', error);
+  }
+}
+
 function escapeHTML(value) {
   return String(value ?? '').replace(/[&<>"']/g, char => ({
-    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
   })[char]);
 }
 
 function chatSales(product) {
   let message = 'Hello, I am interested in your renewable energy products. Please contact me.';
+
   if (product) {
     message = `Hello, I am interested in ${product.name} (Model: ${product.model || 'Not specified'}). Please send me a quotation.`;
   }
+
   window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(message), '_blank');
 }
 
@@ -274,32 +317,58 @@ function filterCategory(category) {
 function addToCart(productId) {
   const product = allProducts.find(p => String(p.id) === String(productId));
   if (!product) return;
+
   const existing = cart.find(item => String(item.id) === String(product.id));
-  if (existing) existing.quantity += 1;
-  else cart.push({id:product.id,name:product.name,model:product.model||'',image_url:product.image_url||'',quantity:1});
+
+  if (existing) {
+    existing.quantity += 1;
+  } else {
+    cart.push({
+      id: product.id,
+      name: product.name,
+      model: product.model || '',
+      image_url: product.image_url || '',
+      quantity: 1
+    });
+  }
+
+  saveCart();
   updateCartCount();
+
   const button = document.getElementById('cartButton-' + productId);
+
   if (button) {
     button.textContent = 'Added ✓';
-    setTimeout(() => { if(button) button.textContent = 'Add to Cart'; }, 1000);
+    setTimeout(() => {
+      if (button) button.textContent = 'Add to Cart';
+    }, 1000);
   }
 }
 
 function updateCartCount() {
-  document.getElementById('cartCount').textContent = cart.reduce((sum,item)=>sum+item.quantity,0);
+  document.getElementById('cartCount').textContent =
+    cart.reduce((sum, item) => sum + item.quantity, 0);
 }
 
 function changeQuantity(id, amount) {
   const item = cart.find(p => String(p.id) === String(id));
   if (!item) return;
+
   item.quantity += amount;
-  if (item.quantity <= 0) cart = cart.filter(p => String(p.id) !== String(id));
+
+  if (item.quantity <= 0) {
+    cart = cart.filter(p => String(p.id) !== String(id));
+  }
+
+  saveCart();
   updateCartCount();
   renderCart();
 }
 
 function removeFromCart(id) {
   cart = cart.filter(p => String(p.id) !== String(id));
+
+  saveCart();
   updateCartCount();
   renderCart();
 }
@@ -341,11 +410,13 @@ function renderCart() {
 
   document.getElementById('cartSummary').textContent =
     `${cart.length} product type(s) · ${cart.reduce((sum,item)=>sum+item.quantity,0)} total unit(s)`;
+
   checkout.style.display = 'block';
 }
 
 function renderProducts(products) {
   const list = document.getElementById('productList');
+
   if (!products.length) {
     list.innerHTML = '<div class="status-message">No published products available yet. Please contact us for product inquiries.</div>';
     document.getElementById('noResults').style.display = 'none';
@@ -355,9 +426,11 @@ function renderProducts(products) {
   list.innerHTML = products.map(product => {
     const image = product.image_url || 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=800&q=80';
     const category = product.category || 'Other Products';
+
     const price = product.show_price && product.price !== null && product.price !== ''
       ? `${escapeHTML(product.currency || 'USD')} ${Number(product.price).toLocaleString('en-US')}`
       : 'Get Latest Price';
+
     const details = [
       product.model ? `Model: ${escapeHTML(product.model)}` : '',
       product.power ? `Power: ${escapeHTML(product.power)}` : '',
@@ -382,6 +455,7 @@ function renderProducts(products) {
         </div>
       </div>`;
   }).join('');
+
   filterProducts();
 }
 
@@ -393,27 +467,36 @@ function chatSalesById(id) {
 function filterProducts() {
   const keyword = document.getElementById('search').value.toLowerCase();
   const category = document.getElementById('filter').value;
+
   let count = 0;
+
   document.querySelectorAll('#productList .product').forEach(card => {
     const show = card.innerText.toLowerCase().includes(keyword) &&
       (!category || card.dataset.category === category);
+
     card.style.display = show ? '' : 'none';
+
     if (show) count++;
   });
+
   document.getElementById('noResults').style.display =
     allProducts.length && count === 0 ? 'block' : 'none';
 }
 
 async function loadProducts() {
   const list = document.getElementById('productList');
+
   try {
     const {data,error} = await db.from('products')
       .select('id,name,brand,model,category,power,description,image_url,price,currency,moq,stock_status,warranty,show_price')
       .eq('published',true)
       .order('created_at',{ascending:false});
+
     if (error) throw error;
+
     allProducts = data || [];
     renderProducts(allProducts);
+
   } catch(error) {
     console.error('Product loading error:',error);
     list.innerHTML = '<div class="status-message">Unable to load products at the moment. Please contact us through WhatsApp.</div>';
@@ -425,6 +508,7 @@ document.getElementById('filter').addEventListener('change',filterProducts);
 
 document.getElementById('orderForm').addEventListener('submit',async function(event) {
   event.preventDefault();
+
   if (!cart.length) {
     alert('Your inquiry cart is empty.');
     return;
@@ -435,6 +519,7 @@ document.getElementById('orderForm').addEventListener('submit',async function(ev
   submitButton.textContent = 'Submitting...';
 
   const form = new FormData(this);
+
   const items = cart.map(item => ({
     product_id:item.id,
     name:item.name,
@@ -464,8 +549,11 @@ document.getElementById('orderForm').addEventListener('submit',async function(ev
       (order.notes ? `\n\nNotes: ${order.notes}` : '') +
       '\n\nPlease send me your quotation.';
 
+    // Clear the cart only after successful database submission.
     cart = [];
+    saveCart();
     updateCartCount();
+
     this.reset();
     closeCart();
     document.getElementById('successDialog').showModal();
@@ -481,8 +569,15 @@ document.getElementById('orderForm').addEventListener('submit',async function(ev
 
 function chatLastOrder() {
   const message = lastOrderMessage || 'Hello, I would like to inquire about renewable energy products.';
-  window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(message),'_blank');
+
+  window.open(
+    'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(message),
+    '_blank'
+  );
 }
+
+// Restore the saved cart count when the page opens.
+updateCartCount();
 
 loadProducts();
 </script>
