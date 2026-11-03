@@ -44,12 +44,14 @@ section{padding:75px 0}
 .toolbar input,.toolbar select{padding:12px;border:1px solid #dce6df;border-radius:7px;background:white}
 .toolbar input{flex:1;min-width:0}
 .product{background:white;border:1px solid #e2eae4;border-radius:12px;overflow:hidden;transition:.2s}
-.product img{width:100%;height:210px;object-fit:cover;display:block}
+.product img{width:100%;height:210px;object-fit:contain;background:#fff;display:block;padding:10px}
 .product-info{padding:20px}
 .product-info small{color:#07835c;font-weight:bold}
 .product-info h3{margin:7px 0;color:#15382b}
 .product-info p{font-size:13px;color:#718078;min-height:42px}
 .product-info button{width:100%}
+.product-price{font-size:19px;font-weight:bold;color:#07835c;margin:12px 0}
+.product-meta{font-size:12px;color:#718078;margin:5px 0 12px}
 .benefit{padding:25px;background:white;border:1px solid #e2eae4;border-radius:10px}
 .benefit h3{color:#15382b}
 .benefit p{color:#718078;font-size:14px}
@@ -66,6 +68,8 @@ dialog h2{margin-top:0;color:#15382b}
 .formfield input,.formfield select,.formfield textarea{width:100%;padding:11px;border:1px solid #d5e1d9;border-radius:6px}
 .formfield textarea{min-height:100px}
 .close{float:right;border:0;background:#edf3ef;border-radius:50%;width:32px;height:32px;cursor:pointer}
+.status-message{grid-column:1/-1;text-align:center;padding:35px;color:#718078}
+.whatsapp-float{position:fixed;right:25px;bottom:25px;z-index:99999;background:#25D366;color:white;padding:15px 22px;border-radius:50px;font-size:16px;font-weight:bold;box-shadow:0 4px 14px rgba(0,0,0,.2)}
 @media(max-width:750px){
 .navlinks a:not(.quote){display:none}
 .categories,.products,.benefits{grid-template-columns:1fr 1fr}
@@ -75,11 +79,11 @@ dialog h2{margin-top:0;color:#15382b}
 @media(max-width:500px){
 .categories,.products,.benefits{grid-template-columns:1fr}
 .toolbar{flex-direction:column}
+.whatsapp-float{right:12px;bottom:12px;padding:12px 16px}
 }
 </style>
 </head>
 <body>
-
 <header>
 <div class="container">
 <nav>
@@ -144,37 +148,7 @@ dialog h2{margin-top:0;color:#15382b}
 </select>
 </div>
 <div class="products" id="productList">
-
-<div class="product" data-category="Solar Panels">
-<img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=800&q=80" alt="Solar panels">
-<div class="product-info"><small>SOLAR PANELS</small><h3>Solar PV Modules</h3><p>Solar photovoltaic modules. Ask us about available models and specifications.</p><button class="btn green" onclick="openInquiry('Solar Panels')">Request Price</button></div>
-</div>
-
-<div class="product" data-category="Solar Inverters">
-<img src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=800&q=80" alt="Energy infrastructure">
-<div class="product-info"><small>SOLAR INVERTERS</small><h3>Solar Inverters</h3><p>Hybrid, on-grid and off-grid inverter options for different applications.</p><button class="btn green" onclick="openInquiry('Solar Inverters')">Request Price</button></div>
-</div>
-
-<div class="product" data-category="Lithium Batteries">
-<img src="https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&w=800&q=80" alt="Renewable energy">
-<div class="product-info"><small>LITHIUM BATTERIES</small><h3>Lithium Battery Systems</h3><p>Ask about battery voltage, capacity and installation options.</p><button class="btn green" onclick="openInquiry('Lithium Batteries')">Request Price</button></div>
-</div>
-
-<div class="product" data-category="Energy Storage Systems">
-<img src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=800&q=80" alt="Energy storage">
-<div class="product-info"><small>ENERGY STORAGE</small><h3>Energy Storage Systems</h3><p>Discuss storage capacity and your project requirements.</p><button class="btn green" onclick="openInquiry('Energy Storage Systems')">Request Price</button></div>
-</div>
-
-<div class="product" data-category="Wind Turbines">
-<img src="https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=800&q=80" alt="Wind turbines">
-<div class="product-info"><small>WIND POWER</small><h3>Wind Turbines</h3><p>Wind power products. Ask about rated power and voltage options.</p><button class="btn green" onclick="openInquiry('Wind Turbines')">Request Price</button></div>
-</div>
-
-<div class="product" data-category="Other Products">
-<img src="https://images.unsplash.com/photo-1497440001374-f26997328c1b?auto=format&fit=crop&w=800&q=80" alt="Solar equipment">
-<div class="product-info"><small>ACCESSORIES</small><h3>Solar Accessories</h3><p>Mounting structures, cables, connectors and related components.</p><button class="btn green" onclick="openInquiry('Other Products')">Request Price</button></div>
-</div>
-
+<div class="status-message">Loading products...</div>
 </div>
 <p id="noResults" style="display:none;text-align:center;color:#718078">No matching products found.</p>
 </div>
@@ -222,100 +196,148 @@ dialog h2{margin-top:0;color:#15382b}
 <div class="formfield"><label>Email *</label><input name="email" type="email" required></div>
 <div class="formfield"><label>Country *</label><input name="country" required></div>
 <div class="formfield"><label>Product *</label>
-<select name="product" id="inquiryProduct" required>
-<option value="">Select product</option>
-<option>Solar Panels</option>
-<option>Solar Inverters</option>
-<option>Lithium Batteries</option>
-<option>Energy Storage Systems</option>
-<option>Wind Turbines</option>
-<option>Other Products</option>
-</select></div>
+<input name="product" id="inquiryProduct" required placeholder="Product name or model">
+</div>
 <div class="formfield"><label>Quantity and Requirements *</label><textarea name="details" required placeholder="Please describe your required products, quantity and destination."></textarea></div>
 <button class="btn green" type="submit">Prepare Email</button>
 </form>
 </dialog>
 
+<a href="https://wa.me/8616651698738" class="whatsapp-float" target="_blank" rel="noopener noreferrer">☎ Chat on WhatsApp</a>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-document.getElementById('year').textContent=new Date().getFullYear();
+const SUPABASE_URL = 'https://lwqxwsxhgopiubknjtnp.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_J2GEOxIuBbuS7xHm7USVTw_MFqFDgZ1';
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-function openInquiry(category){
-const dialog=document.getElementById('inquiry');
-if(category)document.getElementById('inquiryProduct').value=category;
-dialog.showModal();
+let allProducts = [];
+
+document.getElementById('year').textContent = new Date().getFullYear();
+
+function openInquiry(productName) {
+  const dialog = document.getElementById('inquiry');
+  if (productName) {
+    document.getElementById('inquiryProduct').value = productName;
+  }
+  dialog.showModal();
 }
 
-function filterCategory(category){
-document.getElementById('filter').value=category;
-filterProducts();
-document.getElementById('products').scrollIntoView();
+function filterCategory(category) {
+  document.getElementById('filter').value = category;
+  filterProducts();
+  document.getElementById('products').scrollIntoView();
 }
 
-function filterProducts(){
-const keyword=document.getElementById('search').value.toLowerCase();
-const category=document.getElementById('filter').value;
-let count=0;
-document.querySelectorAll('.product').forEach(card=>{
-const matchesText=card.innerText.toLowerCase().includes(keyword);
-const matchesCategory=!category||card.dataset.category===category;
-const show=matchesText&&matchesCategory;
-card.style.display=show?'':'none';
-if(show)count++;
+function renderProducts(products) {
+  const list = document.getElementById('productList');
+  const noResults = document.getElementById('noResults');
+
+  if (!products.length) {
+    list.innerHTML = '<div class="status-message">No published products available yet. Please contact us for product inquiries.</div>';
+    noResults.style.display = 'none';
+    return;
+  }
+
+  list.innerHTML = products.map(product => {
+    const image = product.image_url || 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=800&q=80';
+    const category = product.category || 'Other Products';
+    const price = product.show_price && product.price !== null && product.price !== ''
+      ? `${product.currency || 'USD'} ${Number(product.price).toLocaleString('en-US')}`
+      : 'Get Latest Price';
+
+    const details = [
+      product.model ? `Model: ${escapeHTML(product.model)}` : '',
+      product.power ? `Power: ${escapeHTML(product.power)}` : '',
+      product.moq ? `MOQ: ${escapeHTML(String(product.moq))}` : '',
+      product.stock_status ? `Stock: ${escapeHTML(product.stock_status)}` : '',
+      product.warranty ? `Warranty: ${escapeHTML(product.warranty)}` : ''
+    ].filter(Boolean).join(' · ');
+
+    return `
+      <div class="product" data-category="${escapeHTML(category)}">
+        <img src="${escapeHTML(image)}" alt="${escapeHTML(product.name)}" loading="lazy">
+        <div class="product-info">
+          <small>${escapeHTML(category.toUpperCase())}</small>
+          <h3>${escapeHTML(product.name)}</h3>
+          <p>${escapeHTML(product.description || '')}</p>
+          <div class="product-meta">${details}</div>
+          <div class="product-price">${price}</div>
+          <button class="btn green" onclick="openInquiry('${escapeJS(product.name)}')">Request a Quote</button>
+        </div>
+      </div>`;
+  }).join('');
+
+  filterProducts();
+}
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+  })[char]);
+}
+
+function escapeJS(value) {
+  return String(value).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, ' ');
+}
+
+function filterProducts() {
+  const keyword = document.getElementById('search').value.toLowerCase();
+  const category = document.getElementById('filter').value;
+  let count = 0;
+
+  document.querySelectorAll('#productList .product').forEach(card => {
+    const matchesText = card.innerText.toLowerCase().includes(keyword);
+    const matchesCategory = !category || card.dataset.category === category;
+    const show = matchesText && matchesCategory;
+    card.style.display = show ? '' : 'none';
+    if (show) count++;
+  });
+
+  document.getElementById('noResults').style.display =
+    allProducts.length && count === 0 ? 'block' : 'none';
+}
+
+async function loadProducts() {
+  const list = document.getElementById('productList');
+
+  try {
+    const { data, error } = await db
+      .from('products')
+      .select('id,name,brand,model,category,power,description,image_url,price,currency,moq,stock_status,warranty,show_price')
+      .eq('published', true)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+
+    allProducts = data || [];
+    renderProducts(allProducts);
+  } catch (error) {
+    console.error('Product loading error:', error);
+    list.innerHTML = '<div class="status-message">Unable to load products at the moment. Please contact us through WhatsApp.</div>';
+  }
+}
+
+document.getElementById('search').addEventListener('input', filterProducts);
+document.getElementById('filter').addEventListener('change', filterProducts);
+
+document.getElementById('inquiryForm').addEventListener('submit', function(event) {
+  event.preventDefault();
+  const recipient = '3487217845@qq.com';
+  const data = new FormData(this);
+  const subject = encodeURIComponent('Sunvanta Energy Product Inquiry');
+  const body = encodeURIComponent(
+    'Name: ' + data.get('name') +
+    '\nCompany: ' + data.get('company') +
+    '\nEmail: ' + data.get('email') +
+    '\nCountry: ' + data.get('country') +
+    '\nProduct: ' + data.get('product') +
+    '\nRequirements: ' + data.get('details')
+  );
+  window.location.href = 'mailto:' + recipient + '?subject=' + subject + '&body=' + body;
 });
-document.getElementById('noResults').style.display=count?'none':'block';
-}
 
-document.getElementById('search').addEventListener('input',filterProducts);
-document.getElementById('filter').addEventListener('change',filterProducts);
-
-document.getElementById('inquiryForm').addEventListener('submit',function(event){
-event.preventDefault();
-const recipient='CHANGE_ME@example.com';
-if(recipient==='CHANGE_ME@example.com'){
-alert('The website owner needs to add an inquiry email address before using this form.');
-return;
-}
-const data=new FormData(this);
-const subject=encodeURIComponent('Sunvanta Energy Product Inquiry');
-const body=encodeURIComponent(
-'Name: '+data.get('name')+
-'\nCompany: '+data.get('company')+
-'\nEmail: '+data.get('email')+
-'\nCountry: '+data.get('country')+
-'\nProduct: '+data.get('product')+
-'\nRequirements: '+data.get('details')
-);
-location.href='mailto:'+recipient+'?subject='+subject+'&body='+body;
-});
+loadProducts();
 </script>
-<!-- WhatsApp Floating Button -->
-<a href="https://wa.me/8616651698738"
-   class="whatsapp-float"
-   target="_blank"
-   rel="noopener noreferrer">
-   ☎ Chat on WhatsApp
-</a>
-
-<style>
-.whatsapp-float {
-    position: fixed;
-    right: 25px;
-    bottom: 25px;
-    z-index: 99999;
-    background: #25D366;
-    color: white;
-    padding: 15px 22px;
-    border-radius: 50px;
-    font-size: 16px;
-    font-weight: bold;
-    text-decoration: none;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.2);
-}
-
-.whatsapp-float:hover {
-    background: #1ebe5d;
-    color: white;
-}
-</style>
 </body>
 </html>
