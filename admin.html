@@ -1,277 +1,360 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sunvanta Energy | Admin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sunvanta Energy Admin</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f4f6f8;color:#202b38}
+body{margin:0;background:#f3f5f7;color:#243247;font-family:Arial,sans-serif}
 header{background:#102b46;color:white;padding:18px 5%;display:flex;justify-content:space-between;align-items:center}
-header h2{margin:0;font-size:21px}
-main{max-width:1100px;margin:35px auto;padding:0 18px}
+main{max-width:1100px;margin:30px auto;padding:0 16px}
 .panel{background:white;padding:24px;border-radius:12px;margin-bottom:22px;box-shadow:0 2px 12px #0000000a}
-h3{margin-top:0}
-input,select,textarea{width:100%;padding:12px;margin:7px 0 15px;border:1px solid #d5dce3;border-radius:7px;font-size:15px}
+h2,h3{margin-top:0}
+input,select,textarea{width:100%;padding:11px;margin:7px 0 15px;border:1px solid #d5dce3;border-radius:7px;font-size:15px}
 textarea{min-height:90px}
-button{border:0;border-radius:7px;padding:11px 17px;background:#e5a52b;color:#172b40;font-weight:bold;cursor:pointer;margin:4px}
-button.secondary{background:#e8edf2;color:#26394d}
-button.danger{background:#f8dddd;color:#9c2525}
+label{font-size:14px;font-weight:bold}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.product{border:1px solid #e1e6eb;padding:15px;border-radius:9px;margin:12px 0;display:flex;gap:15px;align-items:center}
-.product img{width:85px;height:85px;object-fit:contain;background:#f5f6f7;border-radius:6px}
-.product-info{flex:1}
-.muted{color:#738092;font-size:13px}
+button{border:0;border-radius:7px;padding:11px 16px;background:#e5a52b;color:#172b40;font-weight:bold;cursor:pointer;margin:4px}
+.secondary{background:#e8edf2;color:#26394d}
+.danger{background:#f8dddd;color:#9c2525}
 .hidden{display:none}
-#message{margin:12px 0;color:#23633a}
-@media(max-width:650px){.row{grid-template-columns:1fr}.product{align-items:flex-start}.product img{width:65px;height:65px}}
+.product{border:1px solid #e1e6eb;padding:15px;border-radius:9px;margin:12px 0;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.product img{width:85px;height:85px;object-fit:contain;background:#f5f6f7;border-radius:6px}
+.product-info{flex:1;min-width:180px}
+.muted{color:#738092;font-size:13px}
+#message{color:#23633a}
+@media(max-width:650px){.row{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <header>
-  <h2>Sunvanta Energy · Admin</h2>
-  <button id="logoutBtn" class="secondary hidden" onclick="logout()">Log out</button>
+<h2>Sunvanta Energy · Admin</h2>
+<button id="logoutBtn" class="secondary hidden" onclick="logout()">Log out</button>
 </header>
 
 <main>
-  <section class="panel" id="loginPanel">
-    <h3>Administrator Login</h3>
-    <label>Email</label>
-    <input id="email" type="email" value="3487217845@qq.com">
-    <label>Password</label>
-    <input id="password" type="password" placeholder="Enter your password">
-    <button onclick="login()">Log in</button>
-    <p id="loginMessage" class="muted"></p>
-  </section>
+<section class="panel" id="loginPanel">
+<h3>Administrator Login</h3>
+<label>Email</label>
+<input id="email" type="email" value="3487217845@qq.com">
+<label>Password</label>
+<input id="password" type="password" placeholder="Enter your password">
+<button onclick="login()">Log in</button>
+<p id="loginMessage" class="muted"></p>
+</section>
 
-  <section id="adminPanel" class="hidden">
-    <div class="panel">
-      <h3 id="formTitle">Add a Product</h3>
-      <input type="hidden" id="productId">
+<section id="adminPanel" class="hidden">
+<div class="panel">
+<h3 id="formTitle">Add a Product</h3>
+<input type="hidden" id="productId">
 
-      <label>Product Name *</label>
-      <input id="name" placeholder="e.g. Deye 5kW Hybrid Inverter">
+<label>Product Name *</label>
+<input id="name" placeholder="Deye 5kW Hybrid Inverter">
 
-      <div class="row">
-        <div>
-          <label>Brand</label>
-          <input id="brand" placeholder="Deye">
-        </div>
-        <div>
-          <label>Model</label>
-          <input id="model" placeholder="SUN-5K-SG06LP1-EU-CM2">
-        </div>
-      </div>
+<div class="row">
+<div>
+<label>Brand</label>
+<input id="brand" placeholder="Deye">
+</div>
+<div>
+<label>Model</label>
+<input id="model" placeholder="SUN-5K-SG06LP1-EU-CM2">
+</div>
+</div>
 
-      <div class="row">
-        <div>
-          <label>Category</label>
-          <select id="category">
-            <option>Solar Inverters</option>
-            <option>Solar Panels</option>
-            <option>Lithium Batteries</option>
-            <option>Energy Storage Systems</option>
-            <option>Wind Turbines</option>
-            <option>Other Products</option>
-          </select>
-        </div>
-        <div>
-          <label>Power / Capacity</label>
-          <input id="power" placeholder="5kW">
-        </div>
-      </div>
+<div class="row">
+<div>
+<label>Category</label>
+<select id="category">
+<option>Solar Inverters</option>
+<option>Solar Panels</option>
+<option>Lithium Batteries</option>
+<option>Energy Storage Systems</option>
+<option>Wind Turbines</option>
+<option>Other Products</option>
+</select>
+</div>
+<div>
+<label>Power / Capacity</label>
+<input id="power" placeholder="5kW">
+</div>
+</div>
 
-      <label>Description</label>
-      <textarea id="description" placeholder="Product specifications and details"></textarea>
+<h3>Wholesale Information</h3>
+<div class="row">
+<div>
+<label>Price</label>
+<input id="price" type="number" min="0" step="0.01" placeholder="850">
+</div>
+<div>
+<label>Currency</label>
+<select id="currency">
+<option>USD</option>
+<option>EUR</option>
+<option>CNY</option>
+</select>
+</div>
+</div>
 
-      <label>Product Image</label>
-      <input id="imageFile" type="file" accept="image/*">
-      <p class="muted">Upload a real product photo. JPG, PNG or WebP recommended.</p>
+<div class="row">
+<div>
+<label>MOQ (Minimum Order Quantity)</label>
+<input id="moq" type="number" min="1" value="1">
+</div>
+<div>
+<label>Stock Status</label>
+<select id="stockStatus">
+<option>In Stock</option>
+<option>Pre-order</option>
+<option>Out of Stock</option>
+</select>
+</div>
+</div>
 
-      <button onclick="saveProduct()">Save Product</button>
-      <button class="secondary" onclick="resetForm()">Clear</button>
-      <p id="message"></p>
-    </div>
+<div class="row">
+<div>
+<label>Warranty</label>
+<input id="warranty" placeholder="5 Years">
+</div>
+<div>
+<label>Show Price to Customers</label>
+<select id="showPrice">
+<option value="false">No - Get Latest Price</option>
+<option value="true">Yes - Display Price</option>
+</select>
+</div>
+</div>
 
-    <div class="panel">
-      <h3>Product Management</h3>
-      <button class="secondary" onclick="loadProducts()">Refresh List</button>
-      <div id="productList">Loading products...</div>
-    </div>
-  </section>
+<label>Description</label>
+<textarea id="description" placeholder="Product specifications and details"></textarea>
+
+<label>Product Image</label>
+<input id="imageFile" type="file" accept="image/*">
+<p class="muted">Upload a real product image. JPG, PNG or WebP recommended.</p>
+<div id="imagePreview"></div>
+
+<label>Publish Status</label>
+<select id="published">
+<option value="false">Draft</option>
+<option value="true">Published</option>
+</select>
+
+<button onclick="saveProduct()">Save Product</button>
+<button class="secondary" onclick="resetForm()">Clear</button>
+<p id="message"></p>
+</div>
+
+<div class="panel">
+<h3>Product Management</h3>
+<button class="secondary" onclick="loadProducts()">Refresh List</button>
+<div id="productList">Loading...</div>
+</div>
+</section>
 </main>
 
 <script>
-// Fill these two values using your Supabase project settings.
 const SUPABASE_URL = "https://lwqxwsxhgopiubknjtnp.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_J2GEOxIuBbuS7xHm7USVTw_MFqFDgZ1";
-
 const ADMIN_UID = "d11f2af2-efd4-49c4-baab-51f84569ddfa";
 
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+let currentImageUrl = null;
 
 async function login(){
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
-  const msg = document.getElementById("loginMessage");
-  msg.textContent = "Signing in...";
-
-  const {data,error} = await db.auth.signInWithPassword({email,password});
-  if(error){msg.textContent = error.message;return;}
-
-  if(data.user.id !== ADMIN_UID){
-    await db.auth.signOut();
-    msg.textContent = "This account is not authorized as administrator.";
-    return;
-  }
-  showAdmin();
+ const msg=document.getElementById("loginMessage");
+ msg.textContent="Signing in...";
+ const {data,error}=await db.auth.signInWithPassword({
+  email:document.getElementById("email").value.trim(),
+  password:document.getElementById("password").value
+ });
+ if(error){msg.textContent=error.message;return;}
+ if(data.user.id!==ADMIN_UID){
+  await db.auth.signOut();
+  msg.textContent="Unauthorized account.";
+  return;
+ }
+ showAdmin();
 }
 
 async function logout(){
-  await db.auth.signOut();
-  location.reload();
+ await db.auth.signOut();
+ location.reload();
 }
 
 function showAdmin(){
-  document.getElementById("loginPanel").classList.add("hidden");
-  document.getElementById("adminPanel").classList.remove("hidden");
-  document.getElementById("logoutBtn").classList.remove("hidden");
-  loadProducts();
+ document.getElementById("loginPanel").classList.add("hidden");
+ document.getElementById("adminPanel").classList.remove("hidden");
+ document.getElementById("logoutBtn").classList.remove("hidden");
+ loadProducts();
 }
 
 async function checkSession(){
-  const {data} = await db.auth.getSession();
-  if(data.session){
-    if(data.session.user.id === ADMIN_UID) showAdmin();
-    else await db.auth.signOut();
-  }
+ const {data}=await db.auth.getSession();
+ if(data.session){
+  if(data.session.user.id===ADMIN_UID) showAdmin();
+  else await db.auth.signOut();
+ }
 }
 
 async function loadProducts(){
-  const list = document.getElementById("productList");
-  list.textContent = "Loading...";
-
-  const {data,error} = await db.from("products")
-    .select("*").order("created_at",{ascending:false});
-
-  if(error){list.textContent = error.message;return;}
-  if(!data.length){list.textContent = "No products yet. Add your first product above.";return;}
-
-  list.innerHTML = "";
-  data.forEach(p=>{
-    const item = document.createElement("div");
-    item.className = "product";
-
-    const img = document.createElement("img");
-    img.src = p.image_url || "";
-    img.alt = p.name || "Product image";
-
-    const info = document.createElement("div");
-    info.className = "product-info";
-
-    const title = document.createElement("strong");
-    title.textContent = p.name;
-
-    const details = document.createElement("p");
-    details.className = "muted";
-    details.textContent = [p.brand,p.model,p.power].filter(Boolean).join(" · ");
-
-    const status = document.createElement("p");
-    status.className = "muted";
-    status.textContent = p.published ? "Published" : "Draft";
-
-    info.append(title,details,status);
-
-    const actions = document.createElement("div");
-    actions.innerHTML = `
-      <button class="secondary" onclick="editProduct(${p.id})">Edit</button>
-      <button onclick="togglePublish(${p.id},${!p.published})">${p.published ? "Unpublish" : "Publish"}</button>
-      <button class="danger" onclick="deleteProduct(${p.id})">Delete</button>
-    `;
-
-    item.append(img,info,actions);
-    list.appendChild(item);
-  });
+ const list=document.getElementById("productList");
+ list.textContent="Loading...";
+ const {data,error}=await db.from("products").select("*").order("created_at",{ascending:false});
+ if(error){list.textContent=error.message;return;}
+ if(!data.length){list.textContent="No products yet.";return;}
+ list.innerHTML="";
+ data.forEach(p=>{
+  const item=document.createElement("div");
+  item.className="product";
+  const img=document.createElement("img");
+  img.src=p.image_url||"";
+  img.alt=p.name||"Product";
+  const info=document.createElement("div");
+  info.className="product-info";
+  const title=document.createElement("strong");
+  title.textContent=p.name;
+  const detail=document.createElement("p");
+  detail.className="muted";
+  detail.textContent=[p.brand,p.model,p.power].filter(Boolean).join(" · ");
+  const price=document.createElement("p");
+  price.className="muted";
+  price.textContent=p.price==null?"Price not set":p.currency+" "+p.price;
+  const status=document.createElement("p");
+  status.className="muted";
+  status.textContent=(p.published?"Published":"Draft")+" · "+(p.stock_status||"In Stock");
+  info.append(title,detail,price,status);
+  const actions=document.createElement("div");
+  const edit=document.createElement("button");
+  edit.className="secondary";
+  edit.textContent="Edit";
+  edit.onclick=()=>editProduct(p.id);
+  const toggle=document.createElement("button");
+  toggle.textContent=p.published?"Unpublish":"Publish";
+  toggle.onclick=()=>togglePublish(p.id,!p.published);
+  const del=document.createElement("button");
+  del.className="danger";
+  del.textContent="Delete";
+  del.onclick=()=>deleteProduct(p.id);
+  actions.append(edit,toggle,del);
+  item.append(img,info,actions);
+  list.appendChild(item);
+ });
 }
 
 async function saveProduct(){
-  const msg = document.getElementById("message");
-  msg.textContent = "Saving...";
+ const msg=document.getElementById("message");
+ msg.textContent="Saving...";
+ const id=document.getElementById("productId").value;
+ const name=document.getElementById("name").value.trim();
+ if(!name){msg.textContent="Please enter a product name.";return;}
 
-  const id = document.getElementById("productId").value;
-  const name = document.getElementById("name").value.trim();
-  if(!name){msg.textContent = "Please enter a product name.";return;}
+ let imageUrl=currentImageUrl;
+ const file=document.getElementById("imageFile").files[0];
 
-  let imageUrl = window.currentImageUrl || null;
-  const file = document.getElementById("imageFile").files[0];
+ if(file){
+  const ext=file.name.split(".").pop().toLowerCase();
+  const path=Date.now()+"-"+Math.random().toString(36).slice(2)+"."+ext;
+  const {error:uploadError}=await db.storage.from("product-images").upload(path,file);
+  if(uploadError){msg.textContent=uploadError.message;return;}
+  imageUrl=db.storage.from("product-images").getPublicUrl(path).data.publicUrl;
+ }
 
-  if(file){
-    const ext = file.name.split(".").pop().toLowerCase();
-    const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-    const {error:uploadError} = await db.storage.from("product-images").upload(path,file);
-    if(uploadError){msg.textContent = uploadError.message;return;}
-    const {data:urlData} = db.storage.from("product-images").getPublicUrl(path);
-    imageUrl = urlData.publicUrl;
-  }
+ const rawPrice=document.getElementById("price").value;
+ const rawMoq=document.getElementById("moq").value;
+ const product={
+  name,
+  brand:document.getElementById("brand").value.trim(),
+  model:document.getElementById("model").value.trim(),
+  category:document.getElementById("category").value,
+  power:document.getElementById("power").value.trim(),
+  description:document.getElementById("description").value.trim(),
+  image_url:imageUrl,
+  price:rawPrice===""?null:Number(rawPrice),
+  currency:document.getElementById("currency").value,
+  moq:rawMoq===""?1:Number(rawMoq),
+  stock_status:document.getElementById("stockStatus").value,
+  warranty:document.getElementById("warranty").value.trim(),
+  show_price:document.getElementById("showPrice").value==="true",
+  published:document.getElementById("published").value==="true"
+ };
 
-  const product = {
-    name,
-    brand:document.getElementById("brand").value.trim(),
-    model:document.getElementById("model").value.trim(),
-    category:document.getElementById("category").value,
-    power:document.getElementById("power").value.trim(),
-    description:document.getElementById("description").value.trim(),
-    image_url:imageUrl
-  };
+ const result=id
+  ?await db.from("products").update(product).eq("id",id)
+  :await db.from("products").insert(product);
 
-  let result;
-  if(id) result = await db.from("products").update(product).eq("id",id);
-  else result = await db.from("products").insert(product);
-
-  if(result.error){msg.textContent = result.error.message;return;}
-  msg.textContent = "Product saved successfully.";
-  resetForm();
-  loadProducts();
+ if(result.error){msg.textContent=result.error.message;return;}
+ msg.textContent="Product saved successfully.";
+ resetForm();
+ loadProducts();
 }
 
 async function editProduct(id){
-  const {data,error} = await db.from("products").select("*").eq("id",id).single();
-  if(error){alert(error.message);return;}
-
-  document.getElementById("productId").value = data.id;
-  document.getElementById("name").value = data.name || "";
-  document.getElementById("brand").value = data.brand || "";
-  document.getElementById("model").value = data.model || "";
-  document.getElementById("category").value = data.category || "Solar Inverters";
-  document.getElementById("power").value = data.power || "";
-  document.getElementById("description").value = data.description || "";
-  window.currentImageUrl = data.image_url || null;
-  document.getElementById("formTitle").textContent = "Edit Product";
-  window.scrollTo({top:0,behavior:"smooth"});
+ const {data,error}=await db.from("products").select("*").eq("id",id).single();
+ if(error){alert(error.message);return;}
+ document.getElementById("productId").value=data.id;
+ document.getElementById("name").value=data.name||"";
+ document.getElementById("brand").value=data.brand||"";
+ document.getElementById("model").value=data.model||"";
+ document.getElementById("category").value=data.category||"Solar Inverters";
+ document.getElementById("power").value=data.power||"";
+ document.getElementById("description").value=data.description||"";
+ document.getElementById("price").value=data.price??"";
+ document.getElementById("currency").value=data.currency||"USD";
+ document.getElementById("moq").value=data.moq??1;
+ document.getElementById("stockStatus").value=data.stock_status||"In Stock";
+ document.getElementById("warranty").value=data.warranty||"";
+ document.getElementById("showPrice").value=String(data.show_price??false);
+ document.getElementById("published").value=String(data.published??false);
+ currentImageUrl=data.image_url||null;
+ document.getElementById("imagePreview").textContent=currentImageUrl?"Current image uploaded.": "No image uploaded.";
+ document.getElementById("formTitle").textContent="Edit Product";
+ window.scrollTo({top:0,behavior:"smooth"});
 }
 
 async function togglePublish(id,published){
-  const {error} = await db.from("products").update({published}).eq("id",id);
-  if(error){alert(error.message);return;}
-  loadProducts();
+ const {error}=await db.from("products").update({published}).eq("id",id);
+ if(error){alert(error.message);return;}
+ loadProducts();
 }
 
 async function deleteProduct(id){
-  if(!confirm("Delete this product? This cannot be undone.")) return;
-  const {error} = await db.from("products").delete().eq("id",id);
-  if(error){alert(error.message);return;}
-  loadProducts();
+ if(!confirm("Delete this product permanently?"))return;
+ const {error}=await db.from("products").delete().eq("id",id);
+ if(error){alert(error.message);return;}
+ loadProducts();
 }
 
 function resetForm(){
-  ["productId","name","brand","model","power","description","imageFile"].forEach(id=>{
-    document.getElementById(id).value = "";
-  });
-  document.getElementById("category").value = "Solar Inverters";
-  document.getElementById("formTitle").textContent = "Add a Product";
-  window.currentImageUrl = null;
+ ["productId","name","brand","model","power","description","price","warranty","imageFile"].forEach(id=>{
+  document.getElementById(id).value="";
+ });
+ document.getElementById("category").value="Solar Inverters";
+ document.getElementById("currency").value="USD";
+ document.getElementById("moq").value=1;
+ document.getElementById("stockStatus").value="In Stock";
+ document.getElementById("showPrice").value="false";
+ document.getElementById("published").value="false";
+ document.getElementById("formTitle").textContent="Add a Product";
+ document.getElementById("imagePreview").textContent="";
+ currentImageUrl=null;
 }
+
+document.getElementById("imageFile").addEventListener("change",function(){
+ const file=this.files[0];
+ const preview=document.getElementById("imagePreview");
+ if(!file){preview.textContent="";return;}
+ if(!file.type.startsWith("image/")){preview.textContent="Please select an image.";this.value="";return;}
+ const url=URL.createObjectURL(file);
+ preview.innerHTML="";
+ const img=document.createElement("img");
+ img.src=url;
+ img.style.maxWidth="150px";
+ img.style.maxHeight="120px";
+ preview.appendChild(img);
+});
 
 checkSession();
 </script>
