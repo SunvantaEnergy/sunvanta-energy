@@ -3,583 +3,629 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Sunvanta Energy - Solar panels, inverters, lithium batteries and renewable energy products.">
-<title>Sunvanta Energy | Renewable Energy</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sunvanta Energy | Seller Center</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;font-family:Arial,sans-serif;color:#263b33;line-height:1.6}
-a{text-decoration:none;color:inherit}
+body{margin:0;background:#f4f6f8;color:#243247;font-family:Arial,sans-serif}
 button,input,select,textarea{font:inherit}
-.container{width:min(1160px,92%);margin:auto}
-header{background:white;position:sticky;top:0;z-index:10;border-bottom:1px solid #e5ece7}
-nav{min-height:75px;display:flex;align-items:center;justify-content:space-between;gap:15px}
-.logo{font-size:23px;font-weight:800;color:#15382b}
-.logo span{color:#07835c}
-.navlinks{display:flex;align-items:center;gap:22px;font-size:14px;font-weight:bold}
-.btn{border:0;border-radius:7px;padding:12px 18px;cursor:pointer;font-weight:bold;display:inline-flex;align-items:center;justify-content:center;gap:7px}
-.green{background:#07835c;color:white}
-.green:hover{background:#056b4b}
-.outline{background:white;border:1px solid #07835c;color:#07835c}
-.hero{padding:105px 0;color:white;background:linear-gradient(100deg,rgba(8,39,30,.94),rgba(8,70,48,.65)),url('https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1800&q=85') center/cover}
-.hero-content{max-width:700px}
-.eyebrow{color:#a7e8c6;font-size:13px;letter-spacing:2px;font-weight:bold}
-.hero h1{font-size:clamp(38px,6vw,65px);line-height:1.1;margin:18px 0}
-.hero p{font-size:17px;color:#e0eee7;max-width:600px}
-.hero .btn{margin:12px 10px 0 0}
-.white{background:white;color:#15382b}
-section{padding:75px 0}
-.light{background:#f4f8f5}
-.heading{text-align:center;margin-bottom:35px}
-.heading small{color:#07835c;font-weight:bold;letter-spacing:2px}
-.heading h2{font-size:35px;color:#15382b;margin:8px 0}
-.heading p{color:#718078}
-.categories,.products,.benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.category{background:white;padding:25px;border:1px solid #e1ebe4;border-radius:12px;cursor:pointer;transition:.2s}
-.category:hover,.product:hover{box-shadow:0 10px 28px #15382b16;transform:translateY(-3px)}
-.category .icon{font-size:32px}
-.category h3{margin:8px 0;color:#15382b}
-.category p{font-size:13px;color:#718078;margin:0}
-.toolbar{display:flex;gap:12px;margin:25px 0}
-.toolbar input,.toolbar select{padding:12px;border:1px solid #dce6df;border-radius:7px;background:white}
-.toolbar input{flex:1;min-width:0}
-.product{background:white;border:1px solid #e2eae4;border-radius:12px;overflow:hidden;transition:.2s}
-.product img{width:100%;height:210px;object-fit:contain;background:#fff;display:block;padding:10px}
-.product-info{padding:20px}
-.product-info small{color:#07835c;font-weight:bold}
-.product-info h3{margin:7px 0;color:#15382b}
-.product-info p{font-size:13px;color:#718078;min-height:42px}
-.product-price{font-size:19px;font-weight:bold;color:#07835c;margin:12px 0}
-.product-meta{font-size:12px;color:#718078;margin:5px 0 12px}
-.product-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
-.product-actions .btn{font-size:12px;padding:11px 8px}
-.benefit{padding:25px;background:white;border:1px solid #e2eae4;border-radius:10px}
-.benefit h3{color:#15382b}
-.benefit p{color:#718078;font-size:14px}
-.cta{background:#15382b;color:white;text-align:center;padding:55px 20px}
-.cta h2{font-size:32px}
-.cta p{color:#d2e2d8}
-footer{background:#0b2119;color:#c9d8cf;padding:35px 0;font-size:13px}
-footer .logo{color:white}
-.status-message{grid-column:1/-1;text-align:center;padding:35px;color:#718078}
-.whatsapp-float{position:fixed;right:25px;bottom:25px;z-index:20;background:#25D366;color:white;padding:14px 20px;border-radius:50px;font-size:15px;font-weight:bold;box-shadow:0 4px 14px #0003}
-.cart-button{position:relative}
-.cart-count{background:#e9a23b;color:#173729;border-radius:50%;font-size:11px;min-width:19px;height:19px;display:inline-flex;align-items:center;justify-content:center;padding:2px 5px}
-dialog{border:0;border-radius:14px;width:min(620px,94%);padding:25px;max-height:90vh;overflow:auto;box-shadow:0 15px 50px #0003}
-dialog::backdrop{background:#0008}
-dialog h2{margin-top:0;color:#15382b}
-.close{float:right;border:0;background:#edf3ef;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:20px}
-.cart-item{display:flex;align-items:center;gap:12px;padding:15px 0;border-bottom:1px solid #e5ece7}
-.cart-item img{width:65px;height:65px;object-fit:contain;background:#f5f8f5;border-radius:7px}
-.cart-item-info{flex:1;min-width:0}
-.cart-item-info strong{display:block;font-size:14px}
-.cart-item-info small{color:#718078;font-size:12px}
-.qty-control{display:flex;align-items:center;gap:8px}
-.qty-control button{width:27px;height:27px;border:1px solid #dce6df;background:white;border-radius:5px;cursor:pointer}
-.remove{color:#b54b43;border:0;background:none;cursor:pointer;font-size:12px}
-.formfield{margin:13px 0}
-.formfield label{display:block;font-weight:bold;font-size:13px;margin-bottom:5px}
-.formfield input,.formfield textarea{width:100%;padding:11px;border:1px solid #d5e1d9;border-radius:6px}
-.formfield textarea{min-height:75px}
-.formfield input:focus,.formfield textarea:focus{outline:2px solid #a7e8c6;border-color:#07835c}
-.form-hint{font-size:12px;color:#718078}
-.empty-cart{text-align:center;padding:35px 10px;color:#718078}
-.cart-total{padding:15px 0;font-weight:bold;border-top:1px solid #e5ece7;margin-top:12px}
-.success-message{text-align:center;padding:25px 10px}
-.success-message h3{color:#07835c}
-@media(max-width:750px){
-.navlinks{gap:10px}
-.navlinks a:not(.quote){display:none}
-.categories,.products,.benefits{grid-template-columns:1fr 1fr}
-.hero{padding:75px 0}
-.heading h2{font-size:28px}
-}
-@media(max-width:500px){
-.categories,.products,.benefits{grid-template-columns:1fr}
-.toolbar{flex-direction:column}
-.whatsapp-float{right:12px;bottom:12px;padding:12px 16px}
-.product-actions{grid-template-columns:1fr}
-.cart-item{flex-wrap:wrap}
+button{cursor:pointer;border:0;border-radius:7px;padding:10px 15px;font-weight:bold;background:#087c59;color:white}
+button:hover{opacity:.9}
+.secondary{background:#e8edf2;color:#26394d}
+.danger{background:#f8dddd;color:#9c2525}
+.hidden{display:none!important}
+.login-wrap{min-height:100vh;display:grid;place-items:center;padding:20px}
+.login-box{background:white;padding:32px;border-radius:14px;width:min(420px,100%);box-shadow:0 5px 25px #0001}
+.login-box h2{color:#15382b}
+input,select,textarea{width:100%;padding:11px;border:1px solid #d5dce3;border-radius:7px;margin:6px 0 15px;background:white}
+textarea{min-height:90px}
+label{font-size:13px;font-weight:bold}
+header{height:65px;background:#15382b;color:white;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:10}
+.brand{font-size:19px;font-weight:bold}
+.brand span{color:#8fe0b5}
+.layout{display:grid;grid-template-columns:225px minmax(0,1fr);min-height:calc(100vh - 65px)}
+.sidebar{background:#fff;border-right:1px solid #e5e9ed;padding:20px 12px}
+.sidebar button{width:100%;text-align:left;background:transparent;color:#435166;margin:3px 0;padding:13px}
+.sidebar button.active,.sidebar button:hover{background:#eaf5ef;color:#087c59}
+.sidebar .nav-label{font-size:11px;color:#9aa4af;padding:16px 12px 5px;letter-spacing:1px}
+main{padding:28px;min-width:0}
+.page{display:none}
+.page.active{display:block}
+.page-title{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+h1{font-size:26px;margin:0;color:#193b2d}
+.sub{color:#7a8794;font-size:13px;margin-top:6px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:22px}
+.stat{background:white;border:1px solid #e8ecef;border-radius:12px;padding:19px}
+.stat small{color:#778493}
+.stat strong{display:block;font-size:28px;margin-top:8px;color:#173b2c}
+.panel{background:white;border:1px solid #e8ecef;border-radius:12px;padding:21px;margin-bottom:20px;min-width:0}
+.panel h3{margin:0 0 17px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px}
+.toolbar input,.toolbar select{margin:0;max-width:260px}
+.table-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px;min-width:650px}
+th,td{text-align:left;padding:13px 10px;border-bottom:1px solid #edf0f2;vertical-align:middle}
+th{background:#f8faf9;color:#637181}
+td select{margin:0;min-width:115px;padding:7px}
+.muted{color:#7b8794;font-size:12px}
+.tag{display:inline-block;padding:4px 8px;border-radius:20px;background:#edf3ef;color:#28714e;font-size:11px}
+.tag.draft{background:#f0f1f3;color:#6d7781}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.product-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.product{border:1px solid #e4e9ed;border-radius:10px;padding:13px;display:flex;gap:12px;align-items:center;min-width:0}
+.product img{width:75px;height:75px;object-fit:contain;background:#f5f7f6;border-radius:7px}
+.product-info{flex:1;min-width:0}
+.product-info strong{display:block;overflow-wrap:anywhere}
+.product-info p{font-size:12px;color:#7b8794;margin:5px 0}
+.product-actions{display:flex;gap:5px;flex-wrap:wrap}
+.product-actions button{font-size:11px;padding:7px 9px}
+.empty{text-align:center;color:#82909b;padding:30px}
+#notice{margin:12px 0;color:#087c59;font-size:13px}
+.preview img{max-width:150px;max-height:120px;object-fit:contain}
+@media(max-width:900px){.cards{grid-template-columns:repeat(2,1fr)}.product-list{grid-template-columns:1fr}}
+@media(max-width:650px){
+.layout{grid-template-columns:1fr}
+.sidebar{display:flex;overflow-x:auto;padding:8px;border-right:0;border-bottom:1px solid #ddd}
+.sidebar .nav-label{display:none}
+.sidebar button{white-space:nowrap;width:auto;margin:0 3px;padding:10px}
+main{padding:16px}
+header{padding:0 15px}
+.row{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
-<header>
-<div class="container">
-<nav>
-<a class="logo" href="#home">SUNVANTA <span>ENERGY</span></a>
-<div class="navlinks">
-<a href="#home">Home</a>
-<a href="#categories">Categories</a>
-<a href="#products">Products</a>
-<a href="#about">About Us</a>
-<button class="btn outline cart-button" onclick="openCart()">Cart <span class="cart-count" id="cartCount">0</span></button>
+
+<section class="login-wrap" id="loginPanel">
+<div class="login-box">
+<h2>SUNVANTA ENERGY</h2>
+<p class="muted">Seller Center · Administrator Login</p>
+<label>Email</label>
+<input id="email" type="email" value="3487217845@qq.com">
+<label>Password</label>
+<input id="password" type="password" placeholder="Enter your password">
+<button style="width:100%" onclick="login()">Log in</button>
+<p id="loginMessage" class="muted"></p>
 </div>
-</nav>
+</section>
+
+<div id="app" class="hidden">
+<header>
+<div class="brand">SUNVANTA <span>ENERGY</span> <small style="font-size:12px;font-weight:normal">SELLER CENTER</small></div>
+<div>
+<span id="adminEmail" style="font-size:12px;margin-right:12px"></span>
+<button class="secondary" onclick="logout()">Log out</button>
 </div>
 </header>
 
+<div class="layout">
+<aside class="sidebar">
+<div class="nav-label">WORKSPACE</div>
+<button class="active" data-page="dashboard" onclick="showPage('dashboard',this)">▦ Dashboard</button>
+<button data-page="products" onclick="showPage('products',this)">▣ Products</button>
+<button data-page="inquiries" onclick="showPage('inquiries',this)">✉ Inquiries</button>
+<button data-page="customers" onclick="showPage('customers',this)">♙ Customers</button>
+<button data-page="statistics" onclick="showPage('statistics',this)">▥ Statistics</button>
+<div class="nav-label">ACCOUNT</div>
+<button onclick="window.open('https://sunvantaenergy.github.io/sunvanta-energy/','_blank')">↗ View Store</button>
+</aside>
+
 <main>
-<section class="hero" id="home">
-<div class="container hero-content">
-<div class="eyebrow">RENEWABLE ENERGY · GLOBAL SUPPLY</div>
-<h1>Power Your Future With Clean Energy.</h1>
-<p>Explore solar panels, solar inverters, lithium batteries and energy storage products. We welcome distributors, wholesalers, importers and project buyers worldwide.</p>
-<a class="btn green" href="#products">Explore Products →</a>
-<button class="btn white" onclick="chatSales()">Chat with Sales</button>
+<!-- DASHBOARD -->
+<section class="page active" id="page-dashboard">
+<div class="page-title">
+<div><h1>Dashboard</h1><div class="sub">Welcome back to your business workspace.</div></div>
+<button onclick="refreshAll()">↻ Refresh Data</button>
+</div>
+<div class="cards">
+<div class="stat"><small>Total Products</small><strong id="statProducts">—</strong></div>
+<div class="stat"><small>Published Products</small><strong id="statPublished">—</strong></div>
+<div class="stat"><small>Total Inquiries</small><strong id="statInquiries">—</strong></div>
+<div class="stat"><small>Pending Inquiries</small><strong id="statPending">—</strong></div>
+</div>
+<div class="panel">
+<h3>Recent Inquiries</h3>
+<div class="table-wrap">
+<table><thead><tr><th>Date</th><th>Customer</th><th>Country</th><th>WhatsApp</th><th>Status</th></tr></thead>
+<tbody id="recentInquiries"></tbody></table>
+</div>
+</div>
+<div class="panel">
+<h3>Quick Actions</h3>
+<button onclick="showPage('products')">＋ Add Product</button>
+<button class="secondary" onclick="showPage('inquiries')">View Inquiries</button>
+<button class="secondary" onclick="showPage('customers')">View Customers</button>
 </div>
 </section>
 
-<section id="categories">
-<div class="container">
-<div class="heading">
-<small>OUR PRODUCT RANGE</small>
-<h2>Explore Product Categories</h2>
-<p>Find renewable energy products for your business and projects.</p>
+<!-- PRODUCTS -->
+<section class="page" id="page-products">
+<div class="page-title">
+<div><h1>Product Management</h1><div class="sub">Create, edit, publish and manage your products.</div></div>
+<button onclick="newProduct()">＋ Add Product</button>
 </div>
-<div class="categories">
-<div class="category" onclick="filterCategory('Solar Panels')"><div class="icon">☀️</div><h3>Solar Panels</h3><p>Photovoltaic modules for different applications.</p></div>
-<div class="category" onclick="filterCategory('Solar Inverters')"><div class="icon">⚡</div><h3>Solar Inverters</h3><p>Hybrid, on-grid and off-grid inverter products.</p></div>
-<div class="category" onclick="filterCategory('Lithium Batteries')"><div class="icon">🔋</div><h3>Lithium Batteries</h3><p>Battery products for solar energy storage.</p></div>
-<div class="category" onclick="filterCategory('Energy Storage Systems')"><div class="icon">🏭</div><h3>Energy Storage Systems</h3><p>Residential and commercial storage solutions.</p></div>
-<div class="category" onclick="filterCategory('Wind Turbines')"><div class="icon">🌬️</div><h3>Wind Turbines</h3><p>Wind power products and equipment.</p></div>
-<div class="category" onclick="filterCategory('Other Products')"><div class="icon">🌱</div><h3>Other Products</h3><p>Mounting structures, cables and accessories.</p></div>
-</div>
-</div>
-</section>
 
-<section class="light" id="products">
-<div class="container">
-<div class="heading">
-<small>PRODUCT SHOWCASE</small>
-<h2>Our Products</h2>
-<p>Choose products, add quantities and send us your wholesale inquiry.</p>
+<div class="panel" id="productFormPanel">
+<h3 id="formTitle">Add a Product</h3>
+<input type="hidden" id="productId">
+<label>Product Name *</label>
+<input id="name" placeholder="Deye 5kW Hybrid Inverter">
+<div class="row">
+<div><label>Brand</label><input id="brand" placeholder="Deye"></div>
+<div><label>Model</label><input id="model" placeholder="Product model"></div>
 </div>
+<div class="row">
+<div><label>Category</label>
+<select id="category">
+<option>Solar Inverters</option><option>Solar Panels</option>
+<option>Lithium Batteries</option><option>Energy Storage Systems</option>
+<option>Wind Turbines</option><option>Other Products</option>
+</select></div>
+<div><label>Power / Capacity</label><input id="power" placeholder="5kW"></div>
+</div>
+<h3>Wholesale Information</h3>
+<div class="row">
+<div><label>Price</label><input id="price" type="number" min="0" step="0.01" placeholder="850"></div>
+<div><label>Currency</label><select id="currency"><option>USD</option><option>EUR</option><option>CNY</option></select></div>
+</div>
+<div class="row">
+<div><label>MOQ</label><input id="moq" type="number" min="1" value="1"></div>
+<div><label>Stock Status</label><select id="stockStatus"><option>In Stock</option><option>Pre-order</option><option>Out of Stock</option></select></div>
+</div>
+<div class="row">
+<div><label>Warranty</label><input id="warranty" placeholder="5 Years"></div>
+<div><label>Show Price to Customers</label><select id="showPrice"><option value="false">No - Get Latest Price</option><option value="true">Yes - Display Price</option></select></div>
+</div>
+<label>Description</label>
+<textarea id="description" placeholder="Product specifications and details"></textarea>
+<label>Product Image</label>
+<input id="imageFile" type="file" accept="image/*">
+<div class="preview" id="imagePreview"></div>
+<label>Publish Status</label>
+<select id="published"><option value="false">Draft</option><option value="true">Published</option></select>
+<button id="saveProductBtn" onclick="saveProduct()">Save Product</button>
+<button class="secondary" onclick="resetForm()">Clear</button>
+<p id="productMessage" class="muted"></p>
+</div>
+
+<div class="panel">
+<h3>All Products</h3>
 <div class="toolbar">
-<input id="search" type="search" placeholder="Search products...">
-<select id="filter">
-<option value="">All Categories</option>
-<option>Solar Panels</option>
-<option>Solar Inverters</option>
-<option>Lithium Batteries</option>
-<option>Energy Storage Systems</option>
-<option>Wind Turbines</option>
-<option>Other Products</option>
+<input id="productSearch" placeholder="Search product..." oninput="renderProductList()">
+<select id="productFilter" onchange="renderProductList()">
+<option value="">All Status</option><option value="true">Published</option><option value="false">Draft</option>
 </select>
 </div>
-<div class="products" id="productList"><div class="status-message">Loading products...</div></div>
-<p id="noResults" style="display:none;text-align:center;color:#718078">No matching products found.</p>
+<div id="productList" class="product-list">Loading...</div>
 </div>
 </section>
 
-<section id="about">
-<div class="container">
-<div class="heading">
-<small>ABOUT SUNVANTA ENERGY</small>
-<h2>Your Global Renewable Energy Partner</h2>
-<p>We welcome inquiries from international distributors, wholesalers, importers and project buyers.</p>
+<!-- INQUIRIES -->
+<section class="page" id="page-inquiries">
+<div class="page-title">
+<div><h1>Inquiry Management</h1><div class="sub">Review customer requests and update their status.</div></div>
+<button onclick="loadInquiries()">↻ Refresh</button>
 </div>
-<div class="benefits">
-<div class="benefit"><h3>Wide Product Range</h3><p>Explore solar panels, inverters, batteries and other renewable energy products.</p></div>
-<div class="benefit"><h3>Wholesale Inquiries</h3><p>Share your models and quantities to request a quotation.</p></div>
-<div class="benefit"><h3>Project Communication</h3><p>Tell us about your project, destination and technical requirements.</p></div>
+<div class="cards">
+<div class="stat"><small>All Inquiries</small><strong id="inquiryTotal">—</strong></div>
+<div class="stat"><small>New</small><strong id="inquiryNew">—</strong></div>
+<div class="stat"><small>Processing</small><strong id="inquiryProcessing">—</strong></div>
+<div class="stat"><small>Completed</small><strong id="inquiryCompleted">—</strong></div>
+</div>
+<div class="panel">
+<div class="toolbar">
+<input id="inquirySearch" placeholder="Search customer, country or WhatsApp..." oninput="renderInquiries()">
+<select id="inquiryStatusFilter" onchange="renderInquiries()">
+<option value="">All Status</option><option>New</option><option>Processing</option><option>Quoted</option><option>Completed</option><option>Cancelled</option>
+</select>
+</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Date</th><th>Customer</th><th>Contact</th><th>Country</th><th>Products</th><th>Status</th><th>Details</th></tr></thead>
+<tbody id="inquiryList"></tbody>
+</table>
 </div>
 </div>
 </section>
 
-<section class="cta">
-<div class="container">
-<h2>Looking for Energy Products?</h2>
-<p>Send us your requirements and request a quotation.</p>
-<button class="btn green" onclick="chatSales()">Chat with Sales</button>
+<!-- CUSTOMERS -->
+<section class="page" id="page-customers">
+<div class="page-title">
+<div><h1>Customer Management</h1><div class="sub">Customer records are automatically summarized from submitted inquiries.</div></div>
+<button onclick="loadInquiries()">↻ Refresh</button>
 </div>
+<div class="cards">
+<div class="stat"><small>Total Customers</small><strong id="customerTotal">—</strong></div>
+<div class="stat"><small>Countries</small><strong id="customerCountries">—</strong></div>
+<div class="stat"><small>With WhatsApp</small><strong id="customerWhatsapp">—</strong></div>
+<div class="stat"><small>With Email</small><strong id="customerEmail">—</strong></div>
+</div>
+<div class="panel">
+<div class="toolbar"><input id="customerSearch" placeholder="Search name, country or contact..." oninput="renderCustomers()"></div>
+<div class="table-wrap">
+<table><thead><tr><th>Customer</th><th>Country</th><th>WhatsApp</th><th>Email</th><th>Inquiries</th><th>Last Inquiry</th><th>Contact</th></tr></thead>
+<tbody id="customerList"></tbody></table>
+</div>
+</div>
+</section>
+
+<!-- STATISTICS -->
+<section class="page" id="page-statistics">
+<div class="page-title">
+<div><h1>Business Statistics</h1><div class="sub">A summary based on your current product and inquiry records.</div></div>
+<button onclick="refreshAll()">↻ Refresh</button>
+</div>
+<div class="cards">
+<div class="stat"><small>Total Products</small><strong id="statsProducts">—</strong></div>
+<div class="stat"><small>Total Inquiries</small><strong id="statsInquiries">—</strong></div>
+<div class="stat"><small>Customer Countries</small><strong id="statsCountries">—</strong></div>
+<div class="stat"><small>Inquiry Conversion Data</small><strong>—</strong></div>
+</div>
+<div class="panel">
+<h3>Inquiries by Country</h3>
+<div id="countryStats"></div>
+</div>
+<div class="panel">
+<h3>Popular Inquired Products</h3>
+<div id="popularProducts"></div>
+</div>
+<p class="muted">Note: Website visitor counts and product page views are not tracked yet. They require a separate website analytics feature.</p>
 </section>
 </main>
-
-<footer>
-<div class="container">
-<div class="logo">SUNVANTA <span>ENERGY</span></div>
-<p>Renewable Energy Products · Global Wholesale Inquiries</p>
-<p>© <span id="year"></span> Sunvanta Energy. All rights reserved.</p>
 </div>
-</footer>
-
-<a href="https://wa.me/8616651698738" class="whatsapp-float" target="_blank" rel="noopener noreferrer">☎ Chat on WhatsApp</a>
-
-<dialog id="cartDialog">
-<button class="close" onclick="closeCart()">×</button>
-<h2>Your Inquiry Cart</h2>
-<p class="form-hint">Review your products and quantities before submitting your request.</p>
-<div id="cartItems"></div>
-<div id="checkoutArea" style="display:none">
-<div class="cart-total" id="cartSummary"></div>
-<h3>Contact Information</h3>
-<form id="orderForm">
-<div class="formfield"><label>Your Name *</label><input name="customer_name" required maxlength="120" placeholder="Your name"></div>
-<div class="formfield"><label>WhatsApp Number *</label><input name="whatsapp" required maxlength="40" placeholder="e.g. +971 50 123 4567"></div>
-<div class="formfield"><label>Country *</label><input name="country" required maxlength="100" placeholder="Your country"></div>
-<div class="formfield"><label>Email (Optional)</label><input name="email" type="email" maxlength="200" placeholder="Your email address"></div>
-<div class="formfield"><label>Additional Requirements (Optional)</label><textarea name="notes" maxlength="1500" placeholder="Destination, delivery requirements or other details"></textarea></div>
-<p class="form-hint">Submitting this request does not mean payment or order confirmation. Our sales team will contact you to confirm price, shipping and delivery.</p>
-<button class="btn green" style="width:100%" id="submitOrder" type="submit">Submit Order Request</button>
-</form>
 </div>
-</dialog>
 
-<dialog id="successDialog">
-<button class="close" onclick="document.getElementById('successDialog').close()">×</button>
-<div class="success-message">
-<div style="font-size:42px">✓</div>
-<h3>Request Submitted Successfully!</h3>
-<p>Your inquiry has been received. You can also contact our sales team directly on WhatsApp.</p>
-<button class="btn green" onclick="chatLastOrder()">Continue on WhatsApp</button>
-<button class="btn outline" style="margin-top:10px" onclick="document.getElementById('successDialog').close()">Continue Browsing</button>
-</div>
-</dialog>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL = 'https://lwqxwsxhgopiubknjtnp.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_J2GEOxIuBbuS7xHm7USVTw_MFqFDgZ1';
-const WHATSAPP_NUMBER = '8616651698738';
-const CART_STORAGE_KEY = 'sunvanta_energy_cart_v1';
+const SUPABASE_URL="https://lwqxwsxhgopiubknjtnp.supabase.co";
+const SUPABASE_KEY="sb_publishable_J2GEOxIuBbuS7xHm7USVTw_MFqFDgZ1";
+const ADMIN_UID="d11f2af2-efd4-49c4-baab-51f84569ddfa";
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+let products=[];
+let inquiries=[];
+let customers=[];
+let currentImageUrl=null;
 
-let allProducts = [];
-let cart = loadSavedCart();
-let lastOrderMessage = '';
+const $=id=>document.getElementById(id);
+const safe=value=>String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const dateText=value=>value?new Date(value).toLocaleDateString():"—";
 
-document.getElementById('year').textContent = new Date().getFullYear();
-
-function loadSavedCart() {
-  try {
-    const saved = localStorage.getItem(CART_STORAGE_KEY);
-    if (!saved) return [];
-
-    const parsed = JSON.parse(saved);
-    if (!Array.isArray(parsed)) return [];
-
-    return parsed.filter(item =>
-      item &&
-      item.id !== undefined &&
-      item.name &&
-      Number.isInteger(Number(item.quantity)) &&
-      Number(item.quantity) > 0
-    ).map(item => ({
-      id: item.id,
-      name: String(item.name),
-      model: String(item.model || ''),
-      image_url: String(item.image_url || ''),
-      quantity: Number(item.quantity)
-    }));
-  } catch (error) {
-    console.error('Unable to restore cart:', error);
-    return [];
-  }
+async function login(){
+ $("loginMessage").textContent="Signing in...";
+ const {data,error}=await db.auth.signInWithPassword({
+  email:$("email").value.trim(),password:$("password").value
+ });
+ if(error){$("loginMessage").textContent=error.message;return;}
+ if(data.user.id!==ADMIN_UID){
+  await db.auth.signOut();
+  $("loginMessage").textContent="Unauthorized account.";
+  return;
+ }
+ showAdmin(data.user.email);
 }
 
-function saveCart() {
-  try {
-    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
-  } catch (error) {
-    console.error('Unable to save cart:', error);
-  }
+async function logout(){
+ await db.auth.signOut();
+ location.reload();
 }
 
-function escapeHTML(value) {
-  return String(value ?? '').replace(/[&<>"']/g, char => ({
-    '&':'&amp;',
-    '<':'&lt;',
-    '>':'&gt;',
-    '"':'&quot;',
-    "'":'&#39;'
-  })[char]);
+function showAdmin(email){
+ $("loginPanel").classList.add("hidden");
+ $("app").classList.remove("hidden");
+ $("adminEmail").textContent=email||"Administrator";
+ refreshAll();
 }
 
-function chatSales(product) {
-  let message = 'Hello, I am interested in your renewable energy products. Please contact me.';
-
-  if (product) {
-    message = `Hello, I am interested in ${product.name} (Model: ${product.model || 'Not specified'}). Please send me a quotation.`;
-  }
-
-  window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(message), '_blank');
+async function checkSession(){
+ const {data}=await db.auth.getSession();
+ if(data.session){
+  if(data.session.user.id===ADMIN_UID)showAdmin(data.session.user.email);
+  else await db.auth.signOut();
+ }
 }
 
-function filterCategory(category) {
-  document.getElementById('filter').value = category;
-  filterProducts();
-  document.getElementById('products').scrollIntoView({behavior:'smooth'});
+function showPage(name,button){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ $("page-"+name).classList.add("active");
+ document.querySelectorAll(".sidebar button[data-page]").forEach(b=>b.classList.remove("active"));
+ const selected=button||document.querySelector('[data-page="'+name+'"]');
+ if(selected)selected.classList.add("active");
+ if(name==="products")loadProducts();
+ if(name==="inquiries"||name==="customers"||name==="statistics")loadInquiries();
 }
 
-function addToCart(productId) {
-  const product = allProducts.find(p => String(p.id) === String(productId));
-  if (!product) return;
-
-  const existing = cart.find(item => String(item.id) === String(product.id));
-
-  if (existing) {
-    existing.quantity += 1;
-  } else {
-    cart.push({
-      id: product.id,
-      name: product.name,
-      model: product.model || '',
-      image_url: product.image_url || '',
-      quantity: 1
-    });
-  }
-
-  saveCart();
-  updateCartCount();
-
-  const button = document.getElementById('cartButton-' + productId);
-
-  if (button) {
-    button.textContent = 'Added ✓';
-    setTimeout(() => {
-      if (button) button.textContent = 'Add to Cart';
-    }, 1000);
-  }
+async function refreshAll(){
+ await Promise.all([loadProducts(),loadInquiries()]);
+ updateDashboard();
+ updateStatistics();
 }
 
-function updateCartCount() {
-  document.getElementById('cartCount').textContent =
-    cart.reduce((sum, item) => sum + item.quantity, 0);
+async function loadProducts(){
+ $("productList").textContent="Loading...";
+ const {data,error}=await db.from("products").select("*").order("created_at",{ascending:false});
+ if(error){$("productList").textContent=error.message;return;}
+ products=data||[];
+ renderProductList();
+ updateDashboard();
+ updateStatistics();
 }
 
-function changeQuantity(id, amount) {
-  const item = cart.find(p => String(p.id) === String(id));
-  if (!item) return;
-
-  item.quantity += amount;
-
-  if (item.quantity <= 0) {
-    cart = cart.filter(p => String(p.id) !== String(id));
-  }
-
-  saveCart();
-  updateCartCount();
-  renderCart();
+function renderProductList(){
+ const keyword=($("productSearch")?.value||"").toLowerCase();
+ const filter=$("productFilter")?.value||"";
+ const list=$("productList");
+ const filtered=products.filter(p=>{
+  const text=[p.name,p.brand,p.model,p.category].join(" ").toLowerCase();
+  return text.includes(keyword)&&(!filter||String(p.published)===filter);
+ });
+ if(!filtered.length){list.innerHTML='<div class="empty">No matching products.</div>';return;}
+ list.innerHTML=filtered.map(p=>`
+ <div class="product">
+  <img src="${safe(p.image_url||"")}" alt="">
+  <div class="product-info">
+   <strong>${safe(p.name)}</strong>
+   <p>${safe([p.brand,p.model,p.power].filter(Boolean).join(" · "))}</p>
+   <p>${p.price==null?"Price not set":safe(p.currency)+" "+safe(p.price)} · ${p.published?'<span class="tag">Published</span>':'<span class="tag draft">Draft</span>'}</p>
+  </div>
+  <div class="product-actions">
+   <button class="secondary" onclick="editProduct('${safe(p.id)}')">Edit</button>
+   <button onclick="togglePublish('${safe(p.id)}',${!p.published})">${p.published?"Unpublish":"Publish"}</button>
+   <button class="danger" onclick="deleteProduct('${safe(p.id)}')">Delete</button>
+  </div>
+ </div>`).join("");
 }
 
-function removeFromCart(id) {
-  cart = cart.filter(p => String(p.id) !== String(id));
-
-  saveCart();
-  updateCartCount();
-  renderCart();
+function newProduct(){
+ resetForm();
+ $("productFormPanel").scrollIntoView({behavior:"smooth"});
 }
 
-function openCart() {
-  renderCart();
-  document.getElementById('cartDialog').showModal();
-}
+async function saveProduct(){
+ const msg=$("productMessage");
+ const btn=$("saveProductBtn");
+ const id=$("productId").value;
+ const name=$("name").value.trim();
+ if(!name){msg.textContent="Please enter a product name.";return;}
 
-function closeCart() {
-  document.getElementById('cartDialog').close();
-}
-
-function renderCart() {
-  const itemsArea = document.getElementById('cartItems');
-  const checkout = document.getElementById('checkoutArea');
-
-  if (!cart.length) {
-    itemsArea.innerHTML = '<div class="empty-cart"><div style="font-size:38px">🛒</div><p>Your inquiry cart is empty.</p><button class="btn green" onclick="closeCart();document.getElementById(\'products\').scrollIntoView({behavior:\'smooth\'})">Browse Products</button></div>';
-    checkout.style.display = 'none';
-    return;
+ btn.disabled=true;
+ msg.textContent="Saving product...";
+ try{
+  let imageUrl=currentImageUrl;
+  const file=$("imageFile").files[0];
+  if(file){
+   if(!file.type.startsWith("image/"))throw new Error("Please select an image file.");
+   const ext=(file.name.split(".").pop()||"jpg").toLowerCase();
+   const path=Date.now()+"-"+Math.random().toString(36).slice(2)+"."+ext;
+   const {error:uploadError}=await db.storage.from("product-images").upload(path,file);
+   if(uploadError)throw uploadError;
+   imageUrl=db.storage.from("product-images").getPublicUrl(path).data.publicUrl;
   }
 
-  itemsArea.innerHTML = cart.map(item => `
-    <div class="cart-item">
-      <img src="${escapeHTML(item.image_url || 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=200&q=70')}" alt="">
-      <div class="cart-item-info">
-        <strong>${escapeHTML(item.name)}</strong>
-        <small>${escapeHTML(item.model)}</small>
-        <div class="qty-control" style="margin-top:7px">
-          <button type="button" onclick="changeQuantity('${escapeHTML(item.id)}',-1)">−</button>
-          <span>${item.quantity}</span>
-          <button type="button" onclick="changeQuantity('${escapeHTML(item.id)}',1)">+</button>
-          <button class="remove" type="button" onclick="removeFromCart('${escapeHTML(item.id)}')">Remove</button>
-        </div>
-      </div>
-    </div>
-  `).join('');
-
-  document.getElementById('cartSummary').textContent =
-    `${cart.length} product type(s) · ${cart.reduce((sum,item)=>sum+item.quantity,0)} total unit(s)`;
-
-  checkout.style.display = 'block';
-}
-
-function renderProducts(products) {
-  const list = document.getElementById('productList');
-
-  if (!products.length) {
-    list.innerHTML = '<div class="status-message">No published products available yet. Please contact us for product inquiries.</div>';
-    document.getElementById('noResults').style.display = 'none';
-    return;
-  }
-
-  list.innerHTML = products.map(product => {
-    const image = product.image_url || 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=800&q=80';
-    const category = product.category || 'Other Products';
-
-    const price = product.show_price && product.price !== null && product.price !== ''
-      ? `${escapeHTML(product.currency || 'USD')} ${Number(product.price).toLocaleString('en-US')}`
-      : 'Get Latest Price';
-
-    const details = [
-      product.model ? `Model: ${escapeHTML(product.model)}` : '',
-      product.power ? `Power: ${escapeHTML(product.power)}` : '',
-      product.moq ? `MOQ: ${escapeHTML(String(product.moq))}` : '',
-      product.stock_status ? `Stock: ${escapeHTML(product.stock_status)}` : '',
-      product.warranty ? `Warranty: ${escapeHTML(product.warranty)}` : ''
-    ].filter(Boolean).join(' · ');
-
-    return `
-      <div class="product" data-category="${escapeHTML(category)}">
-        <img src="${escapeHTML(image)}" alt="${escapeHTML(product.name)}" loading="lazy">
-        <div class="product-info">
-          <small>${escapeHTML(category.toUpperCase())}</small>
-          <h3>${escapeHTML(product.name)}</h3>
-          <p>${escapeHTML(product.description || '')}</p>
-          <div class="product-meta">${details}</div>
-          <div class="product-price">${price}</div>
-          <div class="product-actions">
-            <button class="btn green" onclick="chatSalesById('${escapeHTML(product.id)}')">Chat with Sales</button>
-            <button class="btn outline" id="cartButton-${escapeHTML(product.id)}" onclick="addToCart('${escapeHTML(product.id)}')">Add to Cart</button>
-          </div>
-        </div>
-      </div>`;
-  }).join('');
-
-  filterProducts();
-}
-
-function chatSalesById(id) {
-  const product = allProducts.find(p => String(p.id) === String(id));
-  if (product) chatSales(product);
-}
-
-function filterProducts() {
-  const keyword = document.getElementById('search').value.toLowerCase();
-  const category = document.getElementById('filter').value;
-
-  let count = 0;
-
-  document.querySelectorAll('#productList .product').forEach(card => {
-    const show = card.innerText.toLowerCase().includes(keyword) &&
-      (!category || card.dataset.category === category);
-
-    card.style.display = show ? '' : 'none';
-
-    if (show) count++;
-  });
-
-  document.getElementById('noResults').style.display =
-    allProducts.length && count === 0 ? 'block' : 'none';
-}
-
-async function loadProducts() {
-  const list = document.getElementById('productList');
-
-  try {
-    const {data,error} = await db.from('products')
-      .select('id,name,brand,model,category,power,description,image_url,price,currency,moq,stock_status,warranty,show_price')
-      .eq('published',true)
-      .order('created_at',{ascending:false});
-
-    if (error) throw error;
-
-    allProducts = data || [];
-    renderProducts(allProducts);
-
-  } catch(error) {
-    console.error('Product loading error:',error);
-    list.innerHTML = '<div class="status-message">Unable to load products at the moment. Please contact us through WhatsApp.</div>';
-  }
-}
-
-document.getElementById('search').addEventListener('input',filterProducts);
-document.getElementById('filter').addEventListener('change',filterProducts);
-
-document.getElementById('orderForm').addEventListener('submit',async function(event) {
-  event.preventDefault();
-
-  if (!cart.length) {
-    alert('Your inquiry cart is empty.');
-    return;
-  }
-
-  const submitButton = document.getElementById('submitOrder');
-  submitButton.disabled = true;
-  submitButton.textContent = 'Submitting...';
-
-  const form = new FormData(this);
-
-  const items = cart.map(item => ({
-    product_id:item.id,
-    name:item.name,
-    model:item.model,
-    quantity:item.quantity
-  }));
-
-  const order = {
-    customer_name:String(form.get('customer_name') || '').trim(),
-    whatsapp:String(form.get('whatsapp') || '').trim(),
-    country:String(form.get('country') || '').trim(),
-    email:String(form.get('email') || '').trim() || null,
-    notes:String(form.get('notes') || '').trim() || null,
-    items:items,
-    status:'New'
+  const rawPrice=$("price").value;
+  const rawMoq=$("moq").value;
+  const product={
+   name,brand:$("brand").value.trim(),model:$("model").value.trim(),
+   category:$("category").value,power:$("power").value.trim(),
+   description:$("description").value.trim(),image_url:imageUrl,
+   price:rawPrice===""?null:Number(rawPrice),currency:$("currency").value,
+   moq:rawMoq===""?1:Number(rawMoq),stock_status:$("stockStatus").value,
+   warranty:$("warranty").value.trim(),show_price:$("showPrice").value==="true",
+   published:$("published").value==="true"
   };
 
-  try {
-    const {error} = await db.from('inquiry_orders').insert(order);
-    if (error) throw error;
+  const result=id
+   ?await db.from("products").update(product).eq("id",id)
+   :await db.from("products").insert(product);
+  if(result.error)throw result.error;
 
-    lastOrderMessage =
-      `Hello, I have submitted an inquiry on Sunvanta Energy.\n` +
-      `Name: ${order.customer_name}\nCountry: ${order.country}\n` +
-      `WhatsApp: ${order.whatsapp}\n\nProducts:\n` +
-      items.map(item => `${item.name} | ${item.model} | Qty: ${item.quantity}`).join('\n') +
-      (order.notes ? `\n\nNotes: ${order.notes}` : '') +
-      '\n\nPlease send me your quotation.';
-
-    // Clear the cart only after successful database submission.
-    cart = [];
-    saveCart();
-    updateCartCount();
-
-    this.reset();
-    closeCart();
-    document.getElementById('successDialog').showModal();
-
-  } catch(error) {
-    console.error('Order submission error:',error);
-    alert('Sorry, your request could not be submitted. Please contact us directly through WhatsApp.');
-  } finally {
-    submitButton.disabled = false;
-    submitButton.textContent = 'Submit Order Request';
-  }
-});
-
-function chatLastOrder() {
-  const message = lastOrderMessage || 'Hello, I would like to inquire about renewable energy products.';
-
-  window.open(
-    'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(message),
-    '_blank'
-  );
+  msg.textContent="Product saved successfully.";
+  resetForm();
+  await loadProducts();
+ }catch(error){
+  msg.textContent="Save failed: "+error.message;
+ }finally{
+  btn.disabled=false;
+ }
 }
 
-// Restore the saved cart count when the page opens.
-updateCartCount();
+async function editProduct(id){
+ const p=products.find(x=>String(x.id)===String(id));
+ if(!p)return;
+ $("productId").value=p.id;
+ $("name").value=p.name||"";
+ $("brand").value=p.brand||"";
+ $("model").value=p.model||"";
+ $("category").value=p.category||"Solar Inverters";
+ $("power").value=p.power||"";
+ $("description").value=p.description||"";
+ $("price").value=p.price??"";
+ $("currency").value=p.currency||"USD";
+ $("moq").value=p.moq??1;
+ $("stockStatus").value=p.stock_status||"In Stock";
+ $("warranty").value=p.warranty||"";
+ $("showPrice").value=String(p.show_price??false);
+ $("published").value=String(p.published??false);
+ currentImageUrl=p.image_url||null;
+ $("imagePreview").innerHTML=currentImageUrl?'<img src="'+safe(currentImageUrl)+'">':"No image uploaded.";
+ $("formTitle").textContent="Edit Product";
+ $("productFormPanel").scrollIntoView({behavior:"smooth"});
+}
 
-loadProducts();
+async function togglePublish(id,published){
+ const {error}=await db.from("products").update({published}).eq("id",id);
+ if(error){alert(error.message);return;}
+ await loadProducts();
+}
+
+async function deleteProduct(id){
+ if(!confirm("Delete this product permanently?"))return;
+ const {error}=await db.from("products").delete().eq("id",id);
+ if(error){alert(error.message);return;}
+ await loadProducts();
+}
+
+function resetForm(){
+ ["productId","name","brand","model","power","description","price","warranty","imageFile"].forEach(id=>$(id).value="");
+ $("category").value="Solar Inverters";
+ $("currency").value="USD";
+ $("moq").value=1;
+ $("stockStatus").value="In Stock";
+ $("showPrice").value="false";
+ $("published").value="false";
+ $("formTitle").textContent="Add a Product";
+ $("imagePreview").innerHTML="";
+ $("productMessage").textContent="";
+ currentImageUrl=null;
+}
+
+$("imageFile").addEventListener("change",function(){
+ const file=this.files[0];
+ if(!file){$("imagePreview").innerHTML="";return;}
+ if(!file.type.startsWith("image/")){alert("Please select an image.");this.value="";return;}
+ const url=URL.createObjectURL(file);
+ $("imagePreview").innerHTML='<img src="'+url+'">';
+});
+
+async function loadInquiries(){
+ $("inquiryList").innerHTML='<tr><td colspan="7">Loading...</td></tr>';
+ const {data,error}=await db.from("inquiry_orders").select("*").order("created_at",{ascending:false});
+ if(error){
+  $("inquiryList").innerHTML='<tr><td colspan="7">Unable to load inquiries: '+safe(error.message)+'</td></tr>';
+  return;
+ }
+ inquiries=data||[];
+ buildCustomers();
+ renderInquiries();
+ renderCustomers();
+ updateDashboard();
+ updateStatistics();
+}
+
+function renderInquiries(){
+ const keyword=($("inquirySearch")?.value||"").toLowerCase();
+ const statusFilter=$("inquiryStatusFilter")?.value||"";
+ const filtered=inquiries.filter(o=>{
+  const text=[o.customer_name,o.whatsapp,o.email,o.country].join(" ").toLowerCase();
+  return text.includes(keyword)&&(!statusFilter||o.status===statusFilter);
+ });
+ $("inquiryList").innerHTML=filtered.length?filtered.map(o=>{
+  const items=Array.isArray(o.items)?o.items:[];
+  const productText=items.map(i=>`${i.name||"Product"} × ${i.quantity||1}`).join(", ");
+  return `<tr>
+   <td>${dateText(o.created_at)}</td>
+   <td><strong>${safe(o.customer_name)}</strong><div class="muted">${safe(o.email||"")}</div></td>
+   <td>${safe(o.whatsapp||"—")}</td>
+   <td>${safe(o.country||"—")}</td>
+   <td>${safe(productText||"—")}</td>
+   <td><select onchange="updateInquiryStatus(${Number(o.id)},this.value)">
+    ${["New","Processing","Quoted","Completed","Cancelled"].map(s=>`<option ${o.status===s?"selected":""}>${s}</option>`).join("")}
+   </select></td>
+   <td><button class="secondary" onclick="viewInquiry(${Number(o.id)})">View</button></td>
+  </tr>`;
+ }).join(""):'<tr><td colspan="7" class="empty">No inquiries found.</td></tr>';
+
+ $("inquiryTotal").textContent=inquiries.length;
+ $("inquiryNew").textContent=inquiries.filter(o=>o.status==="New").length;
+ $("inquiryProcessing").textContent=inquiries.filter(o=>o.status==="Processing").length;
+ $("inquiryCompleted").textContent=inquiries.filter(o=>o.status==="Completed").length;
+}
+
+async function updateInquiryStatus(id,status){
+ const {error}=await db.from("inquiry_orders").update({status}).eq("id",id);
+ if(error){alert("Unable to update status: "+error.message);await loadInquiries();return;}
+ const order=inquiries.find(o=>Number(o.id)===id);
+ if(order)order.status=status;
+ renderInquiries();
+ updateDashboard();
+}
+
+function viewInquiry(id){
+ const o=inquiries.find(x=>Number(x.id)===id);
+ if(!o)return;
+ const items=Array.isArray(o.items)?o.items:[];
+ const lines=items.map(i=>`${i.name||"Product"} | ${i.model||""} | Qty: ${i.quantity||1}`).join("\n");
+ alert(
+  "Customer: "+(o.customer_name||"")+
+  "\nCountry: "+(o.country||"")+
+  "\nWhatsApp: "+(o.whatsapp||"")+
+  "\nEmail: "+(o.email||"")+
+  "\nDate: "+dateText(o.created_at)+
+  "\nStatus: "+(o.status||"New")+
+  "\n\nProducts:\n"+lines+
+  "\n\nNotes:\n"+(o.notes||"")
+ );
+}
+
+function buildCustomers(){
+ const map=new Map();
+ inquiries.forEach(o=>{
+  const key=(o.whatsapp||o.email||o.customer_name||"").toLowerCase().trim();
+  if(!key)return;
+  if(!map.has(key)){
+   map.set(key,{name:o.customer_name||"",country:o.country||"",whatsapp:o.whatsapp||"",email:o.email||"",count:0,last:o.created_at});
+  }
+  const c=map.get(key);
+  c.count++;
+  if(!c.whatsapp&&o.whatsapp)c.whatsapp=o.whatsapp;
+  if(!c.email&&o.email)c.email=o.email;
+  if(!c.country&&o.country)c.country=o.country;
+  if(o.created_at&&(!c.last||new Date(o.created_at)>new Date(c.last)))c.last=o.created_at;
+ });
+ customers=[...map.values()].sort((a,b)=>new Date(b.last)-new Date(a.last));
+}
+
+function renderCustomers(){
+ const keyword=($("customerSearch")?.value||"").toLowerCase();
+ const filtered=customers.filter(c=>[c.name,c.country,c.whatsapp,c.email].join(" ").toLowerCase().includes(keyword));
+ $("customerList").innerHTML=filtered.length?filtered.map(c=>`
+ <tr><td><strong>${safe(c.name)}</strong></td><td>${safe(c.country||"—")}</td>
+ <td>${safe(c.whatsapp||"—")}</td><td>${safe(c.email||"—")}</td>
+ <td>${c.count}</td><td>${dateText(c.last)}</td>
+ <td>${c.whatsapp?'<a target="_blank" rel="noopener" href="https://wa.me/'+safe(c.whatsapp.replace(/[^0-9]/g,""))+'">WhatsApp</a>':"—"}</td></tr>`).join(""):'<tr><td colspan="7" class="empty">No customer records yet.</td></tr>';
+
+ $("customerTotal").textContent=customers.length;
+ $("customerCountries").textContent=new Set(customers.map(c=>c.country).filter(Boolean)).size;
+ $("customerWhatsapp").textContent=customers.filter(c=>c.whatsapp).length;
+ $("customerEmail").textContent=customers.filter(c=>c.email).length;
+}
+
+function updateDashboard(){
+ $("statProducts").textContent=products.length;
+ $("statPublished").textContent=products.filter(p=>p.published).length;
+ $("statInquiries").textContent=inquiries.length;
+ $("statPending").textContent=inquiries.filter(o=>["New","Processing"].includes(o.status||"New")).length;
+ const recent=inquiries.slice(0,6);
+ $("recentInquiries").innerHTML=recent.length?recent.map(o=>`
+ <tr><td>${dateText(o.created_at)}</td><td>${safe(o.customer_name)}</td>
+ <td>${safe(o.country||"—")}</td><td>${safe(o.whatsapp||"—")}</td>
+ <td><span class="tag">${safe(o.status||"New")}</span></td></tr>`).join(""):'<tr><td colspan="5" class="empty">No inquiries yet.</td></tr>';
+}
+
+function updateStatistics(){
+ $("statsProducts").textContent=products.length;
+ $("statsInquiries").textContent=inquiries.length;
+ const countryMap={};
+ const productMap={};
+ inquiries.forEach(o=>{
+  const country=o.country||"Unknown";
+  countryMap[country]=(countryMap[country]||0)+1;
+  (Array.isArray(o.items)?o.items:[]).forEach(i=>{
+   const name=i.name||"Unknown Product";
+   productMap[name]=(productMap[name]||0)+Number(i.quantity||1);
+  });
+ });
+ $("statsCountries").textContent=Object.keys(countryMap).length;
+ const countries=Object.entries(countryMap).sort((a,b)=>b[1]-a[1]);
+ $("countryStats").innerHTML=countries.length?countries.map(([name,count])=>`
+ <p>${safe(name)} <strong style="float:right">${count}</strong></p>
+ <div style="height:7px;background:#edf1ee;border-radius:9px;overflow:hidden">
+ <div style="height:100%;width:${Math.max(4,count/Math.max(...countries.map(x=>x[1]))*100)}%;background:#07835c"></div></div>`).join(""):'<p class="muted">No inquiry data yet.</p>';
+ const popular=Object.entries(productMap).sort((a,b)=>b[1]-a[1]).slice(0,10);
+ $("popularProducts").innerHTML=popular.length?popular.map(([name,count])=>`<p>${safe(name)} <strong style="float:right">${count} units requested</strong></p>`).join(""):'<p class="muted">No product inquiry data yet.</p>';
+}
+
+checkSession();
 </script>
 </body>
 </html>
