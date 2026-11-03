@@ -1,0 +1,292 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Sunvanta Energy - Solar panels, inverters, lithium batteries and renewable energy products.">
+<title>Sunvanta Energy | Renewable Energy</title>
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Arial,sans-serif;color:#263b33;line-height:1.6}
+a{text-decoration:none;color:inherit}
+button,input,select,textarea{font:inherit}
+.container{width:min(1160px,92%);margin:auto}
+header{background:white;position:sticky;top:0;z-index:10;border-bottom:1px solid #e5ece7}
+nav{height:75px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.logo{font-size:23px;font-weight:800;color:#15382b}
+.logo span{color:#07835c}
+.navlinks{display:flex;align-items:center;gap:24px;font-size:14px;font-weight:bold}
+.btn{border:0;border-radius:7px;padding:12px 20px;cursor:pointer;font-weight:bold;display:inline-block}
+.green{background:#07835c;color:white}
+.green:hover{background:#056b4b}
+.hero{padding:105px 0;color:white;background:linear-gradient(100deg,rgba(8,39,30,.94),rgba(8,70,48,.65)),url('https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1800&q=85') center/cover}
+.hero-content{max-width:700px}
+.eyebrow{color:#a7e8c6;font-size:13px;letter-spacing:2px;font-weight:bold}
+.hero h1{font-size:clamp(38px,6vw,65px);line-height:1.1;margin:18px 0}
+.hero p{font-size:17px;color:#e0eee7;max-width:600px}
+.hero .btn{margin:12px 10px 0 0}
+.white{background:white;color:#15382b}
+section{padding:75px 0}
+.light{background:#f4f8f5}
+.heading{text-align:center;margin-bottom:35px}
+.heading small{color:#07835c;font-weight:bold;letter-spacing:2px}
+.heading h2{font-size:35px;color:#15382b;margin:8px 0}
+.heading p{color:#718078}
+.categories,.products,.benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.category{background:white;padding:25px;border:1px solid #e1ebe4;border-radius:12px;cursor:pointer}
+.category:hover,.product:hover{box-shadow:0 10px 28px #15382b16;transform:translateY(-3px)}
+.category .icon{font-size:32px}
+.category h3{margin:8px 0;color:#15382b}
+.category p{font-size:13px;color:#718078;margin:0}
+.toolbar{display:flex;gap:12px;margin:25px 0}
+.toolbar input,.toolbar select{padding:12px;border:1px solid #dce6df;border-radius:7px;background:white}
+.toolbar input{flex:1;min-width:0}
+.product{background:white;border:1px solid #e2eae4;border-radius:12px;overflow:hidden;transition:.2s}
+.product img{width:100%;height:210px;object-fit:cover;display:block}
+.product-info{padding:20px}
+.product-info small{color:#07835c;font-weight:bold}
+.product-info h3{margin:7px 0;color:#15382b}
+.product-info p{font-size:13px;color:#718078;min-height:42px}
+.product-info button{width:100%}
+.benefit{padding:25px;background:white;border:1px solid #e2eae4;border-radius:10px}
+.benefit h3{color:#15382b}
+.benefit p{color:#718078;font-size:14px}
+.cta{background:#15382b;color:white;text-align:center;padding:55px 20px}
+.cta h2{font-size:32px}
+.cta p{color:#d2e2d8}
+footer{background:#0b2119;color:#c9d8cf;padding:35px 0;font-size:13px}
+footer .logo{color:white}
+dialog{border:0;border-radius:13px;width:min(540px,92%);padding:28px;max-height:90vh;overflow:auto}
+dialog::backdrop{background:#0009}
+dialog h2{margin-top:0;color:#15382b}
+.formfield{margin:13px 0}
+.formfield label{display:block;font-weight:bold;font-size:13px;margin-bottom:5px}
+.formfield input,.formfield select,.formfield textarea{width:100%;padding:11px;border:1px solid #d5e1d9;border-radius:6px}
+.formfield textarea{min-height:100px}
+.close{float:right;border:0;background:#edf3ef;border-radius:50%;width:32px;height:32px;cursor:pointer}
+@media(max-width:750px){
+.navlinks a:not(.quote){display:none}
+.categories,.products,.benefits{grid-template-columns:1fr 1fr}
+.hero{padding:75px 0}
+.heading h2{font-size:28px}
+}
+@media(max-width:500px){
+.categories,.products,.benefits{grid-template-columns:1fr}
+.toolbar{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<header>
+<div class="container">
+<nav>
+<a class="logo" href="#home">SUNVANTA <span>ENERGY</span></a>
+<div class="navlinks">
+<a href="#home">Home</a>
+<a href="#categories">Categories</a>
+<a href="#products">Products</a>
+<a href="#about">About Us</a>
+<button class="btn green quote" onclick="openInquiry()">Get a Quote</button>
+</div>
+</nav>
+</div>
+</header>
+
+<main>
+<section class="hero" id="home">
+<div class="container hero-content">
+<div class="eyebrow">RENEWABLE ENERGY · GLOBAL SUPPLY</div>
+<h1>Power Your Future With Clean Energy.</h1>
+<p>Explore solar panels, solar inverters, lithium batteries and energy storage products. We welcome distributors, wholesalers, importers and project buyers worldwide.</p>
+<a class="btn green" href="#products">Explore Products →</a>
+<button class="btn white" onclick="openInquiry()">Request a Quote</button>
+</div>
+</section>
+
+<section id="categories">
+<div class="container">
+<div class="heading">
+<small>OUR PRODUCT RANGE</small>
+<h2>Explore Product Categories</h2>
+<p>Find renewable energy products for your business and projects.</p>
+</div>
+<div class="categories">
+<div class="category" onclick="filterCategory('Solar Panels')"><div class="icon">☀️</div><h3>Solar Panels</h3><p>Photovoltaic modules for different applications.</p></div>
+<div class="category" onclick="filterCategory('Solar Inverters')"><div class="icon">⚡</div><h3>Solar Inverters</h3><p>Hybrid, on-grid and off-grid inverter products.</p></div>
+<div class="category" onclick="filterCategory('Lithium Batteries')"><div class="icon">🔋</div><h3>Lithium Batteries</h3><p>Battery products for solar energy storage.</p></div>
+<div class="category" onclick="filterCategory('Energy Storage Systems')"><div class="icon">🏭</div><h3>Energy Storage Systems</h3><p>Residential and commercial storage solutions.</p></div>
+<div class="category" onclick="filterCategory('Wind Turbines')"><div class="icon">🌬️</div><h3>Wind Turbines</h3><p>Wind power products and equipment.</p></div>
+<div class="category" onclick="filterCategory('Other Products')"><div class="icon">🌱</div><h3>Other Products</h3><p>Mounting structures, cables and accessories.</p></div>
+</div>
+</div>
+</section>
+
+<section class="light" id="products">
+<div class="container">
+<div class="heading">
+<small>PRODUCT SHOWCASE</small>
+<h2>Our Products</h2>
+<p>Contact us for product specifications, availability and wholesale quotations.</p>
+</div>
+<div class="toolbar">
+<input id="search" type="search" placeholder="Search products...">
+<select id="filter">
+<option value="">All Categories</option>
+<option>Solar Panels</option>
+<option>Solar Inverters</option>
+<option>Lithium Batteries</option>
+<option>Energy Storage Systems</option>
+<option>Wind Turbines</option>
+<option>Other Products</option>
+</select>
+</div>
+<div class="products" id="productList">
+
+<div class="product" data-category="Solar Panels">
+<img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=800&q=80" alt="Solar panels">
+<div class="product-info"><small>SOLAR PANELS</small><h3>Solar PV Modules</h3><p>Solar photovoltaic modules. Ask us about available models and specifications.</p><button class="btn green" onclick="openInquiry('Solar Panels')">Request Price</button></div>
+</div>
+
+<div class="product" data-category="Solar Inverters">
+<img src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=800&q=80" alt="Energy infrastructure">
+<div class="product-info"><small>SOLAR INVERTERS</small><h3>Solar Inverters</h3><p>Hybrid, on-grid and off-grid inverter options for different applications.</p><button class="btn green" onclick="openInquiry('Solar Inverters')">Request Price</button></div>
+</div>
+
+<div class="product" data-category="Lithium Batteries">
+<img src="https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&w=800&q=80" alt="Renewable energy">
+<div class="product-info"><small>LITHIUM BATTERIES</small><h3>Lithium Battery Systems</h3><p>Ask about battery voltage, capacity and installation options.</p><button class="btn green" onclick="openInquiry('Lithium Batteries')">Request Price</button></div>
+</div>
+
+<div class="product" data-category="Energy Storage Systems">
+<img src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=800&q=80" alt="Energy storage">
+<div class="product-info"><small>ENERGY STORAGE</small><h3>Energy Storage Systems</h3><p>Discuss storage capacity and your project requirements.</p><button class="btn green" onclick="openInquiry('Energy Storage Systems')">Request Price</button></div>
+</div>
+
+<div class="product" data-category="Wind Turbines">
+<img src="https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=800&q=80" alt="Wind turbines">
+<div class="product-info"><small>WIND POWER</small><h3>Wind Turbines</h3><p>Wind power products. Ask about rated power and voltage options.</p><button class="btn green" onclick="openInquiry('Wind Turbines')">Request Price</button></div>
+</div>
+
+<div class="product" data-category="Other Products">
+<img src="https://images.unsplash.com/photo-1497440001374-f26997328c1b?auto=format&fit=crop&w=800&q=80" alt="Solar equipment">
+<div class="product-info"><small>ACCESSORIES</small><h3>Solar Accessories</h3><p>Mounting structures, cables, connectors and related components.</p><button class="btn green" onclick="openInquiry('Other Products')">Request Price</button></div>
+</div>
+
+</div>
+<p id="noResults" style="display:none;text-align:center;color:#718078">No matching products found.</p>
+</div>
+</section>
+
+<section id="about">
+<div class="container">
+<div class="heading">
+<small>ABOUT SUNVANTA ENERGY</small>
+<h2>Your Global Renewable Energy Partner</h2>
+<p>We welcome inquiries from international distributors, wholesalers, importers and project buyers.</p>
+</div>
+<div class="benefits">
+<div class="benefit"><h3>Wide Product Range</h3><p>Explore solar panels, inverters, batteries and other renewable energy products.</p></div>
+<div class="benefit"><h3>Wholesale Inquiries</h3><p>Share your models and quantities to request a quotation.</p></div>
+<div class="benefit"><h3>Project Communication</h3><p>Tell us about your project, destination and technical requirements.</p></div>
+</div>
+</div>
+</section>
+
+<section class="cta">
+<div class="container">
+<h2>Looking for Energy Products?</h2>
+<p>Send us your requirements and request a quotation.</p>
+<button class="btn green" onclick="openInquiry()">Contact Us Today</button>
+</div>
+</section>
+</main>
+
+<footer>
+<div class="container">
+<div class="logo">SUNVANTA <span>ENERGY</span></div>
+<p>Renewable Energy Products · Global Wholesale Inquiries</p>
+<p>© <span id="year"></span> Sunvanta Energy. All rights reserved.</p>
+</div>
+</footer>
+
+<dialog id="inquiry">
+<button class="close" onclick="document.getElementById('inquiry').close()">×</button>
+<h2>Request a Quotation</h2>
+<p>Fill in your details. Your email application will open with the inquiry prepared.</p>
+<form id="inquiryForm">
+<div class="formfield"><label>Your Name *</label><input name="name" required></div>
+<div class="formfield"><label>Company</label><input name="company"></div>
+<div class="formfield"><label>Email *</label><input name="email" type="email" required></div>
+<div class="formfield"><label>Country *</label><input name="country" required></div>
+<div class="formfield"><label>Product *</label>
+<select name="product" id="inquiryProduct" required>
+<option value="">Select product</option>
+<option>Solar Panels</option>
+<option>Solar Inverters</option>
+<option>Lithium Batteries</option>
+<option>Energy Storage Systems</option>
+<option>Wind Turbines</option>
+<option>Other Products</option>
+</select></div>
+<div class="formfield"><label>Quantity and Requirements *</label><textarea name="details" required placeholder="Please describe your required products, quantity and destination."></textarea></div>
+<button class="btn green" type="submit">Prepare Email</button>
+</form>
+</dialog>
+
+<script>
+document.getElementById('year').textContent=new Date().getFullYear();
+
+function openInquiry(category){
+const dialog=document.getElementById('inquiry');
+if(category)document.getElementById('inquiryProduct').value=category;
+dialog.showModal();
+}
+
+function filterCategory(category){
+document.getElementById('filter').value=category;
+filterProducts();
+document.getElementById('products').scrollIntoView();
+}
+
+function filterProducts(){
+const keyword=document.getElementById('search').value.toLowerCase();
+const category=document.getElementById('filter').value;
+let count=0;
+document.querySelectorAll('.product').forEach(card=>{
+const matchesText=card.innerText.toLowerCase().includes(keyword);
+const matchesCategory=!category||card.dataset.category===category;
+const show=matchesText&&matchesCategory;
+card.style.display=show?'':'none';
+if(show)count++;
+});
+document.getElementById('noResults').style.display=count?'none':'block';
+}
+
+document.getElementById('search').addEventListener('input',filterProducts);
+document.getElementById('filter').addEventListener('change',filterProducts);
+
+document.getElementById('inquiryForm').addEventListener('submit',function(event){
+event.preventDefault();
+const recipient='CHANGE_ME@example.com';
+if(recipient==='CHANGE_ME@example.com'){
+alert('The website owner needs to add an inquiry email address before using this form.');
+return;
+}
+const data=new FormData(this);
+const subject=encodeURIComponent('Sunvanta Energy Product Inquiry');
+const body=encodeURIComponent(
+'Name: '+data.get('name')+
+'\nCompany: '+data.get('company')+
+'\nEmail: '+data.get('email')+
+'\nCountry: '+data.get('country')+
+'\nProduct: '+data.get('product')+
+'\nRequirements: '+data.get('details')
+);
+location.href='mailto:'+recipient+'?subject='+subject+'&body='+body;
+});
+</script>
+</body>
+</html>
