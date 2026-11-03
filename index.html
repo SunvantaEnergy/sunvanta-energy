@@ -14,13 +14,14 @@ a{text-decoration:none;color:inherit}
 button,input,select,textarea{font:inherit}
 .container{width:min(1160px,92%);margin:auto}
 header{background:white;position:sticky;top:0;z-index:10;border-bottom:1px solid #e5ece7}
-nav{height:75px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+nav{min-height:75px;display:flex;align-items:center;justify-content:space-between;gap:15px}
 .logo{font-size:23px;font-weight:800;color:#15382b}
 .logo span{color:#07835c}
-.navlinks{display:flex;align-items:center;gap:24px;font-size:14px;font-weight:bold}
-.btn{border:0;border-radius:7px;padding:12px 20px;cursor:pointer;font-weight:bold;display:inline-block}
+.navlinks{display:flex;align-items:center;gap:22px;font-size:14px;font-weight:bold}
+.btn{border:0;border-radius:7px;padding:12px 18px;cursor:pointer;font-weight:bold;display:inline-flex;align-items:center;justify-content:center;gap:7px}
 .green{background:#07835c;color:white}
 .green:hover{background:#056b4b}
+.outline{background:white;border:1px solid #07835c;color:#07835c}
 .hero{padding:105px 0;color:white;background:linear-gradient(100deg,rgba(8,39,30,.94),rgba(8,70,48,.65)),url('https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1800&q=85') center/cover}
 .hero-content{max-width:700px}
 .eyebrow{color:#a7e8c6;font-size:13px;letter-spacing:2px;font-weight:bold}
@@ -35,7 +36,7 @@ section{padding:75px 0}
 .heading h2{font-size:35px;color:#15382b;margin:8px 0}
 .heading p{color:#718078}
 .categories,.products,.benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.category{background:white;padding:25px;border:1px solid #e1ebe4;border-radius:12px;cursor:pointer}
+.category{background:white;padding:25px;border:1px solid #e1ebe4;border-radius:12px;cursor:pointer;transition:.2s}
 .category:hover,.product:hover{box-shadow:0 10px 28px #15382b16;transform:translateY(-3px)}
 .category .icon{font-size:32px}
 .category h3{margin:8px 0;color:#15382b}
@@ -49,9 +50,10 @@ section{padding:75px 0}
 .product-info small{color:#07835c;font-weight:bold}
 .product-info h3{margin:7px 0;color:#15382b}
 .product-info p{font-size:13px;color:#718078;min-height:42px}
-.product-info button{width:100%}
 .product-price{font-size:19px;font-weight:bold;color:#07835c;margin:12px 0}
 .product-meta{font-size:12px;color:#718078;margin:5px 0 12px}
+.product-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.product-actions .btn{font-size:12px;padding:11px 8px}
 .benefit{padding:25px;background:white;border:1px solid #e2eae4;border-radius:10px}
 .benefit h3{color:#15382b}
 .benefit p{color:#718078;font-size:14px}
@@ -60,17 +62,34 @@ section{padding:75px 0}
 .cta p{color:#d2e2d8}
 footer{background:#0b2119;color:#c9d8cf;padding:35px 0;font-size:13px}
 footer .logo{color:white}
-dialog{border:0;border-radius:13px;width:min(540px,92%);padding:28px;max-height:90vh;overflow:auto}
-dialog::backdrop{background:#0009}
+.status-message{grid-column:1/-1;text-align:center;padding:35px;color:#718078}
+.whatsapp-float{position:fixed;right:25px;bottom:25px;z-index:20;background:#25D366;color:white;padding:14px 20px;border-radius:50px;font-size:15px;font-weight:bold;box-shadow:0 4px 14px #0003}
+.cart-button{position:relative}
+.cart-count{background:#e9a23b;color:#173729;border-radius:50%;font-size:11px;min-width:19px;height:19px;display:inline-flex;align-items:center;justify-content:center;padding:2px 5px}
+dialog{border:0;border-radius:14px;width:min(620px,94%);padding:25px;max-height:90vh;overflow:auto;box-shadow:0 15px 50px #0003}
+dialog::backdrop{background:#0008}
 dialog h2{margin-top:0;color:#15382b}
+.close{float:right;border:0;background:#edf3ef;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:20px}
+.cart-item{display:flex;align-items:center;gap:12px;padding:15px 0;border-bottom:1px solid #e5ece7}
+.cart-item img{width:65px;height:65px;object-fit:contain;background:#f5f8f5;border-radius:7px}
+.cart-item-info{flex:1;min-width:0}
+.cart-item-info strong{display:block;font-size:14px}
+.cart-item-info small{color:#718078;font-size:12px}
+.qty-control{display:flex;align-items:center;gap:8px}
+.qty-control button{width:27px;height:27px;border:1px solid #dce6df;background:white;border-radius:5px;cursor:pointer}
+.remove{color:#b54b43;border:0;background:none;cursor:pointer;font-size:12px}
 .formfield{margin:13px 0}
 .formfield label{display:block;font-weight:bold;font-size:13px;margin-bottom:5px}
-.formfield input,.formfield select,.formfield textarea{width:100%;padding:11px;border:1px solid #d5e1d9;border-radius:6px}
-.formfield textarea{min-height:100px}
-.close{float:right;border:0;background:#edf3ef;border-radius:50%;width:32px;height:32px;cursor:pointer}
-.status-message{grid-column:1/-1;text-align:center;padding:35px;color:#718078}
-.whatsapp-float{position:fixed;right:25px;bottom:25px;z-index:99999;background:#25D366;color:white;padding:15px 22px;border-radius:50px;font-size:16px;font-weight:bold;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+.formfield input,.formfield textarea{width:100%;padding:11px;border:1px solid #d5e1d9;border-radius:6px}
+.formfield textarea{min-height:75px}
+.formfield input:focus,.formfield textarea:focus{outline:2px solid #a7e8c6;border-color:#07835c}
+.form-hint{font-size:12px;color:#718078}
+.empty-cart{text-align:center;padding:35px 10px;color:#718078}
+.cart-total{padding:15px 0;font-weight:bold;border-top:1px solid #e5ece7;margin-top:12px}
+.success-message{text-align:center;padding:25px 10px}
+.success-message h3{color:#07835c}
 @media(max-width:750px){
+.navlinks{gap:10px}
 .navlinks a:not(.quote){display:none}
 .categories,.products,.benefits{grid-template-columns:1fr 1fr}
 .hero{padding:75px 0}
@@ -80,10 +99,13 @@ dialog h2{margin-top:0;color:#15382b}
 .categories,.products,.benefits{grid-template-columns:1fr}
 .toolbar{flex-direction:column}
 .whatsapp-float{right:12px;bottom:12px;padding:12px 16px}
+.product-actions{grid-template-columns:1fr}
+.cart-item{flex-wrap:wrap}
 }
 </style>
 </head>
 <body>
+
 <header>
 <div class="container">
 <nav>
@@ -93,7 +115,7 @@ dialog h2{margin-top:0;color:#15382b}
 <a href="#categories">Categories</a>
 <a href="#products">Products</a>
 <a href="#about">About Us</a>
-<button class="btn green quote" onclick="openInquiry()">Get a Quote</button>
+<button class="btn outline cart-button" onclick="openCart()">Cart <span class="cart-count" id="cartCount">0</span></button>
 </div>
 </nav>
 </div>
@@ -106,7 +128,7 @@ dialog h2{margin-top:0;color:#15382b}
 <h1>Power Your Future With Clean Energy.</h1>
 <p>Explore solar panels, solar inverters, lithium batteries and energy storage products. We welcome distributors, wholesalers, importers and project buyers worldwide.</p>
 <a class="btn green" href="#products">Explore Products →</a>
-<button class="btn white" onclick="openInquiry()">Request a Quote</button>
+<button class="btn white" onclick="chatSales()">Chat with Sales</button>
 </div>
 </section>
 
@@ -133,7 +155,7 @@ dialog h2{margin-top:0;color:#15382b}
 <div class="heading">
 <small>PRODUCT SHOWCASE</small>
 <h2>Our Products</h2>
-<p>Contact us for product specifications, availability and wholesale quotations.</p>
+<p>Choose products, add quantities and send us your wholesale inquiry.</p>
 </div>
 <div class="toolbar">
 <input id="search" type="search" placeholder="Search products...">
@@ -173,7 +195,7 @@ dialog h2{margin-top:0;color:#15382b}
 <div class="container">
 <h2>Looking for Energy Products?</h2>
 <p>Send us your requirements and request a quotation.</p>
-<button class="btn green" onclick="openInquiry()">Contact Us Today</button>
+<button class="btn green" onclick="chatSales()">Chat with Sales</button>
 </div>
 </section>
 </main>
@@ -186,56 +208,181 @@ dialog h2{margin-top:0;color:#15382b}
 </div>
 </footer>
 
-<dialog id="inquiry">
-<button class="close" onclick="document.getElementById('inquiry').close()">×</button>
-<h2>Request a Quotation</h2>
-<p>Fill in your details. Your email application will open with the inquiry prepared.</p>
-<form id="inquiryForm">
-<div class="formfield"><label>Your Name *</label><input name="name" required></div>
-<div class="formfield"><label>Company</label><input name="company"></div>
-<div class="formfield"><label>Email *</label><input name="email" type="email" required></div>
-<div class="formfield"><label>Country *</label><input name="country" required></div>
-<div class="formfield"><label>Product *</label>
-<input name="product" id="inquiryProduct" required placeholder="Product name or model">
+<a href="https://wa.me/8616651698738" class="whatsapp-float" target="_blank" rel="noopener noreferrer">☎ Chat on WhatsApp</a>
+
+<dialog id="cartDialog">
+<button class="close" onclick="closeCart()">×</button>
+<h2>Your Inquiry Cart</h2>
+<p class="form-hint">Review your products and quantities before submitting your request.</p>
+<div id="cartItems"></div>
+<div id="checkoutArea" style="display:none">
+<div class="cart-total" id="cartSummary"></div>
+<h3>Contact Information</h3>
+<form id="orderForm">
+<div class="formfield">
+<label>Your Name *</label>
+<input name="customer_name" required maxlength="120" placeholder="Your name">
 </div>
-<div class="formfield"><label>Quantity and Requirements *</label><textarea name="details" required placeholder="Please describe your required products, quantity and destination."></textarea></div>
-<button class="btn green" type="submit">Prepare Email</button>
+<div class="formfield">
+<label>WhatsApp Number *</label>
+<input name="whatsapp" required maxlength="40" placeholder="e.g. +971 50 123 4567">
+</div>
+<div class="formfield">
+<label>Country *</label>
+<input name="country" required maxlength="100" placeholder="Your country">
+</div>
+<div class="formfield">
+<label>Email (Optional)</label>
+<input name="email" type="email" maxlength="200" placeholder="Your email address">
+</div>
+<div class="formfield">
+<label>Additional Requirements (Optional)</label>
+<textarea name="notes" maxlength="1500" placeholder="Destination, delivery requirements or other details"></textarea>
+</div>
+<p class="form-hint">Submitting this request does not mean payment or order confirmation. Our sales team will contact you to confirm price, shipping and delivery.</p>
+<button class="btn green" style="width:100%" id="submitOrder" type="submit">Submit Order Request</button>
 </form>
+</div>
 </dialog>
 
-<a href="https://wa.me/8616651698738" class="whatsapp-float" target="_blank" rel="noopener noreferrer">☎ Chat on WhatsApp</a>
+<dialog id="successDialog">
+<button class="close" onclick="document.getElementById('successDialog').close()">×</button>
+<div class="success-message">
+<div style="font-size:42px">✓</div>
+<h3>Request Submitted Successfully!</h3>
+<p>Your inquiry has been received. You can also contact our sales team directly on WhatsApp.</p>
+<button class="btn green" onclick="chatLastOrder()">Continue on WhatsApp</button>
+<button class="btn outline" style="margin-top:10px" onclick="document.getElementById('successDialog').close()">Continue Browsing</button>
+</div>
+</dialog>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SUPABASE_URL = 'https://lwqxwsxhgopiubknjtnp.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_J2GEOxIuBbuS7xHm7USVTw_MFqFDgZ1';
+const WHATSAPP_NUMBER = '8616651698738';
+
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let allProducts = [];
+let cart = [];
+let lastOrderMessage = '';
 
 document.getElementById('year').textContent = new Date().getFullYear();
 
-function openInquiry(productName) {
-  const dialog = document.getElementById('inquiry');
-  if (productName) {
-    document.getElementById('inquiryProduct').value = productName;
+function escapeHTML(value) {
+  return String(value ?? '').replace(/[&<>"']/g, char => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+  })[char]);
+}
+
+function chatSales(product) {
+  let message = 'Hello, I am interested in your renewable energy products. Please contact me.';
+  if (product) {
+    message = `Hello, I am interested in ${product.name} (Model: ${product.model || 'Not specified'}). Please send me a quotation.`;
   }
-  dialog.showModal();
+  window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(message), '_blank');
 }
 
 function filterCategory(category) {
   document.getElementById('filter').value = category;
   filterProducts();
-  document.getElementById('products').scrollIntoView();
+  document.getElementById('products').scrollIntoView({behavior:'smooth'});
+}
+
+function addToCart(productId) {
+  const product = allProducts.find(p => String(p.id) === String(productId));
+  if (!product) return;
+
+  const existing = cart.find(item => String(item.id) === String(product.id));
+  if (existing) {
+    existing.quantity += 1;
+  } else {
+    cart.push({
+      id: product.id,
+      name: product.name,
+      model: product.model || '',
+      image_url: product.image_url || '',
+      quantity: 1
+    });
+  }
+  updateCartCount();
+  const button = document.getElementById('cartButton-' + productId);
+  if (button) {
+    button.textContent = 'Added ✓';
+    setTimeout(() => { if(button) button.textContent = 'Add to Cart'; }, 1000);
+  }
+}
+
+function updateCartCount() {
+  document.getElementById('cartCount').textContent =
+    cart.reduce((sum, item) => sum + item.quantity, 0);
+}
+
+function changeQuantity(id, amount) {
+  const item = cart.find(p => String(p.id) === String(id));
+  if (!item) return;
+  item.quantity += amount;
+  if (item.quantity <= 0) {
+    cart = cart.filter(p => String(p.id) !== String(id));
+  }
+  updateCartCount();
+  renderCart();
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(p => String(p.id) !== String(id));
+  updateCartCount();
+  renderCart();
+}
+
+function openCart() {
+  renderCart();
+  document.getElementById('cartDialog').showModal();
+}
+
+function closeCart() {
+  document.getElementById('cartDialog').close();
+}
+
+function renderCart() {
+  const itemsArea = document.getElementById('cartItems');
+  const checkout = document.getElementById('checkoutArea');
+
+  if (!cart.length) {
+    itemsArea.innerHTML = '<div class="empty-cart"><div style="font-size:38px">🛒</div><p>Your inquiry cart is empty.</p><button class="btn green" onclick="closeCart();document.getElementById(\'products\').scrollIntoView({behavior:\'smooth\'})">Browse Products</button></div>';
+    checkout.style.display = 'none';
+    return;
+  }
+
+  itemsArea.innerHTML = cart.map(item => `
+    <div class="cart-item">
+      <img src="${escapeHTML(item.image_url || 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=200&q=70')}" alt="">
+      <div class="cart-item-info">
+        <strong>${escapeHTML(item.name)}</strong>
+        <small>${escapeHTML(item.model)}</small>
+        <div class="qty-control" style="margin-top:7px">
+          <button type="button" onclick="changeQuantity('${escapeHTML(item.id)}',-1)">−</button>
+          <span>${item.quantity}</span>
+          <button type="button" onclick="changeQuantity('${escapeHTML(item.id)}',1)">+</button>
+          <button class="remove" type="button" onclick="removeFromCart('${escapeHTML(item.id)}')">Remove</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('cartSummary').textContent =
+    `${cart.length} product type(s) · ${cart.reduce((sum,item)=>sum+item.quantity,0)} total unit(s)`;
+
+  checkout.style.display = 'block';
 }
 
 function renderProducts(products) {
   const list = document.getElementById('productList');
-  const noResults = document.getElementById('noResults');
 
   if (!products.length) {
     list.innerHTML = '<div class="status-message">No published products available yet. Please contact us for product inquiries.</div>';
-    noResults.style.display = 'none';
+    document.getElementById('noResults').style.display = 'none';
     return;
   }
 
@@ -243,7 +390,7 @@ function renderProducts(products) {
     const image = product.image_url || 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=800&q=80';
     const category = product.category || 'Other Products';
     const price = product.show_price && product.price !== null && product.price !== ''
-      ? `${product.currency || 'USD'} ${Number(product.price).toLocaleString('en-US')}`
+      ? `${escapeHTML(product.currency || 'USD')} ${Number(product.price).toLocaleString('en-US')}`
       : 'Get Latest Price';
 
     const details = [
@@ -263,7 +410,10 @@ function renderProducts(products) {
           <p>${escapeHTML(product.description || '')}</p>
           <div class="product-meta">${details}</div>
           <div class="product-price">${price}</div>
-          <button class="btn green" onclick="openInquiry('${escapeJS(product.name)}')">Request a Quote</button>
+          <div class="product-actions">
+            <button class="btn green" onclick="chatSalesById('${escapeHTML(product.id)}')">Chat with Sales</button>
+            <button class="btn outline" id="cartButton-${escapeHTML(product.id)}" onclick="addToCart('${escapeHTML(product.id)}')">Add to Cart</button>
+          </div>
         </div>
       </div>`;
   }).join('');
@@ -271,14 +421,9 @@ function renderProducts(products) {
   filterProducts();
 }
 
-function escapeHTML(value) {
-  return String(value).replace(/[&<>"']/g, char => ({
-    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
-  })[char]);
-}
-
-function escapeJS(value) {
-  return String(value).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, ' ');
+function chatSalesById(id) {
+  const product = allProducts.find(p => String(p.id) === String(id));
+  if (product) chatSales(product);
 }
 
 function filterProducts() {
@@ -321,21 +466,73 @@ async function loadProducts() {
 document.getElementById('search').addEventListener('input', filterProducts);
 document.getElementById('filter').addEventListener('change', filterProducts);
 
-document.getElementById('inquiryForm').addEventListener('submit', function(event) {
+document.getElementById('orderForm').addEventListener('submit', async function(event) {
   event.preventDefault();
-  const recipient = '3487217845@qq.com';
-  const data = new FormData(this);
-  const subject = encodeURIComponent('Sunvanta Energy Product Inquiry');
-  const body = encodeURIComponent(
-    'Name: ' + data.get('name') +
-    '\nCompany: ' + data.get('company') +
-    '\nEmail: ' + data.get('email') +
-    '\nCountry: ' + data.get('country') +
-    '\nProduct: ' + data.get('product') +
-    '\nRequirements: ' + data.get('details')
-  );
-  window.location.href = 'mailto:' + recipient + '?subject=' + subject + '&body=' + body;
+
+  if (!cart.length) {
+    alert('Your inquiry cart is empty.');
+    return;
+  }
+
+  const submitButton = document.getElementById('submitOrder');
+  submitButton.disabled = true;
+  submitButton.textContent = 'Submitting...';
+
+  const form = new FormData(this);
+  const items = cart.map(item => ({
+    product_id: item.id,
+    name: item.name,
+    model: item.model,
+    quantity: item.quantity
+  }));
+
+  const order = {
+    customer_name: String(form.get('customer_name')).trim(),
+    whatsapp: String(form.get('whatsapp')).trim(),
+    country: String(form.get('country')).trim(),
+    email: String(form.get('email') || '').trim() || null,
+    notes: String(form.get('notes') || '').trim() || null,
+    items: items,
+    status: 'New'
+  };
+
+  try {
+    const { data, error } = await db
+      .from('inquiry_orders')
+      .insert(order)
+      .select('id')
+      .single();
+
+    if (error) throw error;
+
+    const orderId = data.id;
+    lastOrderMessage =
+      `Hello, I have submitted an inquiry on Sunvanta Energy. Reference: #${orderId}\n` +
+      `Name: ${order.customer_name}\nCountry: ${order.country}\n` +
+      `WhatsApp: ${order.whatsapp}\n\nProducts:\n` +
+      items.map(item => `${item.name} | ${item.model} | Qty: ${item.quantity}`).join('\n') +
+      (order.notes ? `\n\nNotes: ${order.notes}` : '') +
+      '\n\nPlease send me your quotation.';
+
+    cart = [];
+    updateCartCount();
+    this.reset();
+    closeCart();
+    document.getElementById('successDialog').showModal();
+
+  } catch (error) {
+    console.error('Order submission error:', error);
+    alert('Sorry, your request could not be submitted. Please contact us directly through WhatsApp.');
+  } finally {
+    submitButton.disabled = false;
+    submitButton.textContent = 'Submit Order Request';
+  }
 });
+
+function chatLastOrder() {
+  const message = lastOrderMessage || 'Hello, I would like to inquire about renewable energy products.';
+  window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(message), '_blank');
+}
 
 loadProducts();
 </script>
