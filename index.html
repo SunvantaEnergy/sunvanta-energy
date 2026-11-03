@@ -105,7 +105,6 @@ dialog h2{margin-top:0;color:#15382b}
 </style>
 </head>
 <body>
-
 <header>
 <div class="container">
 <nav>
@@ -169,9 +168,7 @@ dialog h2{margin-top:0;color:#15382b}
 <option>Other Products</option>
 </select>
 </div>
-<div class="products" id="productList">
-<div class="status-message">Loading products...</div>
-</div>
+<div class="products" id="productList"><div class="status-message">Loading products...</div></div>
 <p id="noResults" style="display:none;text-align:center;color:#718078">No matching products found.</p>
 </div>
 </section>
@@ -219,26 +216,11 @@ dialog h2{margin-top:0;color:#15382b}
 <div class="cart-total" id="cartSummary"></div>
 <h3>Contact Information</h3>
 <form id="orderForm">
-<div class="formfield">
-<label>Your Name *</label>
-<input name="customer_name" required maxlength="120" placeholder="Your name">
-</div>
-<div class="formfield">
-<label>WhatsApp Number *</label>
-<input name="whatsapp" required maxlength="40" placeholder="e.g. +971 50 123 4567">
-</div>
-<div class="formfield">
-<label>Country *</label>
-<input name="country" required maxlength="100" placeholder="Your country">
-</div>
-<div class="formfield">
-<label>Email (Optional)</label>
-<input name="email" type="email" maxlength="200" placeholder="Your email address">
-</div>
-<div class="formfield">
-<label>Additional Requirements (Optional)</label>
-<textarea name="notes" maxlength="1500" placeholder="Destination, delivery requirements or other details"></textarea>
-</div>
+<div class="formfield"><label>Your Name *</label><input name="customer_name" required maxlength="120" placeholder="Your name"></div>
+<div class="formfield"><label>WhatsApp Number *</label><input name="whatsapp" required maxlength="40" placeholder="e.g. +971 50 123 4567"></div>
+<div class="formfield"><label>Country *</label><input name="country" required maxlength="100" placeholder="Your country"></div>
+<div class="formfield"><label>Email (Optional)</label><input name="email" type="email" maxlength="200" placeholder="Your email address"></div>
+<div class="formfield"><label>Additional Requirements (Optional)</label><textarea name="notes" maxlength="1500" placeholder="Destination, delivery requirements or other details"></textarea></div>
 <p class="form-hint">Submitting this request does not mean payment or order confirmation. Our sales team will contact you to confirm price, shipping and delivery.</p>
 <button class="btn green" style="width:100%" id="submitOrder" type="submit">Submit Order Request</button>
 </form>
@@ -261,7 +243,6 @@ dialog h2{margin-top:0;color:#15382b}
 const SUPABASE_URL = 'https://lwqxwsxhgopiubknjtnp.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_J2GEOxIuBbuS7xHm7USVTw_MFqFDgZ1';
 const WHATSAPP_NUMBER = '8616651698738';
-
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let allProducts = [];
@@ -293,19 +274,9 @@ function filterCategory(category) {
 function addToCart(productId) {
   const product = allProducts.find(p => String(p.id) === String(productId));
   if (!product) return;
-
   const existing = cart.find(item => String(item.id) === String(product.id));
-  if (existing) {
-    existing.quantity += 1;
-  } else {
-    cart.push({
-      id: product.id,
-      name: product.name,
-      model: product.model || '',
-      image_url: product.image_url || '',
-      quantity: 1
-    });
-  }
+  if (existing) existing.quantity += 1;
+  else cart.push({id:product.id,name:product.name,model:product.model||'',image_url:product.image_url||'',quantity:1});
   updateCartCount();
   const button = document.getElementById('cartButton-' + productId);
   if (button) {
@@ -315,17 +286,14 @@ function addToCart(productId) {
 }
 
 function updateCartCount() {
-  document.getElementById('cartCount').textContent =
-    cart.reduce((sum, item) => sum + item.quantity, 0);
+  document.getElementById('cartCount').textContent = cart.reduce((sum,item)=>sum+item.quantity,0);
 }
 
 function changeQuantity(id, amount) {
   const item = cart.find(p => String(p.id) === String(id));
   if (!item) return;
   item.quantity += amount;
-  if (item.quantity <= 0) {
-    cart = cart.filter(p => String(p.id) !== String(id));
-  }
+  if (item.quantity <= 0) cart = cart.filter(p => String(p.id) !== String(id));
   updateCartCount();
   renderCart();
 }
@@ -373,13 +341,11 @@ function renderCart() {
 
   document.getElementById('cartSummary').textContent =
     `${cart.length} product type(s) · ${cart.reduce((sum,item)=>sum+item.quantity,0)} total unit(s)`;
-
   checkout.style.display = 'block';
 }
 
 function renderProducts(products) {
   const list = document.getElementById('productList');
-
   if (!products.length) {
     list.innerHTML = '<div class="status-message">No published products available yet. Please contact us for product inquiries.</div>';
     document.getElementById('noResults').style.display = 'none';
@@ -392,7 +358,6 @@ function renderProducts(products) {
     const price = product.show_price && product.price !== null && product.price !== ''
       ? `${escapeHTML(product.currency || 'USD')} ${Number(product.price).toLocaleString('en-US')}`
       : 'Get Latest Price';
-
     const details = [
       product.model ? `Model: ${escapeHTML(product.model)}` : '',
       product.power ? `Power: ${escapeHTML(product.power)}` : '',
@@ -417,7 +382,6 @@ function renderProducts(products) {
         </div>
       </div>`;
   }).join('');
-
   filterProducts();
 }
 
@@ -430,45 +394,37 @@ function filterProducts() {
   const keyword = document.getElementById('search').value.toLowerCase();
   const category = document.getElementById('filter').value;
   let count = 0;
-
   document.querySelectorAll('#productList .product').forEach(card => {
-    const matchesText = card.innerText.toLowerCase().includes(keyword);
-    const matchesCategory = !category || card.dataset.category === category;
-    const show = matchesText && matchesCategory;
+    const show = card.innerText.toLowerCase().includes(keyword) &&
+      (!category || card.dataset.category === category);
     card.style.display = show ? '' : 'none';
     if (show) count++;
   });
-
   document.getElementById('noResults').style.display =
     allProducts.length && count === 0 ? 'block' : 'none';
 }
 
 async function loadProducts() {
   const list = document.getElementById('productList');
-
   try {
-    const { data, error } = await db
-      .from('products')
+    const {data,error} = await db.from('products')
       .select('id,name,brand,model,category,power,description,image_url,price,currency,moq,stock_status,warranty,show_price')
-      .eq('published', true)
-      .order('created_at', { ascending: false });
-
+      .eq('published',true)
+      .order('created_at',{ascending:false});
     if (error) throw error;
-
     allProducts = data || [];
     renderProducts(allProducts);
-  } catch (error) {
-    console.error('Product loading error:', error);
+  } catch(error) {
+    console.error('Product loading error:',error);
     list.innerHTML = '<div class="status-message">Unable to load products at the moment. Please contact us through WhatsApp.</div>';
   }
 }
 
-document.getElementById('search').addEventListener('input', filterProducts);
-document.getElementById('filter').addEventListener('change', filterProducts);
+document.getElementById('search').addEventListener('input',filterProducts);
+document.getElementById('filter').addEventListener('change',filterProducts);
 
-document.getElementById('orderForm').addEventListener('submit', async function(event) {
+document.getElementById('orderForm').addEventListener('submit',async function(event) {
   event.preventDefault();
-
   if (!cart.length) {
     alert('Your inquiry cart is empty.');
     return;
@@ -480,34 +436,28 @@ document.getElementById('orderForm').addEventListener('submit', async function(e
 
   const form = new FormData(this);
   const items = cart.map(item => ({
-    product_id: item.id,
-    name: item.name,
-    model: item.model,
-    quantity: item.quantity
+    product_id:item.id,
+    name:item.name,
+    model:item.model,
+    quantity:item.quantity
   }));
 
   const order = {
-    customer_name: String(form.get('customer_name')).trim(),
-    whatsapp: String(form.get('whatsapp')).trim(),
-    country: String(form.get('country')).trim(),
-    email: String(form.get('email') || '').trim() || null,
-    notes: String(form.get('notes') || '').trim() || null,
-    items: items,
-    status: 'New'
+    customer_name:String(form.get('customer_name') || '').trim(),
+    whatsapp:String(form.get('whatsapp') || '').trim(),
+    country:String(form.get('country') || '').trim(),
+    email:String(form.get('email') || '').trim() || null,
+    notes:String(form.get('notes') || '').trim() || null,
+    items:items,
+    status:'New'
   };
 
   try {
-    const { data, error } = await db
-      .from('inquiry_orders')
-      .insert(order)
-      .select('id')
-      .single();
-
+    const {error} = await db.from('inquiry_orders').insert(order);
     if (error) throw error;
 
-    const orderId = data.id;
     lastOrderMessage =
-      `Hello, I have submitted an inquiry on Sunvanta Energy. Reference: #${orderId}\n` +
+      `Hello, I have submitted an inquiry on Sunvanta Energy.\n` +
       `Name: ${order.customer_name}\nCountry: ${order.country}\n` +
       `WhatsApp: ${order.whatsapp}\n\nProducts:\n` +
       items.map(item => `${item.name} | ${item.model} | Qty: ${item.quantity}`).join('\n') +
@@ -520,8 +470,8 @@ document.getElementById('orderForm').addEventListener('submit', async function(e
     closeCart();
     document.getElementById('successDialog').showModal();
 
-  } catch (error) {
-    console.error('Order submission error:', error);
+  } catch(error) {
+    console.error('Order submission error:',error);
     alert('Sorry, your request could not be submitted. Please contact us directly through WhatsApp.');
   } finally {
     submitButton.disabled = false;
@@ -531,7 +481,7 @@ document.getElementById('orderForm').addEventListener('submit', async function(e
 
 function chatLastOrder() {
   const message = lastOrderMessage || 'Hello, I would like to inquire about renewable energy products.';
-  window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(message), '_blank');
+  window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(message),'_blank');
 }
 
 loadProducts();
