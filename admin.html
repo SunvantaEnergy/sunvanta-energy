@@ -9,27 +9,46 @@
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#f3f5f7;color:#243247;font-family:Arial,sans-serif}
-header{background:#102b46;color:white;padding:18px 5%;display:flex;justify-content:space-between;align-items:center}
-main{max-width:1100px;margin:30px auto;padding:0 16px}
-.panel{background:white;padding:24px;border-radius:12px;margin-bottom:22px;box-shadow:0 2px 12px #0000000a}
+header{background:#102b46;color:white;padding:16px 5%;display:flex;justify-content:space-between;align-items:center}
+header h2{margin:0;font-size:21px}
+main{max-width:1250px;margin:25px auto;padding:0 16px}
+.panel{background:white;padding:22px;border-radius:12px;margin-bottom:20px;box-shadow:0 2px 12px #0000000a}
 h2,h3{margin-top:0}
-input,select,textarea{width:100%;padding:11px;margin:7px 0 15px;border:1px solid #d5dce3;border-radius:7px;font-size:15px}
+input,select,textarea{width:100%;padding:11px;margin:7px 0 15px;border:1px solid #d5dce3;border-radius:7px;font-size:14px}
 textarea{min-height:90px}
-label{font-size:14px;font-weight:bold}
+label{font-size:13px;font-weight:bold}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-button{border:0;border-radius:7px;padding:11px 16px;background:#e5a52b;color:#172b40;font-weight:bold;cursor:pointer;margin:4px}
+button{border:0;border-radius:7px;padding:10px 14px;background:#e5a52b;color:#172b40;font-weight:bold;cursor:pointer;margin:3px}
 .secondary{background:#e8edf2;color:#26394d}
 .danger{background:#f8dddd;color:#9c2525}
-.hidden{display:none}
-.product{border:1px solid #e1e6eb;padding:15px;border-radius:9px;margin:12px 0;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.hidden{display:none!important}
+.nav{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:20px}
+.nav button{background:#e8edf2;color:#26394d;padding:12px 17px}
+.nav button.active{background:#102b46;color:white}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.stat{background:white;padding:20px;border-radius:11px;box-shadow:0 2px 12px #0000000a}
+.stat small{color:#718096}
+.stat strong{display:block;font-size:28px;margin-top:10px;color:#102b46}
+.product,.record{border:1px solid #e1e6eb;padding:14px;border-radius:9px;margin:12px 0;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
 .product img{width:85px;height:85px;object-fit:contain;background:#f5f6f7;border-radius:6px}
 .product-info{flex:1;min-width:180px}
 .muted{color:#738092;font-size:13px}
+.record-info{flex:1;min-width:220px}
+.tag{display:inline-block;padding:5px 9px;border-radius:20px;background:#edf1f5;font-size:12px;margin:3px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:12px;border-bottom:1px solid #e7ebef;vertical-align:top}
+th{background:#f6f8fa}
 #message{color:#23633a}
-@media(max-width:650px){.row{grid-template-columns:1fr}}
+.empty{padding:25px;text-align:center;color:#7b8794}
+.bar{height:9px;background:#edf1f5;border-radius:10px;overflow:hidden;margin-top:6px}
+.bar span{display:block;height:100%;background:#e5a52b}
+@media(max-width:800px){.cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.row{grid-template-columns:1fr}.cards{grid-template-columns:1fr 1fr}header h2{font-size:17px}.panel{padding:15px}}
 </style>
 </head>
 <body>
+
 <header>
 <h2>Sunvanta Energy · Admin</h2>
 <button id="logoutBtn" class="secondary hidden" onclick="logout()">Log out</button>
@@ -47,314 +66,409 @@ button{border:0;border-radius:7px;padding:11px 16px;background:#e5a52b;color:#17
 </section>
 
 <section id="adminPanel" class="hidden">
+<nav class="nav">
+<button class="active" data-tab="dashboard" onclick="showTab('dashboard',this)">Dashboard</button>
+<button data-tab="products" onclick="showTab('products',this)">Products</button>
+<button data-tab="inquiries" onclick="showTab('inquiries',this)">Inquiries</button>
+<button data-tab="customers" onclick="showTab('customers',this)">Customers</button>
+<button data-tab="statistics" onclick="showTab('statistics',this)">Statistics</button>
+</nav>
+
+<section id="tab-dashboard">
+<h3>Business Dashboard</h3>
+<div class="cards">
+<div class="stat"><small>Total Products</small><strong id="statProducts">-</strong></div>
+<div class="stat"><small>Published Products</small><strong id="statPublished">-</strong></div>
+<div class="stat"><small>Total Inquiries</small><strong id="statInquiries">-</strong></div>
+<div class="stat"><small>New Inquiries</small><strong id="statNew">-</strong></div>
+</div>
+<div class="panel">
+<h3>Recent Inquiries</h3>
+<div id="recentInquiries" class="muted">Loading...</div>
+</div>
+</section>
+
+<section id="tab-products" class="hidden">
 <div class="panel">
 <h3 id="formTitle">Add a Product</h3>
 <input type="hidden" id="productId">
-
 <label>Product Name *</label>
 <input id="name" placeholder="Deye 5kW Hybrid Inverter">
-
 <div class="row">
-<div>
-<label>Brand</label>
-<input id="brand" placeholder="Deye">
+<div><label>Brand</label><input id="brand" placeholder="Deye"></div>
+<div><label>Model</label><input id="model" placeholder="Model number"></div>
 </div>
-<div>
-<label>Model</label>
-<input id="model" placeholder="SUN-5K-SG06LP1-EU-CM2">
-</div>
-</div>
-
 <div class="row">
-<div>
-<label>Category</label>
+<div><label>Category</label>
 <select id="category">
-<option>Solar Inverters</option>
-<option>Solar Panels</option>
-<option>Lithium Batteries</option>
-<option>Energy Storage Systems</option>
-<option>Wind Turbines</option>
-<option>Other Products</option>
-</select>
+<option>Solar Inverters</option><option>Solar Panels</option>
+<option>Lithium Batteries</option><option>Energy Storage Systems</option>
+<option>Wind Turbines</option><option>Other Products</option>
+</select></div>
+<div><label>Power / Capacity</label><input id="power" placeholder="5kW"></div>
 </div>
-<div>
-<label>Power / Capacity</label>
-<input id="power" placeholder="5kW">
-</div>
-</div>
-
 <h3>Wholesale Information</h3>
 <div class="row">
-<div>
-<label>Price</label>
-<input id="price" type="number" min="0" step="0.01" placeholder="850">
+<div><label>Price</label><input id="price" type="number" min="0" step="0.01"></div>
+<div><label>Currency</label><select id="currency"><option>USD</option><option>EUR</option><option>CNY</option></select></div>
 </div>
-<div>
-<label>Currency</label>
-<select id="currency">
-<option>USD</option>
-<option>EUR</option>
-<option>CNY</option>
-</select>
-</div>
-</div>
-
 <div class="row">
-<div>
-<label>MOQ (Minimum Order Quantity)</label>
-<input id="moq" type="number" min="1" value="1">
+<div><label>MOQ</label><input id="moq" type="number" min="1" value="1"></div>
+<div><label>Stock Status</label><select id="stockStatus"><option>In Stock</option><option>Pre-order</option><option>Out of Stock</option></select></div>
 </div>
-<div>
-<label>Stock Status</label>
-<select id="stockStatus">
-<option>In Stock</option>
-<option>Pre-order</option>
-<option>Out of Stock</option>
-</select>
-</div>
-</div>
-
 <div class="row">
-<div>
-<label>Warranty</label>
-<input id="warranty" placeholder="5 Years">
+<div><label>Warranty</label><input id="warranty" placeholder="5 Years"></div>
+<div><label>Show Price to Customers</label><select id="showPrice"><option value="false">No - Get Latest Price</option><option value="true">Yes - Display Price</option></select></div>
 </div>
-<div>
-<label>Show Price to Customers</label>
-<select id="showPrice">
-<option value="false">No - Get Latest Price</option>
-<option value="true">Yes - Display Price</option>
-</select>
-</div>
-</div>
-
 <label>Description</label>
 <textarea id="description" placeholder="Product specifications and details"></textarea>
-
 <label>Product Image</label>
-<input id="imageFile" type="file" accept="image/*">
+<input id="imageFile" type="file" accept="image/jpeg,image/png,image/webp">
 <p class="muted">Upload a real product image. JPG, PNG or WebP recommended.</p>
 <div id="imagePreview"></div>
-
 <label>Publish Status</label>
-<select id="published">
-<option value="false">Draft</option>
-<option value="true">Published</option>
-</select>
-
+<select id="published"><option value="false">Draft</option><option value="true">Published</option></select>
 <button onclick="saveProduct()">Save Product</button>
 <button class="secondary" onclick="resetForm()">Clear</button>
 <p id="message"></p>
 </div>
-
 <div class="panel">
 <h3>Product Management</h3>
 <button class="secondary" onclick="loadProducts()">Refresh List</button>
 <div id="productList">Loading...</div>
 </div>
 </section>
+
+<section id="tab-inquiries" class="hidden">
+<div class="panel">
+<h3>Inquiry Management</h3>
+<button class="secondary" onclick="loadInquiries()">Refresh Inquiries</button>
+<div class="row">
+<div><label>Filter by Status</label>
+<select id="inquiryFilter" onchange="renderInquiries()">
+<option value="">All Statuses</option><option>New</option>
+<option>Processing</option><option>Quoted</option>
+<option>Completed</option><option>Cancelled</option>
+</select></div>
+<div><label>Search</label><input id="inquirySearch" placeholder="Name, country, email..." oninput="renderInquiries()"></div>
+</div>
+<div id="inquiryList">Loading...</div>
+</div>
+</section>
+
+<section id="tab-customers" class="hidden">
+<div class="panel">
+<h3>Customer Management</h3>
+<p class="muted">Customer records are automatically summarized from submitted inquiries.</p>
+<button class="secondary" onclick="loadInquiries()">Refresh Customers</button>
+<div id="customerList">Loading...</div>
+</div>
+</section>
+
+<section id="tab-statistics" class="hidden">
+<div class="panel">
+<h3>Business Statistics</h3>
+<button class="secondary" onclick="refreshAll()">Refresh Statistics</button>
+<h4>Inquiries by Country</h4>
+<div id="countryStats"></div>
+<h4 style="margin-top:25px">Popular Requested Products</h4>
+<div id="popularStats"></div>
+</div>
+</section>
+</section>
 </main>
 
 <script>
-const SUPABASE_URL = "https://lwqxwsxhgopiubknjtnp.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_J2GEOxIuBbuS7xHm7USVTw_MFqFDgZ1";
-const ADMIN_UID = "d11f2af2-efd4-49c4-baab-51f84569ddfa";
+const SUPABASE_URL="https://lwqxwsxhgopiubknjtnp.supabase.co";
+const SUPABASE_ANON_KEY="sb_publishable_J2GEOxIuBbuS7xHm7USVTw_MFqFDgZ1";
+const ADMIN_UID="d11f2af2-efd4-49c4-baab-51f84569ddfa";
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 
-const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
-let currentImageUrl = null;
+let currentImageUrl=null;
+let products=[];
+let inquiries=[];
+
+function el(id){return document.getElementById(id)}
+function safe(value){return value==null?"":String(value)}
+function escapeHTML(value){
+ return safe(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
 
 async function login(){
- const msg=document.getElementById("loginMessage");
+ const msg=el("loginMessage");
  msg.textContent="Signing in...";
  const {data,error}=await db.auth.signInWithPassword({
-  email:document.getElementById("email").value.trim(),
-  password:document.getElementById("password").value
+  email:el("email").value.trim(),password:el("password").value
  });
- if(error){msg.textContent=error.message;return;}
+ if(error){msg.textContent=error.message;return}
  if(data.user.id!==ADMIN_UID){
-  await db.auth.signOut();
-  msg.textContent="Unauthorized account.";
-  return;
+  await db.auth.signOut();msg.textContent="Unauthorized account.";return;
  }
  showAdmin();
 }
-
-async function logout(){
- await db.auth.signOut();
- location.reload();
-}
+async function logout(){await db.auth.signOut();location.reload()}
 
 function showAdmin(){
- document.getElementById("loginPanel").classList.add("hidden");
- document.getElementById("adminPanel").classList.remove("hidden");
- document.getElementById("logoutBtn").classList.remove("hidden");
- loadProducts();
+ el("loginPanel").classList.add("hidden");
+ el("adminPanel").classList.remove("hidden");
+ el("logoutBtn").classList.remove("hidden");
+ refreshAll();
 }
-
 async function checkSession(){
  const {data}=await db.auth.getSession();
  if(data.session){
-  if(data.session.user.id===ADMIN_UID) showAdmin();
+  if(data.session.user.id===ADMIN_UID)showAdmin();
   else await db.auth.signOut();
  }
 }
 
+function showTab(tab,button){
+ document.querySelectorAll('[id^="tab-"]').forEach(x=>x.classList.add("hidden"));
+ el("tab-"+tab).classList.remove("hidden");
+ document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));
+ if(button)button.classList.add("active");
+ if(tab==="products")loadProducts();
+ if(tab==="inquiries"||tab==="customers"||tab==="statistics")loadInquiries();
+}
+
+async function refreshAll(){
+ await Promise.all([loadProducts(),loadInquiries()]);
+ updateDashboard();
+}
+
 async function loadProducts(){
- const list=document.getElementById("productList");
- list.textContent="Loading...";
+ const list=el("productList");
+ if(list)list.textContent="Loading...";
  const {data,error}=await db.from("products").select("*").order("created_at",{ascending:false});
- if(error){list.textContent=error.message;return;}
- if(!data.length){list.textContent="No products yet.";return;}
+ if(error){if(list)list.textContent=error.message;return}
+ products=data||[];
+ renderProducts();
+ updateDashboard();
+ renderStatistics();
+}
+
+function renderProducts(){
+ const list=el("productList");
+ if(!list)return;
+ if(!products.length){list.innerHTML='<div class="empty">No products yet.</div>';return}
  list.innerHTML="";
- data.forEach(p=>{
-  const item=document.createElement("div");
-  item.className="product";
-  const img=document.createElement("img");
-  img.src=p.image_url||"";
-  img.alt=p.name||"Product";
-  const info=document.createElement("div");
-  info.className="product-info";
-  const title=document.createElement("strong");
-  title.textContent=p.name;
-  const detail=document.createElement("p");
-  detail.className="muted";
+ products.forEach(p=>{
+  const item=document.createElement("div");item.className="product";
+  const img=document.createElement("img");img.src=p.image_url||"";img.alt=p.name||"Product";
+  const info=document.createElement("div");info.className="product-info";
+  const title=document.createElement("strong");title.textContent=p.name||"";
+  const detail=document.createElement("p");detail.className="muted";
   detail.textContent=[p.brand,p.model,p.power].filter(Boolean).join(" · ");
-  const price=document.createElement("p");
-  price.className="muted";
-  price.textContent=p.price==null?"Price not set":p.currency+" "+p.price;
-  const status=document.createElement("p");
-  status.className="muted";
+  const price=document.createElement("p");price.className="muted";
+  price.textContent=p.price==null?"Price not set":(p.currency||"")+" "+p.price;
+  const status=document.createElement("p");status.className="muted";
   status.textContent=(p.published?"Published":"Draft")+" · "+(p.stock_status||"In Stock");
   info.append(title,detail,price,status);
   const actions=document.createElement("div");
-  const edit=document.createElement("button");
-  edit.className="secondary";
-  edit.textContent="Edit";
-  edit.onclick=()=>editProduct(p.id);
-  const toggle=document.createElement("button");
-  toggle.textContent=p.published?"Unpublish":"Publish";
-  toggle.onclick=()=>togglePublish(p.id,!p.published);
-  const del=document.createElement("button");
-  del.className="danger";
-  del.textContent="Delete";
-  del.onclick=()=>deleteProduct(p.id);
-  actions.append(edit,toggle,del);
-  item.append(img,info,actions);
-  list.appendChild(item);
+  const edit=document.createElement("button");edit.className="secondary";edit.textContent="Edit";edit.onclick=()=>editProduct(p.id);
+  const toggle=document.createElement("button");toggle.textContent=p.published?"Unpublish":"Publish";toggle.onclick=()=>togglePublish(p.id,!p.published);
+  const del=document.createElement("button");del.className="danger";del.textContent="Delete";del.onclick=()=>deleteProduct(p.id);
+  actions.append(edit,toggle,del);item.append(img,info,actions);list.appendChild(item);
  });
 }
 
 async function saveProduct(){
- const msg=document.getElementById("message");
- msg.textContent="Saving...";
- const id=document.getElementById("productId").value;
- const name=document.getElementById("name").value.trim();
- if(!name){msg.textContent="Please enter a product name.";return;}
-
+ const msg=el("message");msg.textContent="Saving...";
+ const id=el("productId").value;
+ const name=el("name").value.trim();
+ if(!name){msg.textContent="Please enter a product name.";return}
  let imageUrl=currentImageUrl;
- const file=document.getElementById("imageFile").files[0];
-
+ const file=el("imageFile").files[0];
  if(file){
+  if(!["image/jpeg","image/png","image/webp"].includes(file.type)){
+   msg.textContent="Please upload JPG, PNG or WebP.";return;
+  }
   const ext=file.name.split(".").pop().toLowerCase();
   const path=Date.now()+"-"+Math.random().toString(36).slice(2)+"."+ext;
   const {error:uploadError}=await db.storage.from("product-images").upload(path,file);
-  if(uploadError){msg.textContent=uploadError.message;return;}
+  if(uploadError){msg.textContent=uploadError.message;return}
   imageUrl=db.storage.from("product-images").getPublicUrl(path).data.publicUrl;
  }
-
- const rawPrice=document.getElementById("price").value;
- const rawMoq=document.getElementById("moq").value;
+ const rawPrice=el("price").value,rawMoq=el("moq").value;
  const product={
-  name,
-  brand:document.getElementById("brand").value.trim(),
-  model:document.getElementById("model").value.trim(),
-  category:document.getElementById("category").value,
-  power:document.getElementById("power").value.trim(),
-  description:document.getElementById("description").value.trim(),
-  image_url:imageUrl,
-  price:rawPrice===""?null:Number(rawPrice),
-  currency:document.getElementById("currency").value,
-  moq:rawMoq===""?1:Number(rawMoq),
-  stock_status:document.getElementById("stockStatus").value,
-  warranty:document.getElementById("warranty").value.trim(),
-  show_price:document.getElementById("showPrice").value==="true",
-  published:document.getElementById("published").value==="true"
+  name,brand:el("brand").value.trim(),model:el("model").value.trim(),
+  category:el("category").value,power:el("power").value.trim(),
+  description:el("description").value.trim(),image_url:imageUrl,
+  price:rawPrice===""?null:Number(rawPrice),currency:el("currency").value,
+  moq:rawMoq===""?1:Number(rawMoq),stock_status:el("stockStatus").value,
+  warranty:el("warranty").value.trim(),show_price:el("showPrice").value==="true",
+  published:el("published").value==="true"
  };
-
- const result=id
-  ?await db.from("products").update(product).eq("id",id)
-  :await db.from("products").insert(product);
-
- if(result.error){msg.textContent=result.error.message;return;}
+ const result=id?await db.from("products").update(product).eq("id",id):await db.from("products").insert(product);
+ if(result.error){msg.textContent=result.error.message;return}
  msg.textContent="Product saved successfully.";
- resetForm();
- loadProducts();
+ resetForm();await loadProducts();
 }
 
 async function editProduct(id){
  const {data,error}=await db.from("products").select("*").eq("id",id).single();
- if(error){alert(error.message);return;}
- document.getElementById("productId").value=data.id;
- document.getElementById("name").value=data.name||"";
- document.getElementById("brand").value=data.brand||"";
- document.getElementById("model").value=data.model||"";
- document.getElementById("category").value=data.category||"Solar Inverters";
- document.getElementById("power").value=data.power||"";
- document.getElementById("description").value=data.description||"";
- document.getElementById("price").value=data.price??"";
- document.getElementById("currency").value=data.currency||"USD";
- document.getElementById("moq").value=data.moq??1;
- document.getElementById("stockStatus").value=data.stock_status||"In Stock";
- document.getElementById("warranty").value=data.warranty||"";
- document.getElementById("showPrice").value=String(data.show_price??false);
- document.getElementById("published").value=String(data.published??false);
+ if(error){alert(error.message);return}
+ el("productId").value=data.id;el("name").value=data.name||"";
+ el("brand").value=data.brand||"";el("model").value=data.model||"";
+ el("category").value=data.category||"Solar Inverters";el("power").value=data.power||"";
+ el("description").value=data.description||"";el("price").value=data.price??"";
+ el("currency").value=data.currency||"USD";el("moq").value=data.moq??1;
+ el("stockStatus").value=data.stock_status||"In Stock";el("warranty").value=data.warranty||"";
+ el("showPrice").value=String(data.show_price??false);
+ el("published").value=String(data.published??false);
  currentImageUrl=data.image_url||null;
- document.getElementById("imagePreview").textContent=currentImageUrl?"Current image uploaded.": "No image uploaded.";
- document.getElementById("formTitle").textContent="Edit Product";
+ el("imagePreview").textContent=currentImageUrl?"Current image uploaded.":"No image uploaded.";
+ el("formTitle").textContent="Edit Product";
+ showTab("products",document.querySelector('[data-tab="products"]'));
  window.scrollTo({top:0,behavior:"smooth"});
 }
-
 async function togglePublish(id,published){
  const {error}=await db.from("products").update({published}).eq("id",id);
- if(error){alert(error.message);return;}
- loadProducts();
+ if(error){alert(error.message);return}loadProducts();
 }
-
 async function deleteProduct(id){
  if(!confirm("Delete this product permanently?"))return;
  const {error}=await db.from("products").delete().eq("id",id);
- if(error){alert(error.message);return;}
- loadProducts();
+ if(error){alert(error.message);return}loadProducts();
 }
-
 function resetForm(){
- ["productId","name","brand","model","power","description","price","warranty","imageFile"].forEach(id=>{
-  document.getElementById(id).value="";
- });
- document.getElementById("category").value="Solar Inverters";
- document.getElementById("currency").value="USD";
- document.getElementById("moq").value=1;
- document.getElementById("stockStatus").value="In Stock";
- document.getElementById("showPrice").value="false";
- document.getElementById("published").value="false";
- document.getElementById("formTitle").textContent="Add a Product";
- document.getElementById("imagePreview").textContent="";
+ ["productId","name","brand","model","power","description","price","warranty","imageFile"].forEach(id=>el(id).value="");
+ el("category").value="Solar Inverters";el("currency").value="USD";
+ el("moq").value=1;el("stockStatus").value="In Stock";
+ el("showPrice").value="false";el("published").value="false";
+ el("formTitle").textContent="Add a Product";el("imagePreview").textContent="";
  currentImageUrl=null;
 }
-
-document.getElementById("imageFile").addEventListener("change",function(){
- const file=this.files[0];
- const preview=document.getElementById("imagePreview");
- if(!file){preview.textContent="";return;}
- if(!file.type.startsWith("image/")){preview.textContent="Please select an image.";this.value="";return;}
- const url=URL.createObjectURL(file);
- preview.innerHTML="";
- const img=document.createElement("img");
- img.src=url;
- img.style.maxWidth="150px";
- img.style.maxHeight="120px";
- preview.appendChild(img);
+el("imageFile").addEventListener("change",function(){
+ const file=this.files[0],preview=el("imagePreview");
+ if(!file){preview.textContent="";return}
+ if(!["image/jpeg","image/png","image/webp"].includes(file.type)){
+  preview.textContent="Please select JPG, PNG or WebP.";this.value="";return;
+ }
+ const url=URL.createObjectURL(file);preview.innerHTML="";
+ const img=document.createElement("img");img.src=url;
+ img.style.maxWidth="150px";img.style.maxHeight="120px";preview.appendChild(img);
 });
+
+async function loadInquiries(){
+ const box=el("inquiryList");
+ if(box)box.textContent="Loading...";
+ const {data,error}=await db.from("inquiry_orders").select("*").order("created_at",{ascending:false});
+ if(error){
+  if(box)box.textContent="Unable to load inquiries: "+error.message;
+  el("recentInquiries").textContent="Unable to load inquiries.";
+  return;
+ }
+ inquiries=data||[];
+ renderInquiries();renderCustomers();renderStatistics();updateDashboard();
+}
+
+function getItems(items){
+ if(Array.isArray(items))return items;
+ if(typeof items==="string"){try{const parsed=JSON.parse(items);return Array.isArray(parsed)?parsed:[]}catch(e){return []}}
+ return [];
+}
+function itemNames(items){
+ return getItems(items).map(x=>{
+  if(typeof x==="string")return x;
+  return x.name||x.product_name||x.title||x.model||"Product";
+ }).join(", ");
+}
+function renderInquiries(){
+ const box=el("inquiryList");if(!box)return;
+ const filter=el("inquiryFilter").value;
+ const search=el("inquirySearch").value.trim().toLowerCase();
+ const rows=inquiries.filter(q=>{
+  const text=[q.customer_name,q.country,q.email,q.whatsapp,itemNames(q.items)].join(" ").toLowerCase();
+  return (!filter||((q.status||"New")===filter))&&(!search||text.includes(search));
+ });
+ if(!rows.length){box.innerHTML='<div class="empty">No inquiries found.</div>';return}
+ box.innerHTML="";
+ rows.forEach(q=>{
+  const card=document.createElement("div");card.className="record";
+  const info=document.createElement("div");info.className="record-info";
+  const date=q.created_at?new Date(q.created_at).toLocaleString():"";
+  info.innerHTML="<strong>"+escapeHTML(q.customer_name)+"</strong>"+
+   '<p class="muted">'+escapeHTML([q.country,q.email,q.whatsapp].filter(Boolean).join(" · "))+"</p>"+
+   '<p><strong>Products:</strong> '+escapeHTML(itemNames(q.items)||"Not specified")+"</p>"+
+   '<p class="muted"><strong>Notes:</strong> '+escapeHTML(q.notes||"None")+"</p>"+
+   '<p class="muted">'+escapeHTML(date)+"</p>";
+  const controls=document.createElement("div");
+  const select=document.createElement("select");
+  ["New","Processing","Quoted","Completed","Cancelled"].forEach(s=>{
+   const op=document.createElement("option");op.value=s;op.textContent=s;
+   if((q.status||"New")===s)op.selected=true;select.appendChild(op);
+  });
+  select.onchange=()=>updateInquiryStatus(q.id,select.value);
+  controls.appendChild(select);card.append(info,controls);box.appendChild(card);
+ });
+}
+async function updateInquiryStatus(id,status){
+ const {error}=await db.from("inquiry_orders").update({status}).eq("id",id);
+ if(error){alert("Could not update status: "+error.message);await loadInquiries();return}
+ const found=inquiries.find(x=>String(x.id)===String(id));
+ if(found)found.status=status;
+ renderInquiries();updateDashboard();
+}
+
+function renderCustomers(){
+ const box=el("customerList");if(!box)return;
+ const map=new Map();
+ inquiries.forEach(q=>{
+  const key=(q.email||q.whatsapp||q.customer_name||"Unknown").toLowerCase();
+  if(!map.has(key))map.set(key,{...q,count:0});
+  map.get(key).count++;
+ });
+ const customers=Array.from(map.values());
+ if(!customers.length){box.innerHTML='<div class="empty">No customers yet.</div>';return}
+ box.innerHTML="";
+ customers.forEach(c=>{
+  const div=document.createElement("div");div.className="record";
+  const info=document.createElement("div");info.className="record-info";
+  info.innerHTML="<strong>"+escapeHTML(c.customer_name)+"</strong>"+
+   '<p class="muted">'+escapeHTML([c.country,c.email,c.whatsapp].filter(Boolean).join(" · "))+"</p>"+
+   '<p class="muted">Total inquiries: '+c.count+"</p>";
+  div.appendChild(info);box.appendChild(div);
+ });
+}
+
+function renderStatistics(){
+ const countries={},popular={};
+ inquiries.forEach(q=>{
+  const country=q.country||"Not specified";
+  countries[country]=(countries[country]||0)+1;
+  getItems(q.items).forEach(item=>{
+   const name=typeof item==="string"?item:(item.name||item.product_name||item.title||item.model||"Other");
+   popular[name]=(popular[name]||0)+1;
+  });
+ });
+ renderBars("countryStats",countries);
+ renderBars("popularStats",popular);
+}
+function renderBars(id,data){
+ const box=el(id);if(!box)return;
+ const entries=Object.entries(data).sort((a,b)=>b[1]-a[1]).slice(0,10);
+ if(!entries.length){box.innerHTML='<div class="empty">No data available yet.</div>';return}
+ const max=Math.max(...entries.map(x=>x[1]));
+ box.innerHTML=entries.map(([name,count])=>
+  '<div style="margin:12px 0"><div style="display:flex;justify-content:space-between"><span>'+
+  escapeHTML(name)+'</span><strong>'+count+'</strong></div><div class="bar"><span style="width:'+
+  (count/max*100)+'%"></span></div></div>'
+ ).join("");
+}
+function updateDashboard(){
+ el("statProducts").textContent=products.length;
+ el("statPublished").textContent=products.filter(p=>p.published).length;
+ el("statInquiries").textContent=inquiries.length;
+ el("statNew").textContent=inquiries.filter(q=>(q.status||"New")==="New").length;
+ const recent=el("recentInquiries");
+ if(!inquiries.length){recent.innerHTML='<div class="empty">No inquiries yet.</div>';return}
+ recent.innerHTML=inquiries.slice(0,5).map(q=>
+  '<div class="record"><div class="record-info"><strong>'+escapeHTML(q.customer_name)+
+  '</strong><p class="muted">'+escapeHTML([q.country,itemNames(q.items)].filter(Boolean).join(" · "))+
+  '</p></div><span class="tag">'+escapeHTML(q.status||"New")+'</span></div>'
+ ).join("");
+}
 
 checkSession();
 </script>
