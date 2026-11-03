@@ -4,628 +4,363 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sunvanta Energy | Seller Center</title>
+<title>Sunvanta Energy | Solar & Energy Storage Solutions</title>
+<meta name="description" content="Sunvanta Energy - Wholesale solar panels, hybrid inverters, lithium batteries and energy storage systems.">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
+:root{--green:#087c59;--dark:#123b2d;--light:#f4f8f5;--text:#243247}
 *{box-sizing:border-box}
-body{margin:0;background:#f4f6f8;color:#243247;font-family:Arial,sans-serif}
+body{margin:0;font-family:Arial,sans-serif;color:var(--text);background:#fff}
 button,input,select,textarea{font:inherit}
-button{cursor:pointer;border:0;border-radius:7px;padding:10px 15px;font-weight:bold;background:#087c59;color:white}
-button:hover{opacity:.9}
-.secondary{background:#e8edf2;color:#26394d}
-.danger{background:#f8dddd;color:#9c2525}
-.hidden{display:none!important}
-.login-wrap{min-height:100vh;display:grid;place-items:center;padding:20px}
-.login-box{background:white;padding:32px;border-radius:14px;width:min(420px,100%);box-shadow:0 5px 25px #0001}
-.login-box h2{color:#15382b}
-input,select,textarea{width:100%;padding:11px;border:1px solid #d5dce3;border-radius:7px;margin:6px 0 15px;background:white}
-textarea{min-height:90px}
-label{font-size:13px;font-weight:bold}
-header{height:65px;background:#15382b;color:white;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:10}
-.brand{font-size:19px;font-weight:bold}
-.brand span{color:#8fe0b5}
-.layout{display:grid;grid-template-columns:225px minmax(0,1fr);min-height:calc(100vh - 65px)}
-.sidebar{background:#fff;border-right:1px solid #e5e9ed;padding:20px 12px}
-.sidebar button{width:100%;text-align:left;background:transparent;color:#435166;margin:3px 0;padding:13px}
-.sidebar button.active,.sidebar button:hover{background:#eaf5ef;color:#087c59}
-.sidebar .nav-label{font-size:11px;color:#9aa4af;padding:16px 12px 5px;letter-spacing:1px}
-main{padding:28px;min-width:0}
-.page{display:none}
-.page.active{display:block}
-.page-title{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:22px}
-h1{font-size:26px;margin:0;color:#193b2d}
-.sub{color:#7a8794;font-size:13px;margin-top:6px}
-.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:22px}
-.stat{background:white;border:1px solid #e8ecef;border-radius:12px;padding:19px}
-.stat small{color:#778493}
-.stat strong{display:block;font-size:28px;margin-top:8px;color:#173b2c}
-.panel{background:white;border:1px solid #e8ecef;border-radius:12px;padding:21px;margin-bottom:20px;min-width:0}
-.panel h3{margin:0 0 17px}
-.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px}
-.toolbar input,.toolbar select{margin:0;max-width:260px}
-.table-wrap{overflow-x:auto}
-table{border-collapse:collapse;width:100%;font-size:13px;min-width:650px}
-th,td{text-align:left;padding:13px 10px;border-bottom:1px solid #edf0f2;vertical-align:middle}
-th{background:#f8faf9;color:#637181}
-td select{margin:0;min-width:115px;padding:7px}
-.muted{color:#7b8794;font-size:12px}
-.tag{display:inline-block;padding:4px 8px;border-radius:20px;background:#edf3ef;color:#28714e;font-size:11px}
-.tag.draft{background:#f0f1f3;color:#6d7781}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.product-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.product{border:1px solid #e4e9ed;border-radius:10px;padding:13px;display:flex;gap:12px;align-items:center;min-width:0}
-.product img{width:75px;height:75px;object-fit:contain;background:#f5f7f6;border-radius:7px}
-.product-info{flex:1;min-width:0}
-.product-info strong{display:block;overflow-wrap:anywhere}
-.product-info p{font-size:12px;color:#7b8794;margin:5px 0}
-.product-actions{display:flex;gap:5px;flex-wrap:wrap}
-.product-actions button{font-size:11px;padding:7px 9px}
-.empty{text-align:center;color:#82909b;padding:30px}
-#notice{margin:12px 0;color:#087c59;font-size:13px}
-.preview img{max-width:150px;max-height:120px;object-fit:contain}
-@media(max-width:900px){.cards{grid-template-columns:repeat(2,1fr)}.product-list{grid-template-columns:1fr}}
-@media(max-width:650px){
-.layout{grid-template-columns:1fr}
-.sidebar{display:flex;overflow-x:auto;padding:8px;border-right:0;border-bottom:1px solid #ddd}
-.sidebar .nav-label{display:none}
-.sidebar button{white-space:nowrap;width:auto;margin:0 3px;padding:10px}
-main{padding:16px}
-header{padding:0 15px}
-.row{grid-template-columns:1fr}
-}
+button{cursor:pointer;border:0}
+a{text-decoration:none;color:inherit}
+header{background:#fff;position:sticky;top:0;z-index:20;border-bottom:1px solid #e9eeeb}
+.nav{max-width:1200px;margin:auto;padding:16px 22px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.logo{font-size:23px;font-weight:900;color:var(--dark);letter-spacing:.5px}
+.logo span{color:var(--green)}
+.nav-right{display:flex;align-items:center;gap:20px}
+.nav-right a{font-size:14px;font-weight:bold}
+.cart-btn,.primary{background:var(--green);color:#fff;padding:11px 17px;border-radius:7px;font-weight:bold}
+.cart-count{background:#fff;color:var(--green);border-radius:20px;padding:2px 7px;margin-left:5px}
+.hero{background:linear-gradient(115deg,#103c2d,#087c59);color:#fff;padding:75px 22px}
+.hero-inner{max-width:1200px;margin:auto}
+.hero h1{font-size:clamp(32px,5vw,54px);max-width:720px;line-height:1.12;margin:0 0 20px}
+.hero p{font-size:17px;line-height:1.7;max-width:650px;color:#e0f0e8}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}
+.hero-actions a{padding:13px 20px;border-radius:7px;font-weight:bold;background:#fff;color:var(--dark)}
+.hero-actions a:last-child{background:#ffffff20;color:#fff;border:1px solid #ffffff70}
+.features{max-width:1200px;margin:auto;padding:25px 22px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.feature{background:var(--light);padding:18px;border-radius:10px;text-align:center}
+.feature strong{display:block;color:var(--dark);margin-bottom:6px}
+.feature span{font-size:12px;color:#748276}
+section.content{max-width:1200px;margin:auto;padding:45px 22px}
+.section-heading{display:flex;justify-content:space-between;align-items:end;gap:15px;flex-wrap:wrap;margin-bottom:23px}
+h2{font-size:29px;color:var(--dark);margin:0 0 8px}
+.muted{color:#7b8790;font-size:13px}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+.filters input,.filters select{padding:12px;border:1px solid #dce5df;border-radius:7px;background:#fff;min-width:180px}
+.filters input{flex:1}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.card{border:1px solid #e7ece8;border-radius:12px;overflow:hidden;background:white;display:flex;flex-direction:column;min-width:0;transition:.2s}
+.card:hover{box-shadow:0 8px 25px #173b2c12;transform:translateY(-2px)}
+.card-image{height:220px;background:#f7f9f7;display:grid;place-items:center;padding:15px}
+.card-image img{width:100%;height:100%;object-fit:contain}
+.card-body{padding:17px;display:flex;flex-direction:column;flex:1}
+.category{font-size:11px;color:var(--green);font-weight:bold;text-transform:uppercase}
+.card h3{font-size:17px;color:var(--dark);margin:9px 0}
+.card p{font-size:13px;color:#748078;line-height:1.5;margin:0 0 12px}
+.product-meta{font-size:12px;color:#66756b;margin-bottom:12px}
+.price{font-size:18px;font-weight:bold;color:var(--green);margin-bottom:13px}
+.card-actions{display:flex;gap:8px;margin-top:auto}
+.card-actions button{flex:1;padding:10px 8px;border-radius:6px;font-size:12px;font-weight:bold}
+.add-btn{background:var(--green);color:#fff}
+.detail-btn{background:#edf4ef;color:var(--dark)}
+.empty{padding:45px 15px;text-align:center;color:#82908a;grid-column:1/-1}
+.about{background:var(--light)}
+.about-inner{max-width:1200px;margin:auto;padding:55px 22px;display:grid;grid-template-columns:1.2fr 1fr;gap:35px;align-items:center}
+.about h2{line-height:1.25}
+.about p{color:#69786f;line-height:1.8;font-size:14px}
+.about-box{background:#fff;border-radius:12px;padding:25px}
+.about-box div{padding:12px 0;border-bottom:1px solid #edf0ed}
+.about-box div:last-child{border:0}
+.contact{background:var(--dark);color:#fff;padding:45px 22px;text-align:center}
+.contact h2{color:#fff}
+.contact p{color:#d3e5da;line-height:1.7}
+.contact a{display:inline-block;margin-top:12px;background:#fff;color:var(--dark);padding:13px 22px;border-radius:7px;font-weight:bold}
+footer{background:#0c2c21;color:#c9d8cf;padding:23px;text-align:center;font-size:12px}
+.overlay{display:none;position:fixed;inset:0;background:#0008;z-index:50;justify-content:flex-end}
+.overlay.open{display:flex}
+.drawer{background:#fff;width:min(480px,100%);height:100%;overflow:auto;padding:23px}
+.drawer-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.drawer-head h2{font-size:22px}
+.close{background:#edf1ed;color:#243247;border-radius:50%;width:36px;height:36px;font-size:20px}
+.cart-item{display:flex;gap:12px;border-bottom:1px solid #edf0ed;padding:13px 0}
+.cart-item img{width:65px;height:65px;object-fit:contain;background:#f6f8f6;border-radius:7px}
+.cart-info{flex:1;min-width:0}
+.cart-info strong{font-size:13px;display:block}
+.cart-info small{color:#7b8790}
+.qty{display:flex;align-items:center;gap:9px;margin-top:8px}
+.qty button{background:#edf3ef;color:var(--dark);padding:5px 10px;border-radius:5px}
+.remove{background:none;color:#b54b4b;padding:5px}
+.cart-total{padding:18px 0;font-weight:bold}
+.form-group{margin:12px 0}
+.form-group label{display:block;font-size:12px;font-weight:bold;margin-bottom:6px}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:11px;border:1px solid #dce5df;border-radius:7px}
+.form-group textarea{min-height:75px}
+.submit{width:100%;padding:13px;border-radius:7px;background:var(--green);color:#fff;font-weight:bold}
+#message{font-size:13px;margin-top:12px;color:var(--green)}
+.modal{display:none;position:fixed;inset:0;background:#0009;z-index:60;place-items:center;padding:15px}
+.modal.open{display:grid}
+.modal-box{background:#fff;border-radius:12px;width:min(560px,100%);max-height:90vh;overflow:auto;padding:22px}
+.modal-box img{width:100%;height:230px;object-fit:contain;background:#f7f9f7}
+.modal-top{display:flex;justify-content:space-between;align-items:center}
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.features{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.grid{grid-template-columns:1fr}.about-inner{grid-template-columns:1fr}.nav{padding:13px}.nav-right{gap:10px}.nav-right a{display:none}.hero{padding:55px 20px}.card-image{height:210px}}
 </style>
 </head>
 <body>
 
-<section class="login-wrap" id="loginPanel">
-<div class="login-box">
-<h2>SUNVANTA ENERGY</h2>
-<p class="muted">Seller Center · Administrator Login</p>
-<label>Email</label>
-<input id="email" type="email" value="3487217845@qq.com">
-<label>Password</label>
-<input id="password" type="password" placeholder="Enter your password">
-<button style="width:100%" onclick="login()">Log in</button>
-<p id="loginMessage" class="muted"></p>
-</div>
-</section>
-
-<div id="app" class="hidden">
 <header>
-<div class="brand">SUNVANTA <span>ENERGY</span> <small style="font-size:12px;font-weight:normal">SELLER CENTER</small></div>
-<div>
-<span id="adminEmail" style="font-size:12px;margin-right:12px"></span>
-<button class="secondary" onclick="logout()">Log out</button>
+<div class="nav">
+<a class="logo" href="#">SUNVANTA <span>ENERGY</span></a>
+<div class="nav-right">
+<a href="#products">Products</a>
+<a href="#about">About Us</a>
+<a href="#contact">Contact</a>
+<button class="cart-btn" onclick="openCart()">Inquiry Cart <span class="cart-count" id="cartCount">0</span></button>
+</div>
 </div>
 </header>
 
-<div class="layout">
-<aside class="sidebar">
-<div class="nav-label">WORKSPACE</div>
-<button class="active" data-page="dashboard" onclick="showPage('dashboard',this)">▦ Dashboard</button>
-<button data-page="products" onclick="showPage('products',this)">▣ Products</button>
-<button data-page="inquiries" onclick="showPage('inquiries',this)">✉ Inquiries</button>
-<button data-page="customers" onclick="showPage('customers',this)">♙ Customers</button>
-<button data-page="statistics" onclick="showPage('statistics',this)">▥ Statistics</button>
-<div class="nav-label">ACCOUNT</div>
-<button onclick="window.open('https://sunvantaenergy.github.io/sunvanta-energy/','_blank')">↗ View Store</button>
-</aside>
-
-<main>
-<!-- DASHBOARD -->
-<section class="page active" id="page-dashboard">
-<div class="page-title">
-<div><h1>Dashboard</h1><div class="sub">Welcome back to your business workspace.</div></div>
-<button onclick="refreshAll()">↻ Refresh Data</button>
+<section class="hero">
+<div class="hero-inner">
+<h1>Powering a Sustainable Energy Future</h1>
+<p>Your trusted partner for solar panels, hybrid inverters, lithium batteries and energy storage solutions. Wholesale supply for global distributors, installers and project partners.</p>
+<div class="hero-actions">
+<a href="#products">Explore Products</a>
+<a href="#contact">Contact Our Team</a>
 </div>
-<div class="cards">
-<div class="stat"><small>Total Products</small><strong id="statProducts">—</strong></div>
-<div class="stat"><small>Published Products</small><strong id="statPublished">—</strong></div>
-<div class="stat"><small>Total Inquiries</small><strong id="statInquiries">—</strong></div>
-<div class="stat"><small>Pending Inquiries</small><strong id="statPending">—</strong></div>
-</div>
-<div class="panel">
-<h3>Recent Inquiries</h3>
-<div class="table-wrap">
-<table><thead><tr><th>Date</th><th>Customer</th><th>Country</th><th>WhatsApp</th><th>Status</th></tr></thead>
-<tbody id="recentInquiries"></tbody></table>
-</div>
-</div>
-<div class="panel">
-<h3>Quick Actions</h3>
-<button onclick="showPage('products')">＋ Add Product</button>
-<button class="secondary" onclick="showPage('inquiries')">View Inquiries</button>
-<button class="secondary" onclick="showPage('customers')">View Customers</button>
 </div>
 </section>
 
-<!-- PRODUCTS -->
-<section class="page" id="page-products">
-<div class="page-title">
-<div><h1>Product Management</h1><div class="sub">Create, edit, publish and manage your products.</div></div>
-<button onclick="newProduct()">＋ Add Product</button>
+<div class="features">
+<div class="feature"><strong>Global Supply</strong><span>Serving international markets</span></div>
+<div class="feature"><strong>Wholesale Solutions</strong><span>For distributors and installers</span></div>
+<div class="feature"><strong>Product Support</strong><span>Professional product assistance</span></div>
+<div class="feature"><strong>Custom Inquiries</strong><span>Solutions for your projects</span></div>
 </div>
 
-<div class="panel" id="productFormPanel">
-<h3 id="formTitle">Add a Product</h3>
-<input type="hidden" id="productId">
-<label>Product Name *</label>
-<input id="name" placeholder="Deye 5kW Hybrid Inverter">
-<div class="row">
-<div><label>Brand</label><input id="brand" placeholder="Deye"></div>
-<div><label>Model</label><input id="model" placeholder="Product model"></div>
+<section class="content" id="products">
+<div class="section-heading">
+<div><h2>Our Products</h2><div class="muted">Explore our solar and energy storage product range.</div></div>
 </div>
-<div class="row">
-<div><label>Category</label>
-<select id="category">
-<option>Solar Inverters</option><option>Solar Panels</option>
-<option>Lithium Batteries</option><option>Energy Storage Systems</option>
-<option>Wind Turbines</option><option>Other Products</option>
-</select></div>
-<div><label>Power / Capacity</label><input id="power" placeholder="5kW"></div>
-</div>
-<h3>Wholesale Information</h3>
-<div class="row">
-<div><label>Price</label><input id="price" type="number" min="0" step="0.01" placeholder="850"></div>
-<div><label>Currency</label><select id="currency"><option>USD</option><option>EUR</option><option>CNY</option></select></div>
-</div>
-<div class="row">
-<div><label>MOQ</label><input id="moq" type="number" min="1" value="1"></div>
-<div><label>Stock Status</label><select id="stockStatus"><option>In Stock</option><option>Pre-order</option><option>Out of Stock</option></select></div>
-</div>
-<div class="row">
-<div><label>Warranty</label><input id="warranty" placeholder="5 Years"></div>
-<div><label>Show Price to Customers</label><select id="showPrice"><option value="false">No - Get Latest Price</option><option value="true">Yes - Display Price</option></select></div>
-</div>
-<label>Description</label>
-<textarea id="description" placeholder="Product specifications and details"></textarea>
-<label>Product Image</label>
-<input id="imageFile" type="file" accept="image/*">
-<div class="preview" id="imagePreview"></div>
-<label>Publish Status</label>
-<select id="published"><option value="false">Draft</option><option value="true">Published</option></select>
-<button id="saveProductBtn" onclick="saveProduct()">Save Product</button>
-<button class="secondary" onclick="resetForm()">Clear</button>
-<p id="productMessage" class="muted"></p>
-</div>
-
-<div class="panel">
-<h3>All Products</h3>
-<div class="toolbar">
-<input id="productSearch" placeholder="Search product..." oninput="renderProductList()">
-<select id="productFilter" onchange="renderProductList()">
-<option value="">All Status</option><option value="true">Published</option><option value="false">Draft</option>
+<div class="filters">
+<input id="search" placeholder="Search products by name, brand or model..." oninput="renderProducts()">
+<select id="categoryFilter" onchange="renderProducts()">
+<option value="">All Categories</option>
+<option>Solar Inverters</option>
+<option>Solar Panels</option>
+<option>Lithium Batteries</option>
+<option>Energy Storage Systems</option>
+<option>Wind Turbines</option>
+<option>Other Products</option>
 </select>
 </div>
-<div id="productList" class="product-list">Loading...</div>
-</div>
+<div class="grid" id="productGrid"><div class="empty">Loading products...</div></div>
 </section>
 
-<!-- INQUIRIES -->
-<section class="page" id="page-inquiries">
-<div class="page-title">
-<div><h1>Inquiry Management</h1><div class="sub">Review customer requests and update their status.</div></div>
-<button onclick="loadInquiries()">↻ Refresh</button>
+<section class="about" id="about">
+<div class="about-inner">
+<div>
+<h2>Reliable Energy Products for Global Markets</h2>
+<p>Sunvanta Energy focuses on providing solar and energy storage products for international wholesale customers. We work with distributors, installers and project partners to help deliver suitable energy solutions.</p>
+<p>Contact us with your product requirements, target market and project details. Our team will help you find the right products.</p>
 </div>
-<div class="cards">
-<div class="stat"><small>All Inquiries</small><strong id="inquiryTotal">—</strong></div>
-<div class="stat"><small>New</small><strong id="inquiryNew">—</strong></div>
-<div class="stat"><small>Processing</small><strong id="inquiryProcessing">—</strong></div>
-<div class="stat"><small>Completed</small><strong id="inquiryCompleted">—</strong></div>
-</div>
-<div class="panel">
-<div class="toolbar">
-<input id="inquirySearch" placeholder="Search customer, country or WhatsApp..." oninput="renderInquiries()">
-<select id="inquiryStatusFilter" onchange="renderInquiries()">
-<option value="">All Status</option><option>New</option><option>Processing</option><option>Quoted</option><option>Completed</option><option>Cancelled</option>
-</select>
-</div>
-<div class="table-wrap">
-<table>
-<thead><tr><th>Date</th><th>Customer</th><th>Contact</th><th>Country</th><th>Products</th><th>Status</th><th>Details</th></tr></thead>
-<tbody id="inquiryList"></tbody>
-</table>
+<div class="about-box">
+<div><strong>Solar Panels</strong><br><span class="muted">High-efficiency PV modules</span></div>
+<div><strong>Solar Inverters</strong><br><span class="muted">On-grid, off-grid and hybrid solutions</span></div>
+<div><strong>Lithium Batteries</strong><br><span class="muted">Residential and commercial storage</span></div>
+<div><strong>Energy Storage</strong><br><span class="muted">Integrated storage solutions</span></div>
 </div>
 </div>
 </section>
 
-<!-- CUSTOMERS -->
-<section class="page" id="page-customers">
-<div class="page-title">
-<div><h1>Customer Management</h1><div class="sub">Customer records are automatically summarized from submitted inquiries.</div></div>
-<button onclick="loadInquiries()">↻ Refresh</button>
-</div>
-<div class="cards">
-<div class="stat"><small>Total Customers</small><strong id="customerTotal">—</strong></div>
-<div class="stat"><small>Countries</small><strong id="customerCountries">—</strong></div>
-<div class="stat"><small>With WhatsApp</small><strong id="customerWhatsapp">—</strong></div>
-<div class="stat"><small>With Email</small><strong id="customerEmail">—</strong></div>
-</div>
-<div class="panel">
-<div class="toolbar"><input id="customerSearch" placeholder="Search name, country or contact..." oninput="renderCustomers()"></div>
-<div class="table-wrap">
-<table><thead><tr><th>Customer</th><th>Country</th><th>WhatsApp</th><th>Email</th><th>Inquiries</th><th>Last Inquiry</th><th>Contact</th></tr></thead>
-<tbody id="customerList"></tbody></table>
-</div>
-</div>
+<section class="contact" id="contact">
+<h2>Let's Build Your Energy Project</h2>
+<p>Looking for wholesale prices or a customized solar solution?<br>Send us your requirements and our team will get back to you.</p>
+<a href="https://wa.me/8616651698738" target="_blank" rel="noopener">Contact Us on WhatsApp</a>
 </section>
 
-<!-- STATISTICS -->
-<section class="page" id="page-statistics">
-<div class="page-title">
-<div><h1>Business Statistics</h1><div class="sub">A summary based on your current product and inquiry records.</div></div>
-<button onclick="refreshAll()">↻ Refresh</button>
+<footer>© <span id="year"></span> Sunvanta Energy. All rights reserved.</footer>
+
+<div class="overlay" id="cartOverlay" onclick="if(event.target===this)closeCart()">
+<div class="drawer">
+<div class="drawer-head"><h2>Your Inquiry Cart</h2><button class="close" onclick="closeCart()">×</button></div>
+<div id="cartItems"></div>
+<div class="cart-total" id="cartTotal">0 products</div>
+<h3>Submit Your Inquiry</h3>
+<form id="inquiryForm">
+<div class="form-group"><label>Your Name *</label><input id="customerName" required placeholder="Full name"></div>
+<div class="form-group"><label>WhatsApp</label><input id="customerWhatsapp" placeholder="+ country code and number"></div>
+<div class="form-group"><label>Email</label><input id="customerEmail" type="email" placeholder="Email address"></div>
+<div class="form-group"><label>Country</label><input id="customerCountry" placeholder="Your country"></div>
+<div class="form-group"><label>Message / Requirements</label><textarea id="customerNotes" placeholder="Tell us about your project or requirements"></textarea></div>
+<button class="submit" id="submitBtn" type="submit">Submit Inquiry</button>
+<p id="message"></p>
+</form>
 </div>
-<div class="cards">
-<div class="stat"><small>Total Products</small><strong id="statsProducts">—</strong></div>
-<div class="stat"><small>Total Inquiries</small><strong id="statsInquiries">—</strong></div>
-<div class="stat"><small>Customer Countries</small><strong id="statsCountries">—</strong></div>
-<div class="stat"><small>Inquiry Conversion Data</small><strong>—</strong></div>
 </div>
-<div class="panel">
-<h3>Inquiries by Country</h3>
-<div id="countryStats"></div>
-</div>
-<div class="panel">
-<h3>Popular Inquired Products</h3>
-<div id="popularProducts"></div>
-</div>
-<p class="muted">Note: Website visitor counts and product page views are not tracked yet. They require a separate website analytics feature.</p>
-</section>
-</main>
+
+<div class="modal" id="detailModal" onclick="if(event.target===this)closeDetail()">
+<div class="modal-box">
+<div class="modal-top"><h3>Product Details</h3><button class="close" onclick="closeDetail()">×</button></div>
+<div id="detailContent"></div>
 </div>
 </div>
 
 <script>
 const SUPABASE_URL="https://lwqxwsxhgopiubknjtnp.supabase.co";
 const SUPABASE_KEY="sb_publishable_J2GEOxIuBbuS7xHm7USVTw_MFqFDgZ1";
-const ADMIN_UID="d11f2af2-efd4-49c4-baab-51f84569ddfa";
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
+const CART_STORAGE_KEY="sunvanta_energy_cart_v1";
 let products=[];
-let inquiries=[];
-let customers=[];
-let currentImageUrl=null;
+let cart=loadSavedCart();
 
 const $=id=>document.getElementById(id);
 const safe=value=>String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const dateText=value=>value?new Date(value).toLocaleDateString():"—";
-
-async function login(){
- $("loginMessage").textContent="Signing in...";
- const {data,error}=await db.auth.signInWithPassword({
-  email:$("email").value.trim(),password:$("password").value
- });
- if(error){$("loginMessage").textContent=error.message;return;}
- if(data.user.id!==ADMIN_UID){
-  await db.auth.signOut();
-  $("loginMessage").textContent="Unauthorized account.";
+function loadSavedCart(){
+ try{
+  const data=JSON.parse(localStorage.getItem(CART_STORAGE_KEY)||"[]");
+  return Array.isArray(data)?data:[];
+ }catch(e){return []}
+}
+function saveCart(){
+ localStorage.setItem(CART_STORAGE_KEY,JSON.stringify(cart));
+ updateCartCount();
+}
+function money(p){
+ if(p.price==null||p.price==="")return "Request a Quote";
+ return safe(p.currency||"USD")+" "+Number(p.price).toLocaleString();
+}
+async function loadProducts(){
+ $("productGrid").innerHTML='<div class="empty">Loading products...</div>';
+ const {data,error}=await db.from("products").select("*").eq("published",true).order("created_at",{ascending:false});
+ if(error){
+  $("productGrid").innerHTML='<div class="empty">Unable to load products. Please try again later.</div>';
+  console.error(error);
   return;
  }
- showAdmin(data.user.email);
-}
-
-async function logout(){
- await db.auth.signOut();
- location.reload();
-}
-
-function showAdmin(email){
- $("loginPanel").classList.add("hidden");
- $("app").classList.remove("hidden");
- $("adminEmail").textContent=email||"Administrator";
- refreshAll();
-}
-
-async function checkSession(){
- const {data}=await db.auth.getSession();
- if(data.session){
-  if(data.session.user.id===ADMIN_UID)showAdmin(data.session.user.email);
-  else await db.auth.signOut();
- }
-}
-
-function showPage(name,button){
- document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
- $("page-"+name).classList.add("active");
- document.querySelectorAll(".sidebar button[data-page]").forEach(b=>b.classList.remove("active"));
- const selected=button||document.querySelector('[data-page="'+name+'"]');
- if(selected)selected.classList.add("active");
- if(name==="products")loadProducts();
- if(name==="inquiries"||name==="customers"||name==="statistics")loadInquiries();
-}
-
-async function refreshAll(){
- await Promise.all([loadProducts(),loadInquiries()]);
- updateDashboard();
- updateStatistics();
-}
-
-async function loadProducts(){
- $("productList").textContent="Loading...";
- const {data,error}=await db.from("products").select("*").order("created_at",{ascending:false});
- if(error){$("productList").textContent=error.message;return;}
  products=data||[];
- renderProductList();
- updateDashboard();
- updateStatistics();
+ renderProducts();
 }
-
-function renderProductList(){
- const keyword=($("productSearch")?.value||"").toLowerCase();
- const filter=$("productFilter")?.value||"";
- const list=$("productList");
- const filtered=products.filter(p=>{
-  const text=[p.name,p.brand,p.model,p.category].join(" ").toLowerCase();
-  return text.includes(keyword)&&(!filter||String(p.published)===filter);
+function renderProducts(){
+ const keyword=$("search").value.trim().toLowerCase();
+ const category=$("categoryFilter").value;
+ const list=products.filter(p=>{
+  const text=[p.name,p.brand,p.model,p.category,p.power,p.description].join(" ").toLowerCase();
+  return text.includes(keyword)&&(!category||p.category===category);
  });
- if(!filtered.length){list.innerHTML='<div class="empty">No matching products.</div>';return;}
- list.innerHTML=filtered.map(p=>`
- <div class="product">
-  <img src="${safe(p.image_url||"")}" alt="">
-  <div class="product-info">
-   <strong>${safe(p.name)}</strong>
-   <p>${safe([p.brand,p.model,p.power].filter(Boolean).join(" · "))}</p>
-   <p>${p.price==null?"Price not set":safe(p.currency)+" "+safe(p.price)} · ${p.published?'<span class="tag">Published</span>':'<span class="tag draft">Draft</span>'}</p>
-  </div>
-  <div class="product-actions">
-   <button class="secondary" onclick="editProduct('${safe(p.id)}')">Edit</button>
-   <button onclick="togglePublish('${safe(p.id)}',${!p.published})">${p.published?"Unpublish":"Publish"}</button>
-   <button class="danger" onclick="deleteProduct('${safe(p.id)}')">Delete</button>
-  </div>
- </div>`).join("");
-}
-
-function newProduct(){
- resetForm();
- $("productFormPanel").scrollIntoView({behavior:"smooth"});
-}
-
-async function saveProduct(){
- const msg=$("productMessage");
- const btn=$("saveProductBtn");
- const id=$("productId").value;
- const name=$("name").value.trim();
- if(!name){msg.textContent="Please enter a product name.";return;}
-
- btn.disabled=true;
- msg.textContent="Saving product...";
- try{
-  let imageUrl=currentImageUrl;
-  const file=$("imageFile").files[0];
-  if(file){
-   if(!file.type.startsWith("image/"))throw new Error("Please select an image file.");
-   const ext=(file.name.split(".").pop()||"jpg").toLowerCase();
-   const path=Date.now()+"-"+Math.random().toString(36).slice(2)+"."+ext;
-   const {error:uploadError}=await db.storage.from("product-images").upload(path,file);
-   if(uploadError)throw uploadError;
-   imageUrl=db.storage.from("product-images").getPublicUrl(path).data.publicUrl;
-  }
-
-  const rawPrice=$("price").value;
-  const rawMoq=$("moq").value;
-  const product={
-   name,brand:$("brand").value.trim(),model:$("model").value.trim(),
-   category:$("category").value,power:$("power").value.trim(),
-   description:$("description").value.trim(),image_url:imageUrl,
-   price:rawPrice===""?null:Number(rawPrice),currency:$("currency").value,
-   moq:rawMoq===""?1:Number(rawMoq),stock_status:$("stockStatus").value,
-   warranty:$("warranty").value.trim(),show_price:$("showPrice").value==="true",
-   published:$("published").value==="true"
-  };
-
-  const result=id
-   ?await db.from("products").update(product).eq("id",id)
-   :await db.from("products").insert(product);
-  if(result.error)throw result.error;
-
-  msg.textContent="Product saved successfully.";
-  resetForm();
-  await loadProducts();
- }catch(error){
-  msg.textContent="Save failed: "+error.message;
- }finally{
-  btn.disabled=false;
+ if(!list.length){
+  $("productGrid").innerHTML='<div class="empty">No products found. Please try another search.</div>';
+  return;
  }
+ $("productGrid").innerHTML=list.map(p=>{
+  const image=p.image_url||"";
+  const price=p.show_price?`<div class="price">${money(p)}</div>`:'<div class="price">Request a Quote</div>';
+  return `<article class="card">
+   <div class="card-image">${image?`<img src="${safe(image)}" alt="${safe(p.name)}" loading="lazy">`:'<span class="muted">Product Image</span>'}</div>
+   <div class="card-body">
+    <span class="category">${safe(p.category||"Product")}</span>
+    <h3>${safe(p.name)}</h3>
+    <p>${safe(p.description||[p.brand,p.model,p.power].filter(Boolean).join(" · "))}</p>
+    <div class="product-meta">${safe([p.brand,p.model,p.power,p.warranty].filter(Boolean).join(" · "))}</div>
+    ${price}
+    <div class="card-actions">
+     <button class="detail-btn" onclick="showDetail('${safe(p.id)}')">Details</button>
+     <button class="add-btn" onclick="addToCart('${safe(p.id)}')">＋ Add to Inquiry</button>
+    </div>
+   </div>
+  </article>`;
+ }).join("");
 }
-
-async function editProduct(id){
+function showDetail(id){
  const p=products.find(x=>String(x.id)===String(id));
  if(!p)return;
- $("productId").value=p.id;
- $("name").value=p.name||"";
- $("brand").value=p.brand||"";
- $("model").value=p.model||"";
- $("category").value=p.category||"Solar Inverters";
- $("power").value=p.power||"";
- $("description").value=p.description||"";
- $("price").value=p.price??"";
- $("currency").value=p.currency||"USD";
- $("moq").value=p.moq??1;
- $("stockStatus").value=p.stock_status||"In Stock";
- $("warranty").value=p.warranty||"";
- $("showPrice").value=String(p.show_price??false);
- $("published").value=String(p.published??false);
- currentImageUrl=p.image_url||null;
- $("imagePreview").innerHTML=currentImageUrl?'<img src="'+safe(currentImageUrl)+'">':"No image uploaded.";
- $("formTitle").textContent="Edit Product";
- $("productFormPanel").scrollIntoView({behavior:"smooth"});
+ $("detailContent").innerHTML=`
+  ${p.image_url?`<img src="${safe(p.image_url)}" alt="${safe(p.name)}">`:""}
+  <h2>${safe(p.name)}</h2>
+  <p class="muted">${safe([p.brand,p.model,p.category,p.power].filter(Boolean).join(" · "))}</p>
+  <p>${safe(p.description||"Please contact us for product specifications.")}</p>
+  <p><strong>MOQ:</strong> ${safe(p.moq||1)}</p>
+  <p><strong>Stock:</strong> ${safe(p.stock_status||"Please inquire")}</p>
+  <p><strong>Warranty:</strong> ${safe(p.warranty||"Please inquire")}</p>
+  <div class="price">${p.show_price?money(p):"Request a Quote"}</div>
+  <button class="primary" onclick="addToCart('${safe(p.id)}');closeDetail()">Add to Inquiry Cart</button>`;
+ $("detailModal").classList.add("open");
 }
-
-async function togglePublish(id,published){
- const {error}=await db.from("products").update({published}).eq("id",id);
- if(error){alert(error.message);return;}
- await loadProducts();
+function closeDetail(){$("detailModal").classList.remove("open")}
+function addToCart(id){
+ const p=products.find(x=>String(x.id)===String(id));
+ if(!p)return;
+ const existing=cart.find(x=>String(x.id)===String(id));
+ if(existing)existing.quantity++;
+ else cart.push({id:p.id,name:p.name,model:p.model||"",image_url:p.image_url||"",quantity:1});
+ saveCart();
+ renderCart();
+ $("cartOverlay").classList.add("open");
 }
-
-async function deleteProduct(id){
- if(!confirm("Delete this product permanently?"))return;
- const {error}=await db.from("products").delete().eq("id",id);
- if(error){alert(error.message);return;}
- await loadProducts();
+function updateQuantity(id,change){
+ const item=cart.find(x=>String(x.id)===String(id));
+ if(!item)return;
+ item.quantity+=change;
+ if(item.quantity<=0)cart=cart.filter(x=>String(x.id)!==String(id));
+ saveCart();renderCart();
 }
-
-function resetForm(){
- ["productId","name","brand","model","power","description","price","warranty","imageFile"].forEach(id=>$(id).value="");
- $("category").value="Solar Inverters";
- $("currency").value="USD";
- $("moq").value=1;
- $("stockStatus").value="In Stock";
- $("showPrice").value="false";
- $("published").value="false";
- $("formTitle").textContent="Add a Product";
- $("imagePreview").innerHTML="";
- $("productMessage").textContent="";
- currentImageUrl=null;
+function removeItem(id){
+ cart=cart.filter(x=>String(x.id)!==String(id));
+ saveCart();renderCart();
 }
+function updateCartCount(){
+ $("cartCount").textContent=cart.reduce((sum,x)=>sum+Number(x.quantity||0),0);
+}
+function renderCart(){
+ $("cartItems").innerHTML=cart.length?cart.map(item=>`
+ <div class="cart-item">
+  ${item.image_url?`<img src="${safe(item.image_url)}" alt="">`:""}
+  <div class="cart-info">
+   <strong>${safe(item.name)}</strong>
+   <small>${safe(item.model)}</small>
+   <div class="qty">
+    <button onclick="updateQuantity('${safe(item.id)}',-1)">−</button>
+    <span>${Number(item.quantity)}</span>
+    <button onclick="updateQuantity('${safe(item.id)}',1)">＋</button>
+    <button class="remove" onclick="removeItem('${safe(item.id)}')">Remove</button>
+   </div>
+  </div>
+ </div>`).join(""):'<div class="empty">Your inquiry cart is empty. Add products to get started.</div>';
+ $("cartTotal").textContent=cart.reduce((sum,x)=>sum+Number(x.quantity||0),0)+" product units";
+ updateCartCount();
+}
+function openCart(){renderCart();$("cartOverlay").classList.add("open")}
+function closeCart(){$("cartOverlay").classList.remove("open")}
 
-$("imageFile").addEventListener("change",function(){
- const file=this.files[0];
- if(!file){$("imagePreview").innerHTML="";return;}
- if(!file.type.startsWith("image/")){alert("Please select an image.");this.value="";return;}
- const url=URL.createObjectURL(file);
- $("imagePreview").innerHTML='<img src="'+url+'">';
+$("inquiryForm").addEventListener("submit",async function(e){
+ e.preventDefault();
+ if(!cart.length){$("message").textContent="Please add at least one product to your inquiry cart.";return}
+ const btn=$("submitBtn");
+ btn.disabled=true;
+ btn.textContent="Submitting...";
+ $("message").textContent="Please wait...";
+ const order={
+  customer_name:$("customerName").value.trim(),
+  whatsapp:$("customerWhatsapp").value.trim(),
+  email:$("customerEmail").value.trim(),
+  country:$("customerCountry").value.trim(),
+  items:cart.map(x=>({id:x.id,name:x.name,model:x.model,quantity:Number(x.quantity)})),
+  notes:$("customerNotes").value.trim(),
+  status:"New"
+ };
+ try{
+  const {error}=await db.from("inquiry_orders").insert(order);
+  if(error)throw error;
+  cart=[];
+  saveCart();
+  renderCart();
+  $("inquiryForm").reset();
+  $("message").textContent="Thank you! Your inquiry has been submitted successfully.";
+ }catch(error){
+  $("message").textContent="Submission failed. Please contact us on WhatsApp. "+error.message;
+ }finally{
+  btn.disabled=false;
+  btn.textContent="Submit Inquiry";
+ }
 });
 
-async function loadInquiries(){
- $("inquiryList").innerHTML='<tr><td colspan="7">Loading...</td></tr>';
- const {data,error}=await db.from("inquiry_orders").select("*").order("created_at",{ascending:false});
- if(error){
-  $("inquiryList").innerHTML='<tr><td colspan="7">Unable to load inquiries: '+safe(error.message)+'</td></tr>';
-  return;
- }
- inquiries=data||[];
- buildCustomers();
- renderInquiries();
- renderCustomers();
- updateDashboard();
- updateStatistics();
-}
-
-function renderInquiries(){
- const keyword=($("inquirySearch")?.value||"").toLowerCase();
- const statusFilter=$("inquiryStatusFilter")?.value||"";
- const filtered=inquiries.filter(o=>{
-  const text=[o.customer_name,o.whatsapp,o.email,o.country].join(" ").toLowerCase();
-  return text.includes(keyword)&&(!statusFilter||o.status===statusFilter);
- });
- $("inquiryList").innerHTML=filtered.length?filtered.map(o=>{
-  const items=Array.isArray(o.items)?o.items:[];
-  const productText=items.map(i=>`${i.name||"Product"} × ${i.quantity||1}`).join(", ");
-  return `<tr>
-   <td>${dateText(o.created_at)}</td>
-   <td><strong>${safe(o.customer_name)}</strong><div class="muted">${safe(o.email||"")}</div></td>
-   <td>${safe(o.whatsapp||"—")}</td>
-   <td>${safe(o.country||"—")}</td>
-   <td>${safe(productText||"—")}</td>
-   <td><select onchange="updateInquiryStatus(${Number(o.id)},this.value)">
-    ${["New","Processing","Quoted","Completed","Cancelled"].map(s=>`<option ${o.status===s?"selected":""}>${s}</option>`).join("")}
-   </select></td>
-   <td><button class="secondary" onclick="viewInquiry(${Number(o.id)})">View</button></td>
-  </tr>`;
- }).join(""):'<tr><td colspan="7" class="empty">No inquiries found.</td></tr>';
-
- $("inquiryTotal").textContent=inquiries.length;
- $("inquiryNew").textContent=inquiries.filter(o=>o.status==="New").length;
- $("inquiryProcessing").textContent=inquiries.filter(o=>o.status==="Processing").length;
- $("inquiryCompleted").textContent=inquiries.filter(o=>o.status==="Completed").length;
-}
-
-async function updateInquiryStatus(id,status){
- const {error}=await db.from("inquiry_orders").update({status}).eq("id",id);
- if(error){alert("Unable to update status: "+error.message);await loadInquiries();return;}
- const order=inquiries.find(o=>Number(o.id)===id);
- if(order)order.status=status;
- renderInquiries();
- updateDashboard();
-}
-
-function viewInquiry(id){
- const o=inquiries.find(x=>Number(x.id)===id);
- if(!o)return;
- const items=Array.isArray(o.items)?o.items:[];
- const lines=items.map(i=>`${i.name||"Product"} | ${i.model||""} | Qty: ${i.quantity||1}`).join("\n");
- alert(
-  "Customer: "+(o.customer_name||"")+
-  "\nCountry: "+(o.country||"")+
-  "\nWhatsApp: "+(o.whatsapp||"")+
-  "\nEmail: "+(o.email||"")+
-  "\nDate: "+dateText(o.created_at)+
-  "\nStatus: "+(o.status||"New")+
-  "\n\nProducts:\n"+lines+
-  "\n\nNotes:\n"+(o.notes||"")
- );
-}
-
-function buildCustomers(){
- const map=new Map();
- inquiries.forEach(o=>{
-  const key=(o.whatsapp||o.email||o.customer_name||"").toLowerCase().trim();
-  if(!key)return;
-  if(!map.has(key)){
-   map.set(key,{name:o.customer_name||"",country:o.country||"",whatsapp:o.whatsapp||"",email:o.email||"",count:0,last:o.created_at});
-  }
-  const c=map.get(key);
-  c.count++;
-  if(!c.whatsapp&&o.whatsapp)c.whatsapp=o.whatsapp;
-  if(!c.email&&o.email)c.email=o.email;
-  if(!c.country&&o.country)c.country=o.country;
-  if(o.created_at&&(!c.last||new Date(o.created_at)>new Date(c.last)))c.last=o.created_at;
- });
- customers=[...map.values()].sort((a,b)=>new Date(b.last)-new Date(a.last));
-}
-
-function renderCustomers(){
- const keyword=($("customerSearch")?.value||"").toLowerCase();
- const filtered=customers.filter(c=>[c.name,c.country,c.whatsapp,c.email].join(" ").toLowerCase().includes(keyword));
- $("customerList").innerHTML=filtered.length?filtered.map(c=>`
- <tr><td><strong>${safe(c.name)}</strong></td><td>${safe(c.country||"—")}</td>
- <td>${safe(c.whatsapp||"—")}</td><td>${safe(c.email||"—")}</td>
- <td>${c.count}</td><td>${dateText(c.last)}</td>
- <td>${c.whatsapp?'<a target="_blank" rel="noopener" href="https://wa.me/'+safe(c.whatsapp.replace(/[^0-9]/g,""))+'">WhatsApp</a>':"—"}</td></tr>`).join(""):'<tr><td colspan="7" class="empty">No customer records yet.</td></tr>';
-
- $("customerTotal").textContent=customers.length;
- $("customerCountries").textContent=new Set(customers.map(c=>c.country).filter(Boolean)).size;
- $("customerWhatsapp").textContent=customers.filter(c=>c.whatsapp).length;
- $("customerEmail").textContent=customers.filter(c=>c.email).length;
-}
-
-function updateDashboard(){
- $("statProducts").textContent=products.length;
- $("statPublished").textContent=products.filter(p=>p.published).length;
- $("statInquiries").textContent=inquiries.length;
- $("statPending").textContent=inquiries.filter(o=>["New","Processing"].includes(o.status||"New")).length;
- const recent=inquiries.slice(0,6);
- $("recentInquiries").innerHTML=recent.length?recent.map(o=>`
- <tr><td>${dateText(o.created_at)}</td><td>${safe(o.customer_name)}</td>
- <td>${safe(o.country||"—")}</td><td>${safe(o.whatsapp||"—")}</td>
- <td><span class="tag">${safe(o.status||"New")}</span></td></tr>`).join(""):'<tr><td colspan="5" class="empty">No inquiries yet.</td></tr>';
-}
-
-function updateStatistics(){
- $("statsProducts").textContent=products.length;
- $("statsInquiries").textContent=inquiries.length;
- const countryMap={};
- const productMap={};
- inquiries.forEach(o=>{
-  const country=o.country||"Unknown";
-  countryMap[country]=(countryMap[country]||0)+1;
-  (Array.isArray(o.items)?o.items:[]).forEach(i=>{
-   const name=i.name||"Unknown Product";
-   productMap[name]=(productMap[name]||0)+Number(i.quantity||1);
-  });
- });
- $("statsCountries").textContent=Object.keys(countryMap).length;
- const countries=Object.entries(countryMap).sort((a,b)=>b[1]-a[1]);
- $("countryStats").innerHTML=countries.length?countries.map(([name,count])=>`
- <p>${safe(name)} <strong style="float:right">${count}</strong></p>
- <div style="height:7px;background:#edf1ee;border-radius:9px;overflow:hidden">
- <div style="height:100%;width:${Math.max(4,count/Math.max(...countries.map(x=>x[1]))*100)}%;background:#07835c"></div></div>`).join(""):'<p class="muted">No inquiry data yet.</p>';
- const popular=Object.entries(productMap).sort((a,b)=>b[1]-a[1]).slice(0,10);
- $("popularProducts").innerHTML=popular.length?popular.map(([name,count])=>`<p>${safe(name)} <strong style="float:right">${count} units requested</strong></p>`).join(""):'<p class="muted">No product inquiry data yet.</p>';
-}
-
-checkSession();
+$("year").textContent=new Date().getFullYear();
+updateCartCount();
+renderCart();
+loadProducts();
 </script>
 </body>
 </html>
